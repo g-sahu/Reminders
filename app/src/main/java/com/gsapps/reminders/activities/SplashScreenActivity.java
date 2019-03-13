@@ -15,6 +15,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static android.view.View.OnClickListener;
 import static com.google.android.gms.auth.api.Auth.GOOGLE_SIGN_IN_API;
@@ -26,6 +27,8 @@ import static com.google.firebase.auth.GoogleAuthProvider.getCredential;
 import static com.gsapps.reminders.R.id.sign_in_button;
 import static com.gsapps.reminders.R.layout.activity_splash_screen;
 import static com.gsapps.reminders.R.string.*;
+import static com.gsapps.reminders.util.Constants.DISPLAY_NAME;
+import static com.gsapps.reminders.util.Constants.PHOTO_URL;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 import static java.lang.String.valueOf;
 
@@ -58,9 +61,12 @@ public class SplashScreenActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
+        FirebaseUser user = fAuth.getCurrentUser();
 
-        if(fAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(this, HomeActivity.class);
+        if(user != null) {
+            Intent intent = new Intent(this, HomeActivity.class)
+                                    .putExtra(DISPLAY_NAME, user.getDisplayName())
+                                    .putExtra(PHOTO_URL, user.getPhotoUrl());;
             startActivity(intent);
             finish();
         }
@@ -106,12 +112,12 @@ public class SplashScreenActivity extends AppCompatActivity
              .addOnCompleteListener(this, task -> {
                  if (task.isSuccessful()) {
                      Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class)
-                                            .putExtra("DISPLAY_NAME", account.getDisplayName())
-                                            .putExtra("PHOTO_URL", account.getPhotoUrl());
+                                            .putExtra(DISPLAY_NAME, account.getDisplayName())
+                                            .putExtra(PHOTO_URL, account.getPhotoUrl());
                      startActivity(intent);
                      finish();
                  } else {
-                     Log.e(LOG_TAG, "Authentication failed.", task.getException());
+                     Log.e(LOG_TAG, "Firebase authentication failed.", task.getException());
                      showToastMessage(SplashScreenActivity.this, getString(auth_failed));
                  }
              });
@@ -119,7 +125,7 @@ public class SplashScreenActivity extends AppCompatActivity
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e(LOG_TAG, "Connection failed to Google API client!");
+        Log.e(LOG_TAG, "Connection to Google API client failed!");
         Log.e(LOG_TAG, connectionResult.getErrorMessage());
         showToastMessage(this, getString(connection_failure));
     }

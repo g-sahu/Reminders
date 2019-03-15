@@ -55,10 +55,10 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         with(this)
-                .load((Uri) intent.getParcelableExtra(PHOTO_URL))
-                .crossFade()
-                .diskCacheStrategy(ALL)
-                .into(profilePic);
+            .load((Uri) intent.getParcelableExtra(PHOTO_URL))
+            .crossFade()
+            .diskCacheStrategy(ALL)
+            .into(profilePic);
 
         TextView displayName = headerView.findViewById(display_name);
         displayName.setText(intent.getStringExtra(DISPLAY_NAME));
@@ -71,9 +71,10 @@ public class HomeActivity extends AppCompatActivity {
         //Setting up the default fragment
         calendarFragment = new CalendarFragment();
 
-        getSupportFragmentManager().beginTransaction()
-                                   .replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT)
-                                   .commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT)
+                .commit();
 
         setTitle(calendar);
     }
@@ -83,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
+    private void selectDrawerItem(MenuItem menuItem) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         switch(menuItem.getItemId()) {

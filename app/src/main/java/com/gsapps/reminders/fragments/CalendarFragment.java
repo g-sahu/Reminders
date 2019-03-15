@@ -3,36 +3,38 @@ package com.gsapps.reminders.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.gsapps.reminders.model.Event;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.services.calendar.Calendar;
+import com.gsapps.reminders.services.LoadGoogleCalendarTask;
+import com.gsapps.reminders.util.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CALENDAR;
+import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.app.Activity.RESULT_OK;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static android.provider.CalendarContract.Calendars.*;
+import static com.google.api.client.extensions.android.http.AndroidHttp.newCompatibleTransport;
+import static com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential.usingOAuth2;
+import static com.google.api.client.json.jackson2.JacksonFactory.getDefaultInstance;
+import static com.google.api.services.calendar.CalendarScopes.CALENDAR;
 import static com.gsapps.reminders.R.layout.fragment_calendar;
-import static com.gsapps.reminders.util.ReminderUtils.getContentFromProvider;
-import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
+import static com.gsapps.reminders.R.string.app_name;
+import static com.gsapps.reminders.util.Constants.EMAIL;
+import static java.util.Collections.singleton;
 
 public class CalendarFragment extends Fragment {
     private final String LOG_TAG = getClass().getSimpleName();
     private Context context;
-
-    //Storage Permissions
     private static final int REQUEST_CALENDAR = 1;
-    private static final String[] CALENDAR_PERMISSIONS = {READ_CALENDAR};
     private static final int READ_REQUEST_CODE = 42;
+    private static final int REQUEST_ACCOUNT_PICKER = 3;
+    private GoogleAccountCredential credential;
+    private String accountName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,50 +45,22 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View calendarView = inflater.inflate(fragment_calendar, container, false);
-        List<Event> eventList = new ArrayList<>();
-
-        /*for(int i=0; i<5; i++) {
-            Event event = new Event();
-            event.setName("Event " + i);
-            event.setDesc("Description for Event " + i);
-            event.setFrequency(DAILY);
-            event.setRecurring(true);
-            eventList.add(event);
-        }
-
-        Adapter eventListAdapter = new EventListAdapter(context, eventList);
-        RecyclerView eventListView = calendarView.findViewById(event_list_view);
-        eventListView.setAdapter(eventListAdapter);
-        eventListView.setLayoutManager(new LinearLayoutManager(context));*/
-        getCalendarEvents();
+        accountName = getActivity().getIntent().getStringExtra(EMAIL);
+        getCalendarEvents(accountName);
         return calendarView;
     }
 
-    public void getCalendarEvents() {
-        if(hasPermission(context, READ_CALENDAR)) {
-            String[] projection = {_ID, ACCOUNT_NAME, CALENDAR_DISPLAY_NAME, OWNER_ACCOUNT};
-            String selection = "";
-            Uri[] uris = {CONTENT_URI};
-            Cursor[] cursors = getContentFromProvider(context, uris, null, null, null, null);
+    public void getCalendarEvents(String accountName) {
+        final HttpTransport HTTP_TRANSPORT = newCompatibleTransport();
+        credential = usingOAuth2(context, singleton(CALENDAR));
+        credential.setSelectedAccountName(accountName);
 
-            for (Cursor cursor: cursors) {
-                try {
-                    if (cursor.getCount() > 0) {
-                        cursor.moveToFirst();
+        Calendar service = new Calendar.Builder(HTTP_TRANSPORT, getDefaultInstance(), credential)
+                                        .setApplicationName(getString(app_name))
+                                        .build();
 
-                        while (!cursor.isAfterLast()) {
-                            cursor.moveToNext();
-                        }
-                    }
-                } catch(Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    cursor.close();
-                }
-            }
-        } else {
-            ActivityCompat.requestPermissions((Activity) context, CALENDAR_PERMISSIONS, REQUEST_CALENDAR);
-        }
+        LoadGoogleCalendarTask calendarTask = new LoadGoogleCalendarTask((Activity) context);
+        calendarTask.execute(service);
     }
 
     @Override
@@ -102,10 +76,31 @@ public class CalendarFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
-            if (resultData != null) {
-                // TODO: 11-03-2019 Show a message when user does not grant the permissions
-            }
+        super.onActivityResult(requestCode, resultCode, resultData);
+
+        switch (requestCode) {
+            case READ_REQUEST_CODE:
+                if (resultCode == RESULT_OK && resultData != null) {
+                    // TODO: 11-03-2019 Show a message when user does not grant the permissions
+                }
+                break;
+
+            case Constants.REQUEST_AUTHORIZATION:
+                if (resultCode == RESULT_OK) {
+                    getCalendarEvents(accountName);
+                } else {
+                    startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+                }
+                break;
+
+            case REQUEST_ACCOUNT_PICKER:
+                if (resultCode == RESULT_OK && resultData != null && resultData.getExtras() != null) {
+                    String accountName = resultData.getExtras().getString(KEY_ACCOUNT_NAME);
+
+                    if (accountName != null) {
+                        getCalendarEvents(accountName);
+                    }
+                }
         }
     }
 

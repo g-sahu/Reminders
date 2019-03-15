@@ -28,12 +28,13 @@ import static com.gsapps.reminders.R.id.sign_in_button;
 import static com.gsapps.reminders.R.layout.activity_splash_screen;
 import static com.gsapps.reminders.R.string.*;
 import static com.gsapps.reminders.util.Constants.DISPLAY_NAME;
+import static com.gsapps.reminders.util.Constants.EMAIL;
+import static com.gsapps.reminders.util.Constants.OAUTH_CLIENT_ID;
 import static com.gsapps.reminders.util.Constants.PHOTO_URL;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 import static java.lang.String.valueOf;
 
-public class SplashScreenActivity extends AppCompatActivity
-        implements OnConnectionFailedListener, OnClickListener {
+public class SplashScreenActivity extends AppCompatActivity implements OnConnectionFailedListener, OnClickListener {
     private final String LOG_TAG = getClass().getSimpleName();
     private GoogleApiClient googleApiClient;
     private static final int RC_SIGN_IN = 9001;
@@ -46,7 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity
         findViewById(sign_in_button).setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(DEFAULT_SIGN_IN)
-                                        .requestIdToken(getString(oauth_client_id))
+                                        .requestIdToken(OAUTH_CLIENT_ID)
                                         .requestEmail()
                                         .build();
 
@@ -66,7 +67,8 @@ public class SplashScreenActivity extends AppCompatActivity
         if(user != null) {
             Intent intent = new Intent(this, HomeActivity.class)
                                     .putExtra(DISPLAY_NAME, user.getDisplayName())
-                                    .putExtra(PHOTO_URL, user.getPhotoUrl());;
+                                    .putExtra(PHOTO_URL, user.getPhotoUrl())
+                                    .putExtra(EMAIL, user.getEmail());
             startActivity(intent);
             finish();
         }
@@ -113,7 +115,8 @@ public class SplashScreenActivity extends AppCompatActivity
                  if (task.isSuccessful()) {
                      Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class)
                                             .putExtra(DISPLAY_NAME, account.getDisplayName())
-                                            .putExtra(PHOTO_URL, account.getPhotoUrl());
+                                            .putExtra(PHOTO_URL, account.getPhotoUrl())
+                                            .putExtra(EMAIL, account.getEmail());
                      startActivity(intent);
                      finish();
                  } else {

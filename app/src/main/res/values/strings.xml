@@ -9,11 +9,10 @@
     <string name="profile_picture">Profile Picture</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="oauth_client_id">903110263645-q7spnpsb0eof9c374s0pft1d6nsvcn63.apps.googleusercontent.com</string>
     <string name="no_internet">No internet connection.</string>
     <string name="internet_connected">Connected to the internet.</string>
-    <string name="sign_in_success">Sign in success!</string>
-    <string name="sign_in_failure">Sign in failed!</string>
+    <string name="sign_in_success">Sign in successful.</string>
+    <string name="sign_in_failure">Sign in failed.</string>
     <string name="auth_failed">Authentication failed.</string>
     <string name="connection_failure">Connection failure!</string>
 </resources>

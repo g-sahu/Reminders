@@ -15,25 +15,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import com.gsapps.reminders.fragments.CalendarFragment;
+import com.gsapps.reminders.fragments.SettingsFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.bumptech.glide.Glide.with;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.ALL;
+import static com.google.firebase.auth.FirebaseAuth.getInstance;
 import static com.gsapps.reminders.R.id;
 import static com.gsapps.reminders.R.id.*;
 import static com.gsapps.reminders.R.layout.activity_home;
-import static com.gsapps.reminders.R.string.calendar;
 import static com.gsapps.reminders.R.string.drawer_close;
 import static com.gsapps.reminders.R.string.drawer_open;
-import static com.gsapps.reminders.util.Constants.CALENDAR_FRAGMENT;
-import static com.gsapps.reminders.util.Constants.DISPLAY_NAME;
-import static com.gsapps.reminders.util.Constants.PHOTO_URL;
+import static com.gsapps.reminders.R.string.my_calendar;
+import static com.gsapps.reminders.util.Constants.*;
 
 public class HomeActivity extends AppCompatActivity {
     private final String LOG_TAG = getClass().getSimpleName();
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private Fragment calendarFragment;
+    private Fragment calendarFragment, settingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
                 .replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT)
                 .commit();
 
-        setTitle(calendar);
+        setTitle(my_calendar);
     }
 
     @Override
@@ -92,11 +92,14 @@ public class HomeActivity extends AppCompatActivity {
                 calendarFragment = (calendarFragment == null) ? new CalendarFragment() : calendarFragment;
                 fragmentTransaction.replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT);
                 break;
+
+            case fragment_settings:
+                settingsFragment = (settingsFragment == null) ? new SettingsFragment() : settingsFragment;
+                fragmentTransaction.replace(fragment_content, settingsFragment, SETTINGS_FRAGMENT);
+                break;
         }
 
         fragmentTransaction.commit();
-
-        // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         drawerLayout.closeDrawers();
@@ -114,4 +117,10 @@ public class HomeActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    public void logout(View view) {
+        getInstance().signOut();
+        Intent intent = new Intent(this, SplashScreenActivity.class).putExtra(IS_LOGGED_OUT, true);
+        startActivity(intent);
+        finish();
+    }
 }

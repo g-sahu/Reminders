@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,20 +22,20 @@ import static android.view.View.OnClickListener;
 import static com.google.android.gms.auth.api.Auth.GOOGLE_SIGN_IN_API;
 import static com.google.android.gms.auth.api.Auth.GoogleSignInApi;
 import static com.google.android.gms.auth.api.signin.GoogleSignInOptions.DEFAULT_SIGN_IN;
+import static com.google.android.gms.common.api.GoogleApiClient.Builder;
+import static com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import static com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
 import static com.google.firebase.auth.GoogleAuthProvider.getCredential;
 import static com.gsapps.reminders.R.id.sign_in_button;
 import static com.gsapps.reminders.R.layout.activity_splash_screen;
 import static com.gsapps.reminders.R.string.*;
-import static com.gsapps.reminders.util.Constants.DISPLAY_NAME;
-import static com.gsapps.reminders.util.Constants.EMAIL;
-import static com.gsapps.reminders.util.Constants.OAUTH_CLIENT_ID;
-import static com.gsapps.reminders.util.Constants.PHOTO_URL;
+import static com.gsapps.reminders.util.Constants.*;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 import static java.lang.String.valueOf;
 
-public class SplashScreenActivity extends AppCompatActivity implements OnConnectionFailedListener, OnClickListener {
+public class SplashScreenActivity extends AppCompatActivity
+        implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
     private final String LOG_TAG = getClass().getSimpleName();
     private GoogleApiClient googleApiClient;
     private static final int RC_SIGN_IN = 9001;
@@ -51,9 +52,10 @@ public class SplashScreenActivity extends AppCompatActivity implements OnConnect
                                         .requestEmail()
                                         .build();
 
-        googleApiClient = new GoogleApiClient.Builder(this)
+        googleApiClient = new Builder(this)
                                 .enableAutoManage(this, this)
                                 .addApi(GOOGLE_SIGN_IN_API, gso)
+                                .addConnectionCallbacks(this)
                                 .build();
 
         fAuth = getInstance();
@@ -127,9 +129,26 @@ public class SplashScreenActivity extends AppCompatActivity implements OnConnect
     }
 
     @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if(getIntent().getBooleanExtra(IS_LOGGED_OUT, false)) {
+            GoogleSignInApi.signOut(googleApiClient);
+            showToastMessage(this, getString(logout_msg));
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {}
+
+    @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e(LOG_TAG, "Connection to Google API client failed!");
         Log.e(LOG_TAG, connectionResult.getErrorMessage());
         showToastMessage(this, getString(connection_failure));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        googleApiClient.unregisterConnectionCallbacks(this);
     }
 }

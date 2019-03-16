@@ -30,7 +30,6 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Events> {
 
     @Override
     protected Events doInBackground(Calendar... service) {
-        // List the next 10 events from the primary calendar.
         Events events = null;
 
         try {
@@ -67,12 +66,6 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Events> {
             RecyclerView eventListView = activity.findViewById(event_list_view);
             eventListView.setAdapter(eventListAdapter);
             eventListView.setLayoutManager(new LinearLayoutManager(activity));
-
-            /*try {
-                Log.d(LOG_TAG, events.toPrettyString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
         }
     }
 }

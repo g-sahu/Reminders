@@ -7,9 +7,9 @@
             android:title="@string/my_calendar"
             android:checked="true"/>
         <item
-            android:id="@+id/fragment_user_account"
+            android:id="@+id/fragment_contact_events"
             android:icon="@drawable/ic_two"
-            android:title="@string/my_account" />
+            android:title="@string/contact_events" />
         <item
             android:id="@+id/fragment_settings"
             android:icon="@drawable/ic_three"

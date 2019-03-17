@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import com.gsapps.reminders.fragments.CalendarFragment;
+import com.gsapps.reminders.fragments.ContactEventsFragment;
 import com.gsapps.reminders.fragments.SettingsFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     private final String LOG_TAG = getClass().getSimpleName();
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private Fragment calendarFragment, settingsFragment;
+    private Fragment calendarFragment, contactEventsFragment, settingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,11 @@ public class HomeActivity extends AppCompatActivity {
             case fragment_calendar:
                 calendarFragment = (calendarFragment == null) ? new CalendarFragment() : calendarFragment;
                 fragmentTransaction.replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT);
+                break;
+
+            case fragment_contact_events:
+                contactEventsFragment = (contactEventsFragment == null) ? new ContactEventsFragment() : contactEventsFragment;
+                fragmentTransaction.replace(fragment_content, contactEventsFragment, CONTACT_EVENTS_FRAGMENT);
                 break;
 
             case fragment_settings:

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.services.calendar.Calendar;
-import com.gsapps.reminders.services.LoadGoogleCalendarTask;
+import com.gsapps.reminders.services.LoadContactEventsTask;
 import com.gsapps.reminders.util.Constants;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
@@ -21,17 +21,17 @@ import static com.google.api.client.extensions.android.http.AndroidHttp.newCompa
 import static com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential.usingOAuth2;
 import static com.google.api.client.json.jackson2.JacksonFactory.getDefaultInstance;
 import static com.google.api.services.calendar.CalendarScopes.CALENDAR;
-import static com.gsapps.reminders.R.layout.fragment_calendar;
+import static com.gsapps.reminders.R.layout.fragment_contact_events;
 import static com.gsapps.reminders.R.string.app_name;
 import static com.gsapps.reminders.util.Constants.EMAIL;
 import static java.util.Collections.singleton;
 
-public class CalendarFragment extends Fragment {
+public class ContactEventsFragment extends Fragment {
     private final String LOG_TAG = getClass().getSimpleName();
-    private Context context;
     private static final int READ_REQUEST_CODE = 42, REQUEST_ACCOUNT_PICKER = 3;
     private GoogleAccountCredential credential;
     private String accountName;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,21 +42,21 @@ public class CalendarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         accountName = getActivity().getIntent().getStringExtra(EMAIL);
-        getCalendarEvents(accountName);
-        return inflater.inflate(fragment_calendar, container, false);
+        getContactEvents(accountName);
+        return inflater.inflate(fragment_contact_events, container, false);
     }
 
-    private void getCalendarEvents(String accountName) {
+    private void getContactEvents(String accountName) {
         final HttpTransport HTTP_TRANSPORT = newCompatibleTransport();
         credential = usingOAuth2(context, singleton(CALENDAR));
         credential.setSelectedAccountName(accountName);
 
         Calendar service = new Calendar.Builder(HTTP_TRANSPORT, getDefaultInstance(), credential)
-                                        .setApplicationName(getString(app_name))
-                                        .build();
+                .setApplicationName(getString(app_name))
+                .build();
 
-        LoadGoogleCalendarTask calendarTask = new LoadGoogleCalendarTask((Activity) context);
-        calendarTask.execute(service);
+        LoadContactEventsTask contactEventsTask = new LoadContactEventsTask((Activity) context);
+        contactEventsTask.execute(service);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class CalendarFragment extends Fragment {
 
             case Constants.REQUEST_AUTHORIZATION:
                 if (resultCode == RESULT_OK) {
-                    getCalendarEvents(accountName);
+                    getContactEvents(accountName);
                 } else {
                     startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
                 }
@@ -83,10 +83,9 @@ public class CalendarFragment extends Fragment {
                     String accountName = resultData.getExtras().getString(KEY_ACCOUNT_NAME);
 
                     if (accountName != null) {
-                        getCalendarEvents(accountName);
+                        getContactEvents(accountName);
                     }
                 }
         }
     }
-
 }

@@ -4,7 +4,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff">
+        android:background="#ffffff" android:layout_marginTop="5dp" android:layout_marginBottom="5dp"
+        android:paddingTop="5dp" android:paddingBottom="5dp">
 
     <RelativeLayout
             android:layout_width="wrap_content"
@@ -12,7 +13,7 @@
 
         <ImageView
                 android:id="@+id/event_icon"
-                android:contentDescription="Event icon"
+                android:contentDescription="@string/event_icon"
                 android:layout_gravity="center"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -20,14 +21,14 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="5dp"/>
 
         <TextView
                 android:id="@+id/event_name"
                 android:layout_gravity="start"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:text="Event Name"
+                android:text="@string/event_name"
                 android:textSize="17sp"
                 android:textColor="#030303"
                 android:layout_alignTop="@+id/event_icon"
@@ -35,7 +36,7 @@
                 android:layout_toEndOf="@+id/event_icon"
                 android:maxLines="1"
                 android:maxLength="30"
-                android:ellipsize="end" />
+                android:ellipsize="end"/>
 
         <TextView
                 android:id="@+id/event_desc"
@@ -44,12 +45,12 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="#555555"
-                android:text="Event Description"
+                android:text="@string/event_desc"
                 android:layout_alignBottom="@+id/event_icon"
                 android:layout_alignLeft="@+id/event_name"
                 android:layout_alignStart="@+id/event_name"
                 android:maxLines="1"
-                android:ellipsize="end" />
+                android:ellipsize="end"/>
     </RelativeLayout>
 
     <ImageButton

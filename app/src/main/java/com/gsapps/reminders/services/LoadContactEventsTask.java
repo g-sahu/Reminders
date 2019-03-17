@@ -16,15 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v7.widget.RecyclerView.Adapter;
-import static com.gsapps.reminders.R.id.my_calendar_view;
+import static com.gsapps.reminders.R.id.contact_events_view;
 import static com.gsapps.reminders.model.Event.Frequency.ONCE;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 
-public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Events> {
+public class LoadContactEventsTask extends AsyncTask<Calendar, Void, Events> {
     private final String LOG_TAG = getClass().getSimpleName();
     final private Activity activity;
 
-    public LoadGoogleCalendarTask(Activity activity) {
+    public LoadContactEventsTask(Activity activity) {
         this.activity = activity;
     }
 
@@ -34,7 +34,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Events> {
 
         try {
             events = service[0].events()
-                               .list("primary")
+                               .list("addressbook#contacts@group.v.calendar.google.com")
                                .setOrderBy("startTime")
                                .setSingleEvents(true)
                                .setTimeMin(new DateTime("2018-01-01T00:00:00Z"))
@@ -63,7 +63,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Events> {
             }
 
             Adapter eventListAdapter = new EventListAdapter(activity, eventList);
-            RecyclerView eventListView = activity.findViewById(my_calendar_view);
+            RecyclerView eventListView = activity.findViewById(contact_events_view);
             eventListView.setAdapter(eventListAdapter);
             eventListView.setLayoutManager(new LinearLayoutManager(activity));
         }

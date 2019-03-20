@@ -7,13 +7,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.EventDateTime;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
-import static android.widget.Toast.*;
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
+import static java.util.Calendar.getInstance;
+import static java.util.TimeZone.getTimeZone;
 
 public class ReminderUtils {
     private static Toast toast;
@@ -53,5 +59,12 @@ public class ReminderUtils {
 
         toast = makeText(context, message, LENGTH_SHORT);
         toast.show();
+    }
+
+    public static Calendar getCalendar(EventDateTime eventDateTime, String timezone) {
+        DateTime dateTime = (eventDateTime.getDate() != null) ? eventDateTime.getDate() : eventDateTime.getDateTime();
+        Calendar calendar = getInstance(getTimeZone(timezone));
+        calendar.setTimeInMillis(dateTime.getValue());
+        return calendar;
     }
 }

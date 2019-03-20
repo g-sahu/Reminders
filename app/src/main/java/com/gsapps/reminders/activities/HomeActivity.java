@@ -89,17 +89,17 @@ public class HomeActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         switch(menuItem.getItemId()) {
-            case fragment_calendar:
+            case item_calendar:
                 calendarFragment = (calendarFragment == null) ? new CalendarFragment() : calendarFragment;
                 fragmentTransaction.replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT);
                 break;
 
-            case fragment_contact_events:
+            case item_contact_events:
                 contactEventsFragment = (contactEventsFragment == null) ? new ContactEventsFragment() : contactEventsFragment;
                 fragmentTransaction.replace(fragment_content, contactEventsFragment, CONTACT_EVENTS_FRAGMENT);
                 break;
 
-            case fragment_settings:
+            case item_settings:
                 settingsFragment = (settingsFragment == null) ? new SettingsFragment() : settingsFragment;
                 fragmentTransaction.replace(fragment_content, settingsFragment, SETTINGS_FRAGMENT);
                 break;

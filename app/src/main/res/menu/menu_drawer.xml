@@ -2,16 +2,16 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/fragment_calendar"
+            android:id="@+id/item_calendar"
             android:icon="@drawable/ic_one"
             android:title="@string/my_calendar"
             android:checked="true"/>
         <item
-            android:id="@+id/fragment_contact_events"
+            android:id="@+id/item_contact_events"
             android:icon="@drawable/ic_two"
             android:title="@string/contact_events" />
         <item
-            android:id="@+id/fragment_settings"
+            android:id="@+id/item_settings"
             android:icon="@drawable/ic_three"
             android:title="@string/settings" />
     </group>

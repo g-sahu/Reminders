@@ -20,9 +20,9 @@ import static com.gsapps.reminders.R.id.event_name;
 import static com.gsapps.reminders.R.layout.item_event;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Holder> {
-    private List<Event> eventList;
+    private final List<Event> eventList;
     private static LayoutInflater inflater = null;
-    private Context context;
+    private final Context context;
 
     public EventListAdapter(Context context, List<Event> eventList) {
         this.eventList = eventList;
@@ -55,8 +55,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
     }
 
     class Holder extends RecyclerView.ViewHolder {
-        ImageView eventIcon;
-        TextView eventName, eventDesc;
+        final ImageView eventIcon;
+        final TextView eventName, eventDesc;
 
         Holder(View itemView) {
             super(itemView);

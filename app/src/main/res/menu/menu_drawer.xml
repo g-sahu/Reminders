@@ -2,22 +2,18 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/fragment_calendar"
+            android:id="@+id/item_calendar"
             android:icon="@drawable/ic_one"
-            android:title="@string/calendar"
+            android:title="@string/my_calendar"
             android:checked="true"/>
         <item
-            android:id="@+id/fragment_user_account"
+            android:id="@+id/item_contact_events"
             android:icon="@drawable/ic_two"
-            android:title="@string/my_account" />
+            android:title="@string/contact_events" />
         <item
-            android:id="@+id/fragment_about"
+            android:id="@+id/item_settings"
             android:icon="@drawable/ic_three"
-            android:title="@string/about" />
-        <item
-            android:id="@+id/fragment_logout"
-            android:icon="@drawable/ic_three"
-            android:title="@string/logout" />
+            android:title="@string/settings" />
     </group>
 
 </menu>

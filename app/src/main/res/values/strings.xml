@@ -21,4 +21,6 @@
     <string name="event_icon">Event icon</string>
     <string name="event_name">Event Name</string>
     <string name="event_desc">Event Description</string>
+    <string name="meetings">Meetings</string>
+    <string name="connect_with_outlook">Connect with Outlook</string>
 </resources>

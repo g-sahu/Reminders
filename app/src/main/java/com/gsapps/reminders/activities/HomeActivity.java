@@ -39,6 +39,7 @@ import static com.gsapps.reminders.R.string.drawer_close;
 import static com.gsapps.reminders.R.string.drawer_open;
 import static com.gsapps.reminders.R.string.my_calendar;
 import static com.gsapps.reminders.util.Constants.*;
+import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 
 public class HomeActivity extends AppCompatActivity {
     private final String LOG_TAG = getClass().getSimpleName();
@@ -46,8 +47,7 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     private Fragment calendarFragment, contactEventsFragment, meetingsFragment, settingsFragment;
 
-    private final static String SCOPES [] = {"https://graph.microsoft.com/User.Read"};
-    private final static String MSGRAPH_URL = "https://graph.microsoft.com/v1.0/me";
+    private final static String SCOPES [] = {"https://graph.microsoft.com/User.Read", "https://graph.microsoft.com/Calendars.Read"};
     private PublicClientApplication sampleApp;
     public static Context context; // TODO: 24-03-2019 To be changed to a better way to access activity context in other classes.
 
@@ -174,8 +174,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         } catch (MsalClientException e) {
             Log.d(LOG_TAG, "MSAL Exception Generated while getting users: " + e.toString());
-        } catch (IndexOutOfBoundsException e) {
-            Log.d(LOG_TAG, "User at this position does not exist: " + e.toString());
         }
     }
 
@@ -186,6 +184,15 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void logoutOutlook() {
+        try {
+            for (User user : sampleApp.getUsers()) {
+                sampleApp.remove(user);
+            }
 
+            showToastMessage(context, "Logged out of Outlook");
+        } catch (MsalClientException e) {
+            Log.d(LOG_TAG, "MSAL Exception Generated while getting users: " + e.toString());
+            showToastMessage(context, "An error occurred while logging out of Outlook.");
+        }
     }
 }

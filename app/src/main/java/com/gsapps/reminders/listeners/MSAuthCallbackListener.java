@@ -13,14 +13,14 @@ import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 
 public class MSAuthCallbackListener implements AuthenticationCallback {
     private final String LOG_TAG = getClass().getSimpleName();
-    private AuthenticationResult authResult;
+    private static String accessToken;
 
     @Override
     public void onSuccess(AuthenticationResult authenticationResult) {
         Log.d(LOG_TAG, "Successfully authenticated");
         Log.d(LOG_TAG, "ID Token: " + authenticationResult.getIdToken());
-        authResult = authenticationResult;
-        showToastMessage(context, "Signed-in to Microsoft successfully");
+        accessToken = authenticationResult.getAccessToken();
+        showToastMessage(context, "Signed-in to Outlook successfully");
     }
 
     @Override
@@ -41,5 +41,9 @@ public class MSAuthCallbackListener implements AuthenticationCallback {
     public void onCancel() {
         Log.d(LOG_TAG, "User cancelled login.");
         showToastMessage(context, "User cancelled login.");
+    }
+
+    public static String getAccessToken() {
+        return accessToken;
     }
 }

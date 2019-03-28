@@ -48,7 +48,7 @@ public class SplashScreenActivity extends AppCompatActivity
         findViewById(sign_in_button).setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(DEFAULT_SIGN_IN)
-                                        .requestIdToken(OAUTH_CLIENT_ID)
+                                        .requestIdToken(GOOGLE_AUTH_CLIENT_ID)
                                         .requestEmail()
                                         .build();
 

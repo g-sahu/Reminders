@@ -1,17 +1,41 @@
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".fragments.SettingsFragment"
+        tools:context=".activities.HomeActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <Button
-            android:id="@+id/logout_button"
-            android:text="@string/logout"
+    <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="20dp"
-            android:onClick="logout"/>
+            android:layout_height="match_parent">
+
+        <Switch
+                android:id="@+id/switch1"
+                android:text="@string/connect_with_outlook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="20dp"
+                android:onClick="connectWithOutlook"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/logout_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Button
+                android:id="@+id/logout_button"
+                android:text="@string/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="20dp"
+                android:onClick="logout"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

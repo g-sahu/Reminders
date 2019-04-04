@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto"
+                  xmlns:tools="http://schemas.android.com/tools">
+
+    <SwitchPreference
+            app:key="@string/key_connect_with_outlook"
+            app:title="@string/connect_with_outlook"/>
+
+    <Preference
+            app:key="@string/key_logout"
+            app:title="@string/logout"/>
+
+</PreferenceScreen>

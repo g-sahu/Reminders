@@ -13,4 +13,6 @@ public class Constants {
     public static final String EMAIL = "EMAIL";
     public static final int REQUEST_AUTHORIZATION = 2;
     public static final String IS_LOGGED_OUT = "isLoggedOut";
+    public static final String ACTION_MSAL_ACCESS_TOKEN_ACQUIRED = "ACTION_MSAL_ACCESS_TOKEN_ACQUIRED";
+    public static final String MSAL_ACCESS_TOKEN = "MSAL_ACCESS_TOKEN";
 }

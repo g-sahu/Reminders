@@ -15,6 +15,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static android.content.SharedPreferences.Editor;
 import static android.support.v4.content.LocalBroadcastManager.getInstance;
 import static com.gsapps.reminders.activities.HomeActivity.context;
+import static com.gsapps.reminders.util.Constants.ACTION_MSAL_ACCESS_TOKEN_ACQUIRED;
+import static com.gsapps.reminders.util.Constants.MSAL_ACCESS_TOKEN;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 
 public class MSAuthCallbackListener implements AuthenticationCallback {
@@ -28,7 +30,6 @@ public class MSAuthCallbackListener implements AuthenticationCallback {
         accessToken = authenticationResult.getAccessToken();
         saveAccessToken();
         sendBroadcast();
-        showToastMessage(context, "Signed-in to Outlook");
     }
 
     @Override
@@ -54,7 +55,7 @@ public class MSAuthCallbackListener implements AuthenticationCallback {
     public static String getAccessToken() {
         if(accessToken == null) {
             SharedPreferences sharedPref = ((Activity) context).getPreferences(MODE_PRIVATE);
-            accessToken = sharedPref.getString("MSAL_ACCESS_TOKEN", null);
+            accessToken = sharedPref.getString(MSAL_ACCESS_TOKEN, null);
         }
 
         return accessToken;
@@ -63,13 +64,13 @@ public class MSAuthCallbackListener implements AuthenticationCallback {
     private void saveAccessToken() {
         SharedPreferences sharedPref = ((Activity) context).getPreferences(MODE_PRIVATE);
         Editor editor = sharedPref.edit();
-        editor.putString("MSAL_ACCESS_TOKEN", accessToken);
+        editor.putString(MSAL_ACCESS_TOKEN, accessToken);
         editor.commit();
     }
 
     private void sendBroadcast() {
         Intent broadcastIntent = new Intent();
-        broadcastIntent.setAction("ACTION_TOKEN_ACQUIRED");
+        broadcastIntent.setAction(ACTION_MSAL_ACCESS_TOKEN_ACQUIRED);
         getInstance(context).sendBroadcast(broadcastIntent);
     }
 }

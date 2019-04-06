@@ -19,7 +19,6 @@ import com.gsapps.reminders.fragments.CalendarFragment;
 import com.gsapps.reminders.fragments.ContactEventsFragment;
 import com.gsapps.reminders.fragments.MeetingsFragment;
 import com.gsapps.reminders.fragments.SettingsFragment;
-import com.microsoft.identity.client.PublicClientApplication;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.bumptech.glide.Glide.with;
@@ -30,6 +29,7 @@ import static com.gsapps.reminders.R.layout.activity_home;
 import static com.gsapps.reminders.R.string.drawer_close;
 import static com.gsapps.reminders.R.string.drawer_open;
 import static com.gsapps.reminders.R.string.my_calendar;
+import static com.gsapps.reminders.services.MSAuthManager.getClientApplication;
 import static com.gsapps.reminders.util.Constants.*;
 
 public class HomeActivity extends AppCompatActivity {
@@ -135,7 +135,6 @@ public class HomeActivity extends AppCompatActivity {
     /* Handles the redirect from the System Browser */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        PublicClientApplication sampleApp = new PublicClientApplication(getApplicationContext(), MS_AUTH_CLIENT_ID);
-        sampleApp.handleInteractiveRequestRedirect(requestCode, resultCode, data);
+        getClientApplication(context).handleInteractiveRequestRedirect(requestCode, resultCode, data);
     }
 }

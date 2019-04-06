@@ -7,7 +7,7 @@ import com.microsoft.graph.extensions.GraphServiceClient;
 import com.microsoft.graph.extensions.IGraphServiceClient;
 import com.microsoft.graph.http.IHttpRequest;
 
-import static com.gsapps.reminders.listeners.MSAuthCallbackListener.getAccessToken;
+import static com.gsapps.reminders.services.MSAuthManager.getAccessToken;
 import static com.microsoft.graph.core.DefaultClientConfig.createWithAuthenticationProvider;
 import static com.microsoft.graph.logger.LoggerLevel.Debug;
 

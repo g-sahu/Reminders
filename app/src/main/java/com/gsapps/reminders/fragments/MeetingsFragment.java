@@ -17,7 +17,7 @@ import com.microsoft.graph.extensions.IGraphServiceClient;
 
 import static android.support.v4.content.LocalBroadcastManager.getInstance;
 import static com.gsapps.reminders.R.layout.fragment_meetings;
-import static com.gsapps.reminders.listeners.MSAuthCallbackListener.getAccessToken;
+import static com.gsapps.reminders.services.MSAuthManager.getAccessToken;
 import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
 import static com.gsapps.reminders.util.Constants.ACTION_MSAL_ACCESS_TOKEN_ACQUIRED;
 
@@ -37,8 +37,7 @@ public class MeetingsFragment extends Fragment {
         msAuthReceiver = new MSAuthReceiver();
         intentFilter = new IntentFilter(ACTION_MSAL_ACCESS_TOKEN_ACQUIRED);
         localBroadcastManager = getInstance(context);
-        GraphServiceClientManager graphServiceClientManager = new GraphServiceClientManager();
-        mGraphServiceClient = graphServiceClientManager.getGraphServiceClient();
+        mGraphServiceClient = GraphServiceClientManager.getInstance().getGraphServiceClient();
     }
 
     @Override

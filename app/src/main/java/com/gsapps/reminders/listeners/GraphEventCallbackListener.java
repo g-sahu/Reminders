@@ -12,6 +12,7 @@ import com.microsoft.graph.extensions.IEventCollectionPage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.v7.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.activities.HomeActivity.context;
 import static com.gsapps.reminders.fragments.MeetingsFragment.view;
@@ -38,7 +39,7 @@ public class GraphEventCallbackListener implements ICallback<IEventCollectionPag
             eventList.add(event);
         }
 
-        RecyclerView.Adapter eventListAdapter = new EventListAdapter(context, eventList);
+        Adapter eventListAdapter = new EventListAdapter(context, eventList);
         RecyclerView eventListView = view.findViewById(meetings_view);
         eventListView.setAdapter(eventListAdapter);
         eventListView.setLayoutManager(new LinearLayoutManager(context));

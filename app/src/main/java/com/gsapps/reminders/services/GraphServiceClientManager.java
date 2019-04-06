@@ -9,6 +9,7 @@ import com.microsoft.graph.http.IHttpRequest;
 
 import static com.gsapps.reminders.listeners.MSAuthCallbackListener.getAccessToken;
 import static com.microsoft.graph.core.DefaultClientConfig.createWithAuthenticationProvider;
+import static com.microsoft.graph.logger.LoggerLevel.Debug;
 
 public class GraphServiceClientManager implements IAuthenticationProvider {
     private IGraphServiceClient mGraphServiceClient;
@@ -17,7 +18,7 @@ public class GraphServiceClientManager implements IAuthenticationProvider {
     @Override
     public void authenticateRequest(IHttpRequest request)  {
         request.addHeader("Authorization", "Bearer " + getAccessToken());
-        Log.i("Connect","Request: " + request.toString());
+        Log.i("Connect", "Request: " + request.toString());
     }
 
     public static synchronized GraphServiceClientManager getInstance() {
@@ -35,6 +36,7 @@ public class GraphServiceClientManager implements IAuthenticationProvider {
         if (mGraphServiceClient == null) {
             IClientConfig clientConfig = createWithAuthenticationProvider(authenticationProvider);
             mGraphServiceClient = new GraphServiceClient.Builder().fromConfig(clientConfig).buildClient();
+            mGraphServiceClient.getLogger().setLoggingLevel(Debug);
         }
 
         return mGraphServiceClient;

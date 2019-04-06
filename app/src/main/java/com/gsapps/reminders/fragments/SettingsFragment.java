@@ -53,7 +53,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnPref
         return true;
     }
 
-
     public void connectWithOutlook(boolean isSwitchedOn) {
         if(isSwitchedOn) {
             loginOutlook();

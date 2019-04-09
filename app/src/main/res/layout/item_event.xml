@@ -32,7 +32,6 @@
                 android:textSize="17sp"
                 android:textColor="#030303"
                 android:layout_alignTop="@+id/event_icon"
-                android:layout_toRightOf="@+id/event_icon"
                 android:layout_toEndOf="@+id/event_icon"
                 android:maxLines="1"
                 android:maxLength="30"
@@ -47,7 +46,6 @@
                 android:textColor="#555555"
                 android:text="@string/event_desc"
                 android:layout_alignBottom="@+id/event_icon"
-                android:layout_alignLeft="@+id/event_name"
                 android:layout_alignStart="@+id/event_name"
                 android:maxLines="1"
                 android:ellipsize="end"/>
@@ -61,9 +59,7 @@
             android:contentDescription="@string/more_options"
             android:background="@null"
             android:adjustViewBounds="false"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
             android:focusable="false"
             android:focusableInTouchMode="false"/>

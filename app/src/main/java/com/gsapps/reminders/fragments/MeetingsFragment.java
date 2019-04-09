@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -94,8 +93,7 @@ public class MeetingsFragment extends Fragment {
     }
 
     private boolean isOutlookConnected() {
-        SharedPreferences sharedPref = getDefaultSharedPreferences(context);
-        return sharedPref.getBoolean(getString(key_connect_with_outlook), false);
+        return getDefaultSharedPreferences(context).getBoolean(getString(key_connect_with_outlook), false);
     }
 
     private class MSAuthReceiver extends BroadcastReceiver {

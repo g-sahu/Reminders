@@ -56,22 +56,16 @@ public class MeetingsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences sharedPref = getDefaultSharedPreferences(context);
-        boolean isOutlookConnected = sharedPref.getBoolean(getString(key_connect_with_outlook), false);
         localBroadcastManager.registerReceiver(msAuthReceiver, intentFilter);
+        boolean isOutlookConnected = isOutlookConnected();
+        toggleConnectOutlookMessage(isOutlookConnected);
 
         if(isOutlookConnected) {
-            view.findViewById(connect_with_outlook).setVisibility(GONE);
-            view.findViewById(meetings_view).setVisibility(VISIBLE);
-
             if(getAccessToken() == null) {
                 loginOutlook(context);
             } else {
                 getContactEvents();
             }
-        } else {
-            view.findViewById(connect_with_outlook).setVisibility(VISIBLE);
-            view.findViewById(meetings_view).setVisibility(GONE);
         }
     }
 
@@ -88,9 +82,26 @@ public class MeetingsFragment extends Fragment {
                            .get(new GraphEventCallbackListener());
     }
 
+    private void toggleConnectOutlookMessage(boolean isOutlookConnected) {
+        if (isOutlookConnected) {
+            view.findViewById(connect_with_outlook).setVisibility(GONE);
+            view.findViewById(meetings_view).setVisibility(VISIBLE);
+        } else {
+            view.findViewById(connect_with_outlook).setVisibility(VISIBLE);
+            view.findViewById(meetings_view).setVisibility(GONE);
+
+        }
+    }
+
+    private boolean isOutlookConnected() {
+        SharedPreferences sharedPref = getDefaultSharedPreferences(context);
+        return sharedPref.getBoolean(getString(key_connect_with_outlook), false);
+    }
+
     private class MSAuthReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            toggleConnectOutlookMessage(isOutlookConnected());
             getContactEvents();
         }
     }

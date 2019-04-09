@@ -14,10 +14,11 @@ import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.bumptech.glide.Glide.with;
-import static com.gsapps.reminders.R.id.event_desc;
+import static com.gsapps.reminders.R.id.event_date;
 import static com.gsapps.reminders.R.id.event_icon;
 import static com.gsapps.reminders.R.id.event_name;
 import static com.gsapps.reminders.R.layout.item_event;
+import static com.gsapps.reminders.util.ReminderUtils.getDateString;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Holder> {
     private final List<Event> eventList;
@@ -41,7 +42,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
         Event event = eventList.get(position);
         with(context).load(event.getIcon()).into(holder.eventIcon);
         holder.eventName.setText(event.getName());
-        holder.eventDesc.setText(event.getDesc());
+        holder.eventDate.setText(getDateString(event.getStartDate()));
     }
 
     @Override
@@ -56,13 +57,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
 
     class Holder extends RecyclerView.ViewHolder {
         final ImageView eventIcon;
-        final TextView eventName, eventDesc;
+        final TextView eventName, eventDate;
 
         Holder(View itemView) {
             super(itemView);
             eventIcon = itemView.findViewById(event_icon);
             eventName = itemView.findViewById(event_name);
-            eventDesc = itemView.findViewById(event_desc);
+            eventDate = itemView.findViewById(event_date);
         }
     }
 }

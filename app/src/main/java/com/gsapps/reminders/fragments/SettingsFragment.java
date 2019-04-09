@@ -8,6 +8,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import com.gsapps.reminders.activities.SplashScreenActivity;
 
 import static android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import static android.support.v7.preference.Preference.OnPreferenceClickListener;
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static com.gsapps.reminders.R.string.key_logout;
@@ -17,7 +18,8 @@ import static com.gsapps.reminders.services.MSAuthManager.logoutOutlook;
 import static com.gsapps.reminders.util.Constants.IS_LOGGED_OUT;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements OnPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat
+        implements OnPreferenceChangeListener, OnPreferenceClickListener {
     private final String LOG_TAG = getClass().getSimpleName();
     private Context context;
 
@@ -26,7 +28,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnPref
         super.onCreate(savedInstanceState);
         context = getContext();
         findPreference(getString(key_connect_with_outlook)).setOnPreferenceChangeListener(this);
-        findPreference(getString(key_logout)).setOnPreferenceChangeListener(this);
+        //findPreference(getString(key_logout)).setOnPreferenceChangeListener(this);
+        findPreference(getString(key_logout)).setOnPreferenceClickListener(this);
     }
 
     @Override
@@ -38,11 +41,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnPref
     public boolean onPreferenceChange(Preference preference, Object o) {
         if(preference.getKey().equals(getString(key_connect_with_outlook))) {
             connectWithOutlook((boolean) o);
-        } else if(preference.getKey().equals(getString(key_logout))) {
-            logoutGoogle();
+            return true;
         }
 
-        return true;
+        return false;
+    }
+
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+        if(preference.getKey().equals(getString(key_logout))) {
+            logoutGoogle();
+            return true;
+        }
+
+        return false;
     }
 
     public void connectWithOutlook(boolean isSwitchedOn) {

@@ -48,7 +48,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnPref
     public void connectWithOutlook(boolean isSwitchedOn) {
         if(isSwitchedOn) {
             loginOutlook(context);
-            showToastMessage(context, "Logged in to Outlook");
         } else {
             logoutOutlook(context);
             showToastMessage(context, "Logged out of Outlook");

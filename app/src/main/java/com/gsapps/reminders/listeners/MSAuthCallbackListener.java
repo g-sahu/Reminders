@@ -26,12 +26,7 @@ public class MSAuthCallbackListener implements AuthenticationCallback {
         Log.d(LOG_TAG, "Successfully authenticated");
         Log.d(LOG_TAG, "ID Token: " + authenticationResult.getIdToken());
         saveAccessToken(context, authenticationResult.getAccessToken());
-
-        SharedPreferences sharedPref = getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(context.getString(key_connect_with_outlook), true);
-        editor.apply();
-
+        saveOutlookSettings();
         sendBroadcast();
         showToastMessage(context, "Logged in to Outlook");
     }
@@ -60,5 +55,12 @@ public class MSAuthCallbackListener implements AuthenticationCallback {
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(ACTION_MSAL_ACCESS_TOKEN_ACQUIRED);
         getInstance(context).sendBroadcast(broadcastIntent);
+    }
+
+    private void saveOutlookSettings() {
+        SharedPreferences sharedPref = getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(context.getString(key_connect_with_outlook), true);
+        editor.apply();
     }
 }

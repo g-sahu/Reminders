@@ -21,14 +21,14 @@ public class GraphServiceClientManager implements IAuthenticationProvider {
         Log.i("Connect", "Request: " + request.toString());
     }
 
-    public static synchronized GraphServiceClientManager getInstance() {
+    static synchronized GraphServiceClientManager getInstance() {
         if(INSTANCE == null) {
             INSTANCE = new GraphServiceClientManager();
         }
         return INSTANCE;
     }
 
-    public synchronized IGraphServiceClient getGraphServiceClient() {
+    synchronized IGraphServiceClient getGraphServiceClient() {
         return getGraphServiceClient(this);
     }
 

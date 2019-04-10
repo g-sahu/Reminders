@@ -13,9 +13,8 @@ import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.Event;
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.extensions.IEventCollectionPage;
+import com.microsoft.graph.http.GraphServiceException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,11 +28,9 @@ import static com.gsapps.reminders.services.GraphServiceClientManager.getInstanc
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
-import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 import static java.util.Collections.sort;
 
-public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Events>> implements
-        ICallback<IEventCollectionPage> {
+public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Events>> {
     private final String LOG_TAG = getClass().getSimpleName();
     private final Activity activity;
     private List<Event> eventList = new ArrayList<>();
@@ -77,44 +74,42 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
             }
 
             if(isOutlookConnected(context)) {
-                getInstance()
+                IEventCollectionPage result = getInstance()
                         .getGraphServiceClient()
                         .getMe()
                         .getEvents()
                         .buildRequest()
-                        .get(this);
+                        .get();
+
+                for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
+                    Event event = new Event();
+                    event.setId(meeting.id);
+                    event.setName(meeting.subject);
+                    event.setDesc(meeting.bodyPreview);
+                    event.setStartDate(getCalendar(meeting.start));
+                    event.setEndDate(getCalendar(meeting.end));
+                    event.setFrequency(ONCE);
+                    event.setRecurring(false);
+                    eventList.add(event);
+                }
             }
-        } catch (UserRecoverableAuthIOException ure) {
-            activity.startActivityForResult(ure.getIntent(), REQUEST_AUTHORIZATION);
+        } catch (UserRecoverableAuthIOException e) {
+            activity.startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
+            Log.e(LOG_TAG, e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage());
+        } catch (GraphServiceException e) {
+            Log.e(LOG_TAG, e.getMessage());
         }
 
         return eventsList;
     }
 
     @Override
-    public void success(final IEventCollectionPage result) {
-        for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
-            Event event = new Event();
-            event.setId(meeting.id);
-            event.setName(meeting.subject);
-            event.setDesc(meeting.bodyPreview);
-            event.setStartDate(getCalendar(meeting.start));
-            event.setEndDate(getCalendar(meeting.end));
-            event.setFrequency(ONCE);
-            event.setRecurring(false);
-            eventList.add(event);
-        }
-
+    protected void onPostExecute(List<Events> events) {
+        super.onPostExecute(events);
         sort(eventList, new Event());
         updateMyCalendarView();
-    }
-
-    @Override
-    public void failure(ClientException ex) {
-        Log.e(LOG_TAG, ex.getMessage());
-        showToastMessage(context, ex.getMessage());
     }
 
     private void updateMyCalendarView() {

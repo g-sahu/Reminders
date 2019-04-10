@@ -1,5 +1,6 @@
 package com.gsapps.reminders.fragments;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.gsapps.reminders.listeners.GraphEventCallbackListener;
-import com.gsapps.reminders.services.GraphServiceClientManager;
-import com.microsoft.graph.extensions.IGraphServiceClient;
+import com.gsapps.reminders.services.LoadMeetingsTask;
 
 import static android.support.v4.content.LocalBroadcastManager.getInstance;
 import static android.view.View.GONE;
@@ -33,7 +32,6 @@ public class MeetingsFragment extends Fragment {
     private BroadcastReceiver msAuthReceiver;
     private IntentFilter intentFilter;
     private LocalBroadcastManager localBroadcastManager;
-    private IGraphServiceClient mGraphServiceClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +40,6 @@ public class MeetingsFragment extends Fragment {
         msAuthReceiver = new MSAuthReceiver();
         intentFilter = new IntentFilter(ACTION_MSAL_ACCESS_TOKEN_ACQUIRED);
         localBroadcastManager = getInstance(context);
-        mGraphServiceClient = GraphServiceClientManager.getInstance().getGraphServiceClient();
     }
 
     @Override
@@ -74,10 +71,8 @@ public class MeetingsFragment extends Fragment {
     }
 
     private void getContactEvents() {
-        mGraphServiceClient.getMe()
-                           .getEvents()
-                           .buildRequest()
-                           .get(new GraphEventCallbackListener());
+        LoadMeetingsTask calendarTask = new LoadMeetingsTask((Activity) context);
+        calendarTask.execute();
     }
 
     private void toggleConnectOutlookMessage(boolean isOutlookConnected) {

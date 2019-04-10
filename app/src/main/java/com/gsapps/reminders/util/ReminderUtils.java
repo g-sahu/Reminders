@@ -21,8 +21,10 @@ import java.util.List;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
+import static android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
+import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static java.util.Calendar.getInstance;
 import static java.util.TimeZone.getTimeZone;
 
@@ -92,5 +94,9 @@ public class ReminderUtils {
     public static String getDateString(Calendar calendar) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY hh:mm a"); // TODO: 09-04-2019 Convert start date to local date format
         return dateFormat.format(calendar.getTime());
+    }
+
+    public static boolean isOutlookConnected(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(context.getString(key_connect_with_outlook), false);
     }
 }

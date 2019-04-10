@@ -28,6 +28,7 @@ import static com.gsapps.reminders.model.Event.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
+import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 import static java.util.Collections.sort;
 
@@ -75,12 +76,14 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
                 }
             }
 
-            getInstance()
-                    .getGraphServiceClient()
-                    .getMe()
-                    .getEvents()
-                    .buildRequest()
-                    .get(this);
+            if(isOutlookConnected(context)) {
+                getInstance()
+                        .getGraphServiceClient()
+                        .getMe()
+                        .getEvents()
+                        .buildRequest()
+                        .get(this);
+            }
         } catch (UserRecoverableAuthIOException ure) {
             activity.startActivityForResult(ure.getIntent(), REQUEST_AUTHORIZATION);
         } catch (IOException e) {
@@ -89,20 +92,6 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
 
         return eventsList;
     }
-
-    /*@Override
-    protected void onPostExecute(List<Events> eventsList) {
-        for(Events events : eventsList) {
-            for (com.google.api.services.calendar.model.Event item : events.getItems()) {
-                Event event = new Event();
-                event.setName(item.getSummary());
-                event.setDesc(item.getDescription());
-                event.setFrequency(ONCE);
-                event.setStartDate(getCalendar(item.getStart(), events.getTimeZone()));
-                eventList.add(event);
-            }
-        }
-    }*/
 
     @Override
     public void success(final IEventCollectionPage result) {

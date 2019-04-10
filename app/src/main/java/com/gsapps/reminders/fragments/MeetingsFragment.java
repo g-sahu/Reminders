@@ -16,16 +16,15 @@ import com.gsapps.reminders.services.GraphServiceClientManager;
 import com.microsoft.graph.extensions.IGraphServiceClient;
 
 import static android.support.v4.content.LocalBroadcastManager.getInstance;
-import static android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.gsapps.reminders.R.id.connect_with_outlook;
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.R.layout.fragment_meetings;
-import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static com.gsapps.reminders.services.MSAuthManager.getAccessToken;
 import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
 import static com.gsapps.reminders.util.Constants.ACTION_MSAL_ACCESS_TOKEN_ACQUIRED;
+import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 
 public class MeetingsFragment extends Fragment {
     private final String LOG_TAG = getClass().getSimpleName();
@@ -56,7 +55,7 @@ public class MeetingsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         localBroadcastManager.registerReceiver(msAuthReceiver, intentFilter);
-        boolean isOutlookConnected = isOutlookConnected();
+        boolean isOutlookConnected = isOutlookConnected(context);
         toggleConnectOutlookMessage(isOutlookConnected);
 
         if(isOutlookConnected) {
@@ -92,14 +91,10 @@ public class MeetingsFragment extends Fragment {
         }
     }
 
-    private boolean isOutlookConnected() {
-        return getDefaultSharedPreferences(context).getBoolean(getString(key_connect_with_outlook), false);
-    }
-
     private class MSAuthReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            toggleConnectOutlookMessage(isOutlookConnected());
+            toggleConnectOutlookMessage(isOutlookConnected(context));
             getContactEvents();
         }
     }

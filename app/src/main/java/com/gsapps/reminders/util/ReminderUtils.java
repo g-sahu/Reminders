@@ -90,7 +90,7 @@ public class ReminderUtils {
     }
 
     public static String getDateString(Calendar calendar) {
-        DateFormat dateFormat = new SimpleDateFormat("DD/MM/YYYY hh:mm a"); // TODO: 09-04-2019 Convert start date to local date format
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY hh:mm a"); // TODO: 09-04-2019 Convert start date to local date format
         return dateFormat.format(calendar.getTime());
     }
 }

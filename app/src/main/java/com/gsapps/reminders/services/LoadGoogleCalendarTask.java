@@ -27,6 +27,7 @@ import static com.gsapps.reminders.model.Event.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
+import static com.gsapps.reminders.util.ReminderUtils.getTodaysCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 import static java.util.Collections.sort;
 
@@ -55,8 +56,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
                                     .events()
                                     .list(calendarListEntry.getId())
                                     .setSingleEvents(true)
-                                    .setTimeMin(new DateTime("2018-01-01T00:00:00Z"))
-                                    .setTimeMax(new DateTime("2019-01-01T00:00:00Z"))
+                                    .setTimeMin(new DateTime(getTodaysCalendar().getTimeInMillis()))
                                     .execute();
 
                 eventsList.add(events);
@@ -75,11 +75,11 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
 
             if(isOutlookConnected(context)) {
                 IEventCollectionPage result = getInstance()
-                        .getGraphServiceClient()
-                        .getMe()
-                        .getEvents()
-                        .buildRequest()
-                        .get();
+                                                .getGraphServiceClient()
+                                                .getMe()
+                                                .getEvents()
+                                                .buildRequest()
+                                                .get();
 
                 for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
                     Event event = new Event();

@@ -25,7 +25,7 @@ import static android.support.v7.preference.PreferenceManager.getDefaultSharedPr
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
-import static java.util.Calendar.getInstance;
+import static java.util.Calendar.*;
 import static java.util.TimeZone.getTimeZone;
 
 public class ReminderUtils {
@@ -98,5 +98,14 @@ public class ReminderUtils {
 
     public static boolean isOutlookConnected(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(context.getString(key_connect_with_outlook), false);
+    }
+
+    public static Calendar getTodaysCalendar() {
+        Calendar calendar = getInstance();
+        calendar.set(HOUR_OF_DAY, 0);
+        calendar.set(MINUTE, 0);
+        calendar.set(SECOND, 0);
+        calendar.set(MILLISECOND, 0);
+        return calendar;
     }
 }

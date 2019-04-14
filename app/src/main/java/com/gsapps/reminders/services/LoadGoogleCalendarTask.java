@@ -27,6 +27,7 @@ import static com.gsapps.reminders.model.Event.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
+import static com.gsapps.reminders.util.ReminderUtils.getOptions;
 import static com.gsapps.reminders.util.ReminderUtils.getTodaysCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 import static java.util.Collections.sort;
@@ -78,7 +79,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
                                                 .getGraphServiceClient()
                                                 .getMe()
                                                 .getEvents()
-                                                .buildRequest()
+                                                .buildRequest(getOptions())
                                                 .get();
 
                 for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {

@@ -10,8 +10,6 @@ import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.Event;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
-import com.microsoft.graph.options.Option;
-import com.microsoft.graph.options.QueryOption;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +19,7 @@ import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.model.Event.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
+import static com.gsapps.reminders.util.ReminderUtils.getOptions;
 import static java.util.Collections.sort;
 
 public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
@@ -41,7 +40,7 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
                                             .getGraphServiceClient()
                                             .getMe()
                                             .getEvents()
-                                            .buildRequest(getQueryOptions())
+                                            .buildRequest(getOptions())
                                             .get();
 
             for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
@@ -74,13 +73,5 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
         RecyclerView eventListView = activity.findViewById(meetings_view);
         eventListView.setAdapter(eventListAdapter);
         eventListView.setLayoutManager(new LinearLayoutManager(activity));
-    }
-
-    private List<Option> getQueryOptions() {
-        List<Option> options = new ArrayList<>();
-        options.add(new QueryOption("select", "subject,bodyPreview,start,end,location"));
-        options.add(new QueryOption("filter", "start/dateTime ge '2019-04-12T08:00'"));
-        options.add(new QueryOption("orderby", "start/dateTime"));
-        return options;
     }
 }

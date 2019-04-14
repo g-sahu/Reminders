@@ -10,6 +10,9 @@ import android.widget.Toast;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
+import com.microsoft.graph.options.HeaderOption;
+import com.microsoft.graph.options.Option;
+import com.microsoft.graph.options.QueryOption;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -26,6 +29,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static java.util.Calendar.*;
+import static java.util.TimeZone.getDefault;
 import static java.util.TimeZone.getTimeZone;
 
 public class ReminderUtils {
@@ -91,8 +95,8 @@ public class ReminderUtils {
         return calendar;
     }
 
-    public static String getDateString(Calendar calendar) {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY hh:mm a"); // TODO: 09-04-2019 Convert start date to local date format
+    public static String getDateString(Calendar calendar, String format) {
+        DateFormat dateFormat = new SimpleDateFormat(format); // TODO: 09-04-2019 Convert start date to local date format
         return dateFormat.format(calendar.getTime());
     }
 
@@ -107,5 +111,18 @@ public class ReminderUtils {
         calendar.set(SECOND, 0);
         calendar.set(MILLISECOND, 0);
         return calendar;
+    }
+
+    public static String getTodaysDateString(String format) {
+         return getDateString(getTodaysCalendar(), format);
+    }
+
+    public static List<Option> getOptions() {
+        List<Option> options = new ArrayList<>();
+        options.add(new HeaderOption("Prefer", "outlook.timezone=\"" + getDefault().getID() + "\""));
+        options.add(new QueryOption("select", "subject,bodyPreview,start,end,location"));
+        options.add(new QueryOption("filter", "start/dateTime ge '" + getTodaysDateString("yyyy-MM-dd HH:mm") + "'"));
+        options.add(new QueryOption("orderby", "start/dateTime"));
+        return options;
     }
 }

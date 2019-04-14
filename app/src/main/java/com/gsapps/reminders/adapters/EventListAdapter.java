@@ -42,7 +42,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
         Event event = eventList.get(position);
         with(context).load(event.getIcon()).into(holder.eventIcon);
         holder.eventName.setText(event.getName());
-        holder.eventDate.setText(getDateString(event.getStartDate()));
+        holder.eventDate.setText(getDateString(event.getStartDate(), "dd/MM/YYYY hh:mm a"));
     }
 
     @Override

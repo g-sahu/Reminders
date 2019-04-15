@@ -13,6 +13,8 @@ import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.Event;
+import com.gsapps.reminders.model.MeetingEvent;
+import com.gsapps.reminders.model.comparators.StartDateComparator;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
 
@@ -24,15 +26,15 @@ import static android.support.v7.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.activities.HomeActivity.context;
 import static com.gsapps.reminders.model.Event.Frequency.ONCE;
+import static com.gsapps.reminders.model.EventFactory.getEventFactory;
+import static com.gsapps.reminders.model.EventType.BIRTHDAY;
+import static com.gsapps.reminders.model.EventType.HOLIDAY;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
-import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
-import static com.gsapps.reminders.util.ReminderUtils.getOptions;
-import static com.gsapps.reminders.util.ReminderUtils.getTodaysCalendar;
-import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
+import static com.gsapps.reminders.util.ReminderUtils.*;
 import static java.util.Collections.sort;
 
-public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Events>> {
+public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
     private final String LOG_TAG = getClass().getSimpleName();
     private final Activity activity;
     private List<Event> eventList = new ArrayList<>();
@@ -42,9 +44,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
     }
 
     @Override
-    protected List<Events> doInBackground(Calendar... service) {
-        List<Events> eventsList = new ArrayList<>();
-
+    protected Void doInBackground(Calendar... service) {
         try {
             CalendarList calendarList = service[0]
                                             .calendarList()
@@ -60,12 +60,19 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
                                     .setTimeMin(new DateTime(getTodaysCalendar().getTimeInMillis()))
                                     .execute();
 
-                eventsList.add(events);
-            }
-
-            for(Events events : eventsList) {
                 for (com.google.api.services.calendar.model.Event item : events.getItems()) {
-                    Event event = new Event();
+                    Event event = null;
+
+                    if(calendarListEntry.getId().equals("en.indian#holiday@group.v.calendar.google.com")) {
+                        event = getEventFactory().getEvent(HOLIDAY);
+                    } else if(calendarListEntry.getId().equals("addressbook#contacts@group.v.calendar.google.com")) {
+                        String eventType = item.getGadget().getPreferences().get("goo.contactsEventType");
+                        event = getEvent(eventType);
+                    } else {
+                        event = getEventFactory().getEvent(BIRTHDAY);
+                        // TODO: 15-04-2019 Add logic here to determine other types of events
+                    }
+
                     event.setName(item.getSummary());
                     event.setDesc(item.getDescription());
                     event.setFrequency(ONCE);
@@ -83,7 +90,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
                                                 .get();
 
                 for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
-                    Event event = new Event();
+                    Event event = new MeetingEvent();
                     event.setId(meeting.id);
                     event.setName(meeting.subject);
                     event.setDesc(meeting.bodyPreview);
@@ -103,13 +110,13 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, List<Event
             Log.e(LOG_TAG, e.getMessage());
         }
 
-        return eventsList;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(List<Events> events) {
-        super.onPostExecute(events);
-        sort(eventList, new Event());
+    protected void onPostExecute(Void params) {
+        super.onPostExecute(params);
+        sort(eventList, new StartDateComparator());
         updateMyCalendarView();
     }
 

@@ -8,6 +8,8 @@ import android.util.Log;
 import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.Event;
+import com.gsapps.reminders.model.MeetingEvent;
+import com.gsapps.reminders.model.comparators.StartDateComparator;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
 
@@ -44,7 +46,7 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
                                             .get();
 
             for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
-                Event event = new Event();
+                Event event = new MeetingEvent();
                 event.setId(meeting.id);
                 event.setName(meeting.subject);
                 event.setDesc(meeting.bodyPreview);
@@ -64,7 +66,7 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
     @Override
     protected void onPostExecute(List<Events> events) {
         super.onPostExecute(events);
-        sort(eventList, new Event());
+        sort(eventList, new StartDateComparator());
         updateMyCalendarView();
     }
 

@@ -19,9 +19,10 @@ import static com.gsapps.reminders.R.id.contact_events_view;
 import static com.gsapps.reminders.model.Event.Frequency.ONCE;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
+import static com.gsapps.reminders.util.ReminderUtils.getEvent;
 import static com.gsapps.reminders.util.ReminderUtils.getTodaysCalendar;
 
-public class LoadContactEventsTask extends AsyncTask<com.google.api.services.calendar.Calendar, Void, Events> {
+public class LoadContactEventsTask extends AsyncTask<com.google.api.services.calendar.Calendar, Void, Void> {
     private final String LOG_TAG = getClass().getSimpleName();
     final private Activity activity;
     private List<Event> eventList = new ArrayList<>();
@@ -31,11 +32,9 @@ public class LoadContactEventsTask extends AsyncTask<com.google.api.services.cal
     }
 
     @Override
-    protected Events doInBackground(com.google.api.services.calendar.Calendar... service) {
-        Events events = null;
-
+    protected Void doInBackground(com.google.api.services.calendar.Calendar... service) {
         try {
-            events = service[0].events()
+            Events events = service[0].events()
                                .list("addressbook#contacts@group.v.calendar.google.com")
                                .setOrderBy("startTime")
                                .setSingleEvents(true)
@@ -44,7 +43,8 @@ public class LoadContactEventsTask extends AsyncTask<com.google.api.services.cal
 
             if(events != null) {
                 for (com.google.api.services.calendar.model.Event item : events.getItems()) {
-                    Event event = new Event();
+                    String eventType = item.getGadget().getPreferences().get("goo.contactsEventType");
+                    Event event = getEvent(eventType);
                     event.setName(item.getSummary());
                     event.setDesc(item.getDescription());
                     event.setFrequency(ONCE);
@@ -58,11 +58,12 @@ public class LoadContactEventsTask extends AsyncTask<com.google.api.services.cal
             e.printStackTrace();
         }
 
-        return events;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(Events events) {
+    protected void onPostExecute(Void params) {
+        super.onPostExecute(params);
         updateContactEventsView();
     }
 

@@ -100,11 +100,7 @@ public class Event implements Comparator<Object> {
 
     @Override
     public int hashCode() {
-        if (SDK_INT >= KITKAT) {
-            return hash(id);
-        }
-
-        return super.hashCode();
+        return hash(id);
     }
 
     @Override

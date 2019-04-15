@@ -3,14 +3,11 @@ package com.gsapps.reminders.model;
 import android.support.annotation.Nullable;
 
 import java.util.Calendar;
-import java.util.Comparator;
 
-import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.KITKAT;
 import static java.util.Objects.hash;
 
 //@Getter @Setter
-public class Event implements Comparator<Object> {
+public abstract class Event {
     protected String id;
     protected String name;
     protected String desc;
@@ -103,10 +100,4 @@ public class Event implements Comparator<Object> {
         return hash(id);
     }
 
-    @Override
-    public int compare(Object lhs, Object rhs) {
-        Event event1 = (Event) lhs;
-        Event event2 = (Event) rhs;
-        return event1.getStartDate().compareTo(event2.getStartDate());
-    }
 }

@@ -47,11 +47,10 @@ public class CalendarFragment extends Fragment {
     }
 
     private void getCalendarEvents(String accountName) {
-        final HttpTransport HTTP_TRANSPORT = newCompatibleTransport();
         credential = usingOAuth2(context, singleton(CALENDAR));
         credential.setSelectedAccountName(accountName);
 
-        Calendar service = new Calendar.Builder(HTTP_TRANSPORT, getDefaultInstance(), credential)
+        Calendar service = new Calendar.Builder(newCompatibleTransport(), getDefaultInstance(), credential)
                                         .setApplicationName(getString(app_name))
                                         .build();
 

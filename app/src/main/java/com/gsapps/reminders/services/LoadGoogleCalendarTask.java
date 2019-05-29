@@ -46,22 +46,20 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
     @Override
     protected Void doInBackground(Calendar... service) {
         try {
-            CalendarList calendarList = service[0]
-                                            .calendarList()
-                                            .list()
-                                            .setFields("items/id")
-                                            .execute();
+            CalendarList calendarList = service[0].calendarList()
+                                                  .list()
+                                                  .setFields("items/id")
+                                                  .execute();
 
             for(CalendarListEntry calendarListEntry : calendarList.getItems()) {
-                Events events = service[0]
-                                    .events()
-                                    .list(calendarListEntry.getId())
-                                    .setSingleEvents(true)
-                                    .setTimeMin(new DateTime(getTodaysCalendar().getTimeInMillis()))
-                                    .execute();
+                Events events = service[0].events()
+                                          .list(calendarListEntry.getId())
+                                          .setSingleEvents(true)
+                                          .setTimeMin(new DateTime(getTodaysCalendar().getTimeInMillis()))
+                                          .execute();
 
                 for (com.google.api.services.calendar.model.Event item : events.getItems()) {
-                    Event event = null;
+                    Event event;
 
                     if(calendarListEntry.getId().equals("en.indian#holiday@group.v.calendar.google.com")) {
                         event = getEventFactory().getEvent(HOLIDAY);

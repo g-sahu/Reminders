@@ -14,6 +14,7 @@ import com.gsapps.reminders.model.MeetingEvent;
 import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.support.v7.widget.RecyclerView.ViewHolder;
 import static com.bumptech.glide.Glide.with;
 import static com.gsapps.reminders.R.id.event_date;
 import static com.gsapps.reminders.R.id.event_icon;
@@ -41,14 +42,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         Event event = eventList.get(position);
-        with(context).load(event.getIcon()).into(holder.eventIcon);
-        holder.eventName.setText(event.getName());
+        with(context)
+                .load(event.getIcon())
+                .into(holder.eventIcon);
 
-        if(event instanceof MeetingEvent) {
-            holder.eventDate.setText(getDateString(event.getStartDate(), "dd/MM/YYYY hh:mm a"));
-        } else {
-            holder.eventDate.setText(getDateString(event.getStartDate(), "dd/MM/YYYY"));
-        }
+        holder.eventName.setText(event.getName());
+        String dateFormat = event instanceof MeetingEvent ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
+        holder.eventDate.setText(getDateString(event.getStartDate(), dateFormat));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
         return eventList.size();
     }
 
-    class Holder extends RecyclerView.ViewHolder {
+    class Holder extends ViewHolder {
         final ImageView eventIcon;
         final TextView eventName, eventDate;
 

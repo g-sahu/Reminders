@@ -19,6 +19,7 @@ import com.gsapps.reminders.fragments.CalendarFragment;
 import com.gsapps.reminders.fragments.ContactEventsFragment;
 import com.gsapps.reminders.fragments.MeetingsFragment;
 import com.gsapps.reminders.fragments.SettingsFragment;
+import com.gsapps.reminders.services.MSAuthManager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
@@ -32,7 +33,6 @@ import static com.gsapps.reminders.R.string.drawer_close;
 import static com.gsapps.reminders.R.string.drawer_open;
 import static com.gsapps.reminders.R.string.my_calendar;
 import static com.gsapps.reminders.services.MSAuthManager.getClientApplication;
-import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
 import static com.gsapps.reminders.util.Constants.*;
 
 public class HomeActivity extends AppCompatActivity {
@@ -144,6 +144,7 @@ public class HomeActivity extends AppCompatActivity {
     public void connectWithOutlook(View view) {
         findViewById(connect_with_outlook).setVisibility(GONE);
         findViewById(meetings_view).setVisibility(VISIBLE);
-        loginOutlook(context);
+        MSAuthManager msAuthManager = new MSAuthManager();
+        msAuthManager.loginOutlook(context);
     }
 }

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.gsapps.reminders.services.LoadMeetingsTask;
+import com.gsapps.reminders.services.MSAuthManager;
 
 import static android.support.v4.content.LocalBroadcastManager.getInstance;
 import static android.view.View.GONE;
@@ -21,7 +22,6 @@ import static com.gsapps.reminders.R.id.connect_with_outlook;
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.R.layout.fragment_meetings;
 import static com.gsapps.reminders.services.MSAuthManager.getAccessToken;
-import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
 import static com.gsapps.reminders.util.Constants.ACTION_MSAL_ACCESS_TOKEN_ACQUIRED;
 import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 
@@ -57,7 +57,8 @@ public class MeetingsFragment extends Fragment {
 
         if(isOutlookConnected) {
             if(getAccessToken() == null) {
-                loginOutlook(context);
+                MSAuthManager msAuthManager = new MSAuthManager();
+                msAuthManager.loginOutlook(context);
             } else {
                 getContactEvents();
             }

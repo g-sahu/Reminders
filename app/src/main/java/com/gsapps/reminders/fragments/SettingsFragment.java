@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import com.gsapps.reminders.activities.SplashScreenActivity;
+import com.gsapps.reminders.services.MSAuthManager;
 
 import static android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import static android.support.v7.preference.Preference.OnPreferenceClickListener;
@@ -13,7 +14,6 @@ import static com.google.firebase.auth.FirebaseAuth.getInstance;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static com.gsapps.reminders.R.string.key_logout;
 import static com.gsapps.reminders.R.xml.settings;
-import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
 import static com.gsapps.reminders.services.MSAuthManager.logoutOutlook;
 import static com.gsapps.reminders.util.Constants.IS_LOGGED_OUT;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
@@ -58,8 +58,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
     }
 
     public void connectWithOutlook(boolean isSwitchedOn) {
+        MSAuthManager msAuthManager = new MSAuthManager();
+
         if(isSwitchedOn) {
-            loginOutlook(context);
+            msAuthManager.loginOutlook(context);
         } else {
             logoutOutlook(context);
             showToastMessage(context, "Logged out of Outlook");

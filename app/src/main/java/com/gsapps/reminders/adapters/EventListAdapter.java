@@ -46,7 +46,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
                 .load(event.getIcon())
                 .into(holder.eventIcon);
 
-        holder.eventName.setText(event.getName());
+        holder.eventName.setText(event.getTitle());
         String dateFormat = event instanceof MeetingEvent ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
         holder.eventDate.setText(getDateString(event.getStartDate(), dateFormat));
     }

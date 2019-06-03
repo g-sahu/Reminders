@@ -1,6 +1,7 @@
 package com.gsapps.reminders.model;
 
 import android.support.annotation.Nullable;
+import com.gsapps.reminders.model.enums.Frequency;
 
 import java.util.Calendar;
 
@@ -8,41 +9,37 @@ import static java.util.Objects.hash;
 
 //@Getter @Setter
 public abstract class Event {
-    protected String id;
-    protected String name;
-    protected String desc;
+    protected String eventId;
+    protected String title;
+    protected String eventDesc;
     protected Frequency frequency;
     protected boolean isRecurring;
     protected byte[] icon;
     protected Calendar startDate;
     protected Calendar endDate;
 
-    public enum Frequency {
-        YEARLY, HALF_YEARLY, QUARTERLY, MONTHLY, FORTNIGHTLY, WEEKLY, DAILY, ONCE
+    public String getEventId() {
+        return eventId;
     }
 
-    public String getId() {
-        return id;
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getTitle() {
+        return title;
     }
 
-    public String getName() {
-        return name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getEventDesc() {
+        return eventDesc;
     }
 
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setEventDesc(String eventDesc) {
+        this.eventDesc = eventDesc;
     }
 
     public Frequency getFrequency() {
@@ -89,7 +86,7 @@ public abstract class Event {
     public boolean equals(@Nullable Object obj) {
         if(obj instanceof Event) {
             Event event = (Event) obj;
-            return id.equals(event.id);
+            return eventId.equals(event.eventId);
         }
 
         return false;
@@ -97,7 +94,7 @@ public abstract class Event {
 
     @Override
     public int hashCode() {
-        return hash(id);
+        return hash(eventId);
     }
 
 }

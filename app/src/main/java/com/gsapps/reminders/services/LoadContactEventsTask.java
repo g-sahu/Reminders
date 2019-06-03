@@ -16,10 +16,11 @@ import java.util.List;
 
 import static android.support.v7.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.contact_events_view;
-import static com.gsapps.reminders.model.Event.Frequency.ONCE;
+import static com.gsapps.reminders.model.EventFactory.getEventFactory;
+import static com.gsapps.reminders.model.enums.EventType.CONTACT;
+import static com.gsapps.reminders.model.enums.Frequency.ONCE;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
-import static com.gsapps.reminders.util.ReminderUtils.getEvent;
 import static com.gsapps.reminders.util.ReminderUtils.getTodaysCalendar;
 
 public class LoadContactEventsTask extends AsyncTask<com.google.api.services.calendar.Calendar, Void, Void> {
@@ -44,9 +45,9 @@ public class LoadContactEventsTask extends AsyncTask<com.google.api.services.cal
             if(events != null) {
                 for (com.google.api.services.calendar.model.Event item : events.getItems()) {
                     String eventType = item.getGadget().getPreferences().get("goo.contactsEventType");
-                    Event event = getEvent(eventType);
-                    event.setName(item.getSummary());
-                    event.setDesc(item.getDescription());
+                    Event event = getEventFactory().getEvent(CONTACT);
+                    event.setTitle(item.getSummary());
+                    event.setEventDesc(item.getDescription());
                     event.setFrequency(ONCE);
                     event.setStartDate(getCalendar(item.getStart(), events.getTimeZone()));
                     eventList.add(event);

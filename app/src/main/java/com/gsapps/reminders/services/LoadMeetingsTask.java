@@ -8,7 +8,6 @@ import android.util.Log;
 import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.Event;
-import com.gsapps.reminders.model.MeetingEvent;
 import com.gsapps.reminders.model.comparators.StartDateComparator;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
@@ -18,7 +17,9 @@ import java.util.List;
 
 import static android.support.v7.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.meetings_view;
-import static com.gsapps.reminders.model.Event.Frequency.ONCE;
+import static com.gsapps.reminders.model.EventFactory.getEventFactory;
+import static com.gsapps.reminders.model.enums.EventType.MEETING;
+import static com.gsapps.reminders.model.enums.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getOptions;
@@ -46,10 +47,10 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
                                             .get();
 
             for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
-                Event event = new MeetingEvent();
-                event.setId(meeting.id);
-                event.setName(meeting.subject);
-                event.setDesc(meeting.bodyPreview);
+                Event event = getEventFactory().getEvent(MEETING);
+                event.setEventId(meeting.id);
+                event.setTitle(meeting.subject);
+                event.setEventDesc(meeting.bodyPreview);
                 event.setStartDate(getCalendar(meeting.start));
                 event.setEndDate(getCalendar(meeting.end));
                 event.setFrequency(ONCE);

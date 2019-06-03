@@ -25,13 +25,16 @@ import java.util.List;
 import static android.support.v7.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.activities.HomeActivity.context;
-import static com.gsapps.reminders.model.Event.Frequency.ONCE;
 import static com.gsapps.reminders.model.EventFactory.getEventFactory;
-import static com.gsapps.reminders.model.EventType.BIRTHDAY;
-import static com.gsapps.reminders.model.EventType.HOLIDAY;
+import static com.gsapps.reminders.model.enums.EventType.CONTACT;
+import static com.gsapps.reminders.model.enums.EventType.HOLIDAY;
+import static com.gsapps.reminders.model.enums.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
-import static com.gsapps.reminders.util.ReminderUtils.*;
+import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
+import static com.gsapps.reminders.util.ReminderUtils.getOptions;
+import static com.gsapps.reminders.util.ReminderUtils.getTodaysCalendar;
+import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 import static java.util.Collections.sort;
 
 public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
@@ -64,15 +67,15 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
                     if(calendarListEntry.getId().equals("en.indian#holiday@group.v.calendar.google.com")) {
                         event = getEventFactory().getEvent(HOLIDAY);
                     } else if(calendarListEntry.getId().equals("addressbook#contacts@group.v.calendar.google.com")) {
-                        String eventType = item.getGadget().getPreferences().get("goo.contactsEventType");
-                        event = getEvent(eventType);
+                        //String eventType = item.getGadget().getPreferences().get("goo.contactsEventType");
+                        event = getEventFactory().getEvent(CONTACT);
                     } else {
-                        event = getEventFactory().getEvent(BIRTHDAY);
+                        event = getEventFactory().getEvent(CONTACT);
                         // TODO: 15-04-2019 Add logic here to determine other types of events
                     }
 
-                    event.setName(item.getSummary());
-                    event.setDesc(item.getDescription());
+                    event.setTitle(item.getSummary());
+                    event.setEventDesc(item.getDescription());
                     event.setFrequency(ONCE);
                     event.setStartDate(getCalendar(item.getStart(), events.getTimeZone()));
                     eventList.add(event);
@@ -89,9 +92,9 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
 
                 for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
                     Event event = new MeetingEvent();
-                    event.setId(meeting.id);
-                    event.setName(meeting.subject);
-                    event.setDesc(meeting.bodyPreview);
+                    event.setEventId(meeting.id);
+                    event.setTitle(meeting.subject);
+                    event.setEventDesc(meeting.bodyPreview);
                     event.setStartDate(getCalendar(meeting.start));
                     event.setEndDate(getCalendar(meeting.end));
                     event.setFrequency(ONCE);

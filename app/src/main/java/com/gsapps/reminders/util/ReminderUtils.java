@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.EventDateTime;
-import com.gsapps.reminders.model.Event;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
 import com.microsoft.graph.options.HeaderOption;
 import com.microsoft.graph.options.Option;
@@ -29,9 +28,6 @@ import static android.support.v7.preference.PreferenceManager.getDefaultSharedPr
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
-import static com.gsapps.reminders.model.EventFactory.getEventFactory;
-import static com.gsapps.reminders.model.EventType.ANNIVERSARY;
-import static com.gsapps.reminders.model.EventType.BIRTHDAY;
 import static java.util.Calendar.*;
 import static java.util.TimeZone.getDefault;
 import static java.util.TimeZone.getTimeZone;
@@ -130,7 +126,7 @@ public class ReminderUtils {
         return options;
     }
 
-    public static Event getEvent(String eventType) {
+    /*public static Event getEvent(String eventType) {
         Event event = null;
 
         if(eventType.equals(ANNIVERSARY.toString())) {
@@ -140,5 +136,5 @@ public class ReminderUtils {
         }
 
         return event;
-    }
+    }*/
 }

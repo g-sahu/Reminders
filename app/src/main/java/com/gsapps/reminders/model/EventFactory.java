@@ -1,5 +1,7 @@
 package com.gsapps.reminders.model;
 
+import com.gsapps.reminders.model.enums.EventType;
+
 public class EventFactory {
     private static EventFactory eventFactory = null;
 
@@ -19,23 +21,14 @@ public class EventFactory {
 
     public Event getEvent(EventType eventType) {
         switch (eventType) {
-            case ANNIVERSARY:
-                return new AnniversaryEvent();
-
-            case BIRTHDAY:
-                return new BirthdayEvent();
+            case CONTACT:
+                return new ContactEvent();
 
             case HOLIDAY:
                 return new HolidayEvent();
 
             case MEETING:
                 return new MeetingEvent();
-
-            case MISSED_CALL:
-                return new MissedCallEvent();
-
-            case PAYMENT:
-                return new PaymentEvent();
 
             case TRAVEL:
                 return new TravelEvent();

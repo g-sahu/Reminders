@@ -1,8 +1,8 @@
 package com.gsapps.reminders.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import com.gsapps.reminders.model.MeetingEvent;
 import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static android.support.v7.widget.RecyclerView.ViewHolder;
+import static androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import static com.bumptech.glide.Glide.with;
 import static com.gsapps.reminders.R.id.event_date;
 import static com.gsapps.reminders.R.id.event_icon;

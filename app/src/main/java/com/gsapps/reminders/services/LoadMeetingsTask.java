@@ -2,8 +2,8 @@ package com.gsapps.reminders.services;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
@@ -16,7 +16,7 @@ import com.microsoft.graph.http.GraphServiceException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.Adapter;
+import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.model.Event.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;

@@ -2,8 +2,8 @@ package com.gsapps.reminders.services;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.util.DateTime;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.Adapter;
+import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.activities.HomeActivity.context;
 import static com.gsapps.reminders.model.Event.Frequency.ONCE;

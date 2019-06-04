@@ -30,23 +30,26 @@ configurations {
 }
 
 dependencies {
+    def room_version = "2.1.0-rc01"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha05'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
     implementation 'androidx.media:media:1.1.0-beta01'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
     implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta1"
     implementation 'androidx.preference:preference:1.1.0-alpha05'
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 
-    implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation 'com.google.firebase:firebase-auth:16.2.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
-
     implementation 'com.google.api-client:google-api-client-android:1.23.0'
     implementation 'com.google.apis:google-api-services-calendar:v3-rev305-1.23.0'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-auth:16.2.0'
 
     implementation 'com.microsoft.graph:msgraph-sdk-android:1.7.0'
     implementation ('com.microsoft.identity.client:msal:0.1.0') {

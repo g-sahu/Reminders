@@ -1,6 +1,6 @@
 package com.gsapps.reminders.model;
 
-public class MeetingEvent extends Event {
+public class MeetingEventDTO extends EventDTO {
     private String subject;
     private String organiser;
     private String location;

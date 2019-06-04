@@ -126,13 +126,13 @@ public class ReminderUtils {
         return options;
     }
 
-    /*public static Event getEvent(String eventType) {
-        Event event = null;
+    /*public static EventDTO getEvent(String eventType) {
+        EventDTO event = null;
 
         if(eventType.equals(ANNIVERSARY.toString())) {
-            event = getEventFactory().getEvent(ANNIVERSARY);
-        } else if (eventType.equals(BIRTHDAY.toString()) || eventType.equals("SELF")){ // TODO: 15-04-2019 Check if Event Type 'Self' is for events other than own birthday
-            event = getEventFactory().getEvent(BIRTHDAY);
+            event = getEventDTOFactory().getEvent(ANNIVERSARY);
+        } else if (eventType.equals(BIRTHDAY.toString()) || eventType.equals("SELF")){ // TODO: 15-04-2019 Check if EventDTO Type 'Self' is for events other than own birthday
+            event = getEventDTOFactory().getEvent(BIRTHDAY);
         }
 
         return event;

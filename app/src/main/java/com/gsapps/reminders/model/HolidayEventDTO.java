@@ -1,5 +1,5 @@
 package com.gsapps.reminders.model;
 
-public class HolidayEvent extends Event {
+public class HolidayEventDTO extends EventDTO {
     private String calendar;
 }

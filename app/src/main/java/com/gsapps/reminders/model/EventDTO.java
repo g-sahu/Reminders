@@ -8,7 +8,7 @@ import java.util.Calendar;
 import static java.util.Objects.hash;
 
 //@Getter @Setter
-public abstract class Event {
+public abstract class EventDTO {
     protected String eventId;
     protected String title;
     protected String eventDesc;
@@ -84,9 +84,9 @@ public abstract class Event {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if(obj instanceof Event) {
-            Event event = (Event) obj;
-            return eventId.equals(event.eventId);
+        if(obj instanceof EventDTO) {
+            EventDTO eventDTO = (EventDTO) obj;
+            return eventId.equals(eventDTO.eventId);
         }
 
         return false;

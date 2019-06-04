@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
-import com.gsapps.reminders.model.Event;
+import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.model.comparators.StartDateComparator;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
@@ -17,7 +17,7 @@ import java.util.List;
 
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.meetings_view;
-import static com.gsapps.reminders.model.EventFactory.getEventFactory;
+import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.model.enums.EventType.MEETING;
 import static com.gsapps.reminders.model.enums.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
@@ -28,7 +28,7 @@ import static java.util.Collections.sort;
 public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
     private final String LOG_TAG = getClass().getSimpleName();
     private final Activity activity;
-    private List<Event> eventList = new ArrayList<>();
+    private List<EventDTO> eventDTOList = new ArrayList<>();
 
     public LoadMeetingsTask(Activity activity) {
         this.activity = activity;
@@ -47,15 +47,15 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
                                             .get();
 
             for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
-                Event event = getEventFactory().getEvent(MEETING);
-                event.setEventId(meeting.id);
-                event.setTitle(meeting.subject);
-                event.setEventDesc(meeting.bodyPreview);
-                event.setStartDate(getCalendar(meeting.start));
-                event.setEndDate(getCalendar(meeting.end));
-                event.setFrequency(ONCE);
-                event.setRecurring(false);
-                eventList.add(event);
+                EventDTO eventDTO = getEventDTOFactory().getEvent(MEETING);
+                eventDTO.setEventId(meeting.id);
+                eventDTO.setTitle(meeting.subject);
+                eventDTO.setEventDesc(meeting.bodyPreview);
+                eventDTO.setStartDate(getCalendar(meeting.start));
+                eventDTO.setEndDate(getCalendar(meeting.end));
+                eventDTO.setFrequency(ONCE);
+                eventDTO.setRecurring(false);
+                eventDTOList.add(eventDTO);
             }
         } catch (GraphServiceException e) {
             Log.e(LOG_TAG, e.getMessage());
@@ -67,12 +67,12 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
     @Override
     protected void onPostExecute(List<Events> events) {
         super.onPostExecute(events);
-        sort(eventList, new StartDateComparator());
+        sort(eventDTOList, new StartDateComparator());
         updateMyCalendarView();
     }
 
     private void updateMyCalendarView() {
-        Adapter eventListAdapter = new EventListAdapter(activity, eventList);
+        Adapter eventListAdapter = new EventListAdapter(activity, eventDTOList);
         RecyclerView eventListView = activity.findViewById(meetings_view);
         eventListView.setAdapter(eventListAdapter);
         eventListView.setLayoutManager(new LinearLayoutManager(activity));

@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.gsapps.reminders.model.Event;
-import com.gsapps.reminders.model.MeetingEvent;
+import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.model.MeetingEventDTO;
 
 import java.util.List;
 
@@ -23,12 +23,12 @@ import static com.gsapps.reminders.R.layout.item_event;
 import static com.gsapps.reminders.util.ReminderUtils.getDateString;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Holder> {
-    private final List<Event> eventList;
+    private final List<EventDTO> eventDTOList;
     private static LayoutInflater inflater = null;
     private final Context context;
 
-    public EventListAdapter(Context context, List<Event> eventList) {
-        this.eventList = eventList;
+    public EventListAdapter(Context context, List<EventDTO> eventDTOList) {
+        this.eventDTOList = eventDTOList;
         this.context = context;
         inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
     }
@@ -41,14 +41,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        Event event = eventList.get(position);
+        EventDTO eventDTO = eventDTOList.get(position);
         with(context)
-                .load(event.getIcon())
+                .load(eventDTO.getIcon())
                 .into(holder.eventIcon);
 
-        holder.eventName.setText(event.getTitle());
-        String dateFormat = event instanceof MeetingEvent ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
-        holder.eventDate.setText(getDateString(event.getStartDate(), dateFormat));
+        holder.eventName.setText(eventDTO.getTitle());
+        String dateFormat = eventDTO instanceof MeetingEventDTO ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
+        holder.eventDate.setText(getDateString(eventDTO.getStartDate(), dateFormat));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
 
     @Override
     public int getItemCount() {
-        return eventList.size();
+        return eventDTOList.size();
     }
 
     class Holder extends ViewHolder {

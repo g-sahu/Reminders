@@ -1,6 +1,6 @@
 package com.gsapps.reminders.model;
 
-public class TravelEvent extends Event {
+public class TravelEventDTO extends EventDTO {
     private String source;
     private String destination;
 

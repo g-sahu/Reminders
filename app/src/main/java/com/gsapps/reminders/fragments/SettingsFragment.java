@@ -3,12 +3,12 @@ package com.gsapps.reminders.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import com.gsapps.reminders.activities.SplashScreenActivity;
 
-import static android.support.v7.preference.Preference.OnPreferenceChangeListener;
-import static android.support.v7.preference.Preference.OnPreferenceClickListener;
+import static androidx.preference.Preference.OnPreferenceChangeListener;
+import static androidx.preference.Preference.OnPreferenceClickListener;
 import static com.google.firebase.auth.FirebaseAuth.getInstance;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static com.gsapps.reminders.R.string.key_logout;

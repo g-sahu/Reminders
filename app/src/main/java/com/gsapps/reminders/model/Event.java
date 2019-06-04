@@ -1,7 +1,7 @@
 package com.gsapps.reminders.model;
 
-import android.support.annotation.Nullable;
 import com.gsapps.reminders.model.enums.Frequency;
+import androidx.annotation.Nullable;
 
 import java.util.Calendar;
 

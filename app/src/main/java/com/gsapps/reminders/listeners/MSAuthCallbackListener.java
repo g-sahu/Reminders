@@ -10,8 +10,8 @@ import com.microsoft.identity.client.MsalException;
 import com.microsoft.identity.client.MsalServiceException;
 import com.microsoft.identity.client.MsalUiRequiredException;
 
-import static android.support.v4.content.LocalBroadcastManager.getInstance;
-import static android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences;
+import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
+import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static com.gsapps.reminders.activities.HomeActivity.context;
 import static com.gsapps.reminders.services.MSAuthManager.saveAccessToken;

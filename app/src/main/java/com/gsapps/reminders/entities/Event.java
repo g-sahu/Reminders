@@ -1,94 +1,45 @@
 package com.gsapps.reminders.entities;
 
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import com.gsapps.reminders.model.enums.Frequency;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Calendar;
-
 import static java.util.Objects.hash;
 
-//@Getter @Setter
+@Entity
+@Getter @Setter
 public abstract class Event {
+    @PrimaryKey(autoGenerate = true)
+    protected int id;
+
+    @ColumnInfo(name = "event_id")
     protected String eventId;
+
     protected String title;
+
+    @ColumnInfo(name = "event_desc")
     protected String eventDesc;
+
     protected Frequency frequency;
+
+    @ColumnInfo(name = "is_recurring")
     protected boolean isRecurring;
-    protected byte[] icon;
-    protected Calendar startDate;
-    protected Calendar endDate;
 
-    public String getEventId() {
-        return eventId;
-    }
+    @ColumnInfo(name = "start_ts")
+    protected long startTs;
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getEventDesc() {
-        return eventDesc;
-    }
-
-    public void setEventDesc(String eventDesc) {
-        this.eventDesc = eventDesc;
-    }
-
-    public Frequency getFrequency() {
-        return frequency;
-    }
-
-    public void setFrequency(Frequency frequency) {
-        this.frequency = frequency;
-    }
-
-    public boolean isRecurring() {
-        return isRecurring;
-    }
-
-    public void setRecurring(boolean recurring) {
-        isRecurring = recurring;
-    }
-
-    public byte[] getIcon() {
-        return icon;
-    }
-
-    public void setIcon(byte[] icon) {
-        this.icon = icon;
-    }
-
-    public Calendar getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Calendar startDate) {
-        this.startDate = startDate;
-    }
-
-    public Calendar getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Calendar endDate) {
-        this.endDate = endDate;
-    }
+    @ColumnInfo(name = "end_ts")
+    protected long endTs;
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if(obj instanceof Event) {
             Event event = (Event) obj;
-            return eventId.equals(event.eventId);
+            return id == event.id;
         }
 
         return false;
@@ -96,7 +47,7 @@ public abstract class Event {
 
     @Override
     public int hashCode() {
-        return hash(eventId);
+        return hash(id);
     }
 
 }

@@ -1,45 +1,69 @@
 package com.gsapps.reminders.entities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import com.gsapps.reminders.model.enums.Frequency;
+import androidx.room.TypeConverters;
+import com.gsapps.reminders.converters.BooleanConverter;
+import com.gsapps.reminders.converters.CalendarConverter;
+import com.gsapps.reminders.converters.EventTypeConverter;
+import com.gsapps.reminders.model.enums.EventType;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Calendar;
 
 import static java.util.Objects.hash;
 
 @Entity
 @Getter @Setter
-public abstract class Event {
+public class Event {
     @PrimaryKey(autoGenerate = true)
-    protected int id;
-
     @ColumnInfo(name = "event_id")
-    protected String eventId;
+    public int eventId;
 
-    protected String title;
+    @NonNull
+    public String title;
+
+    @NonNull
+    @ColumnInfo(name = "event_type")
+    @TypeConverters(EventTypeConverter.class)
+    public EventType eventType;
 
     @ColumnInfo(name = "event_desc")
-    protected String eventDesc;
+    public String eventDesc;
 
-    protected Frequency frequency;
-
+    @NonNull
     @ColumnInfo(name = "is_recurring")
-    protected boolean isRecurring;
+    @TypeConverters(BooleanConverter.class)
+    public boolean isRecurring;
 
+    @NonNull
     @ColumnInfo(name = "start_ts")
-    protected long startTs;
+    @TypeConverters(CalendarConverter.class)
+    public Calendar startTs;
 
+    @NonNull
     @ColumnInfo(name = "end_ts")
-    protected long endTs;
+    @TypeConverters(CalendarConverter.class)
+    public Calendar endTs;
+
+    @NonNull
+    @ColumnInfo(name = "create_ts")
+    @TypeConverters(CalendarConverter.class)
+    public Calendar createTs;
+
+    @ColumnInfo(name = "last_updt_ts")
+    @TypeConverters(CalendarConverter.class)
+    public Calendar lastUpdateTs;
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if(obj instanceof Event) {
             Event event = (Event) obj;
-            return id == event.id;
+            return eventId == event.eventId;
         }
 
         return false;
@@ -47,7 +71,7 @@ public abstract class Event {
 
     @Override
     public int hashCode() {
-        return hash(id);
+        return hash(eventId);
     }
 
 }

@@ -126,6 +126,10 @@ public class ReminderUtils {
         return options;
     }
 
+    public static boolean isNotNullOrEmpty(String str) {
+        return (str != null) && !(str.trim().isEmpty());
+    }
+
     /*public static EventDTO getEvent(String eventType) {
         EventDTO event = null;
 

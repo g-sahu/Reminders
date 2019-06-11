@@ -28,7 +28,6 @@ import static com.gsapps.reminders.activities.HomeActivity.context;
 import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.model.enums.EventType.CONTACT;
 import static com.gsapps.reminders.model.enums.EventType.HOLIDAY;
-import static com.gsapps.reminders.model.enums.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
@@ -76,7 +75,6 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
 
                     eventDTO.setTitle(item.getSummary());
                     eventDTO.setEventDesc(item.getDescription());
-                    eventDTO.setFrequency(ONCE);
                     eventDTO.setStartDate(getCalendar(item.getStart(), events.getTimeZone()));
                     eventDTOList.add(eventDTO);
                 }
@@ -97,7 +95,6 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
                     eventDTO.setEventDesc(meeting.bodyPreview);
                     eventDTO.setStartDate(getCalendar(meeting.start));
                     eventDTO.setEndDate(getCalendar(meeting.end));
-                    eventDTO.setFrequency(ONCE);
                     eventDTO.setRecurring(false);
                     eventDTOList.add(eventDTO);
                 }

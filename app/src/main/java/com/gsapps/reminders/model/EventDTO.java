@@ -1,6 +1,5 @@
 package com.gsapps.reminders.model;
 
-import com.gsapps.reminders.model.enums.Frequency;
 import androidx.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,6 @@ public abstract class EventDTO {
     protected String eventId;
     protected String title;
     protected String eventDesc;
-    protected Frequency frequency;
     protected boolean isRecurring;
     protected byte[] icon;
     protected Calendar startDate;

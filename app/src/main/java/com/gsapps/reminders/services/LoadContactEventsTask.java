@@ -18,7 +18,6 @@ import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.contact_events_view;
 import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.model.enums.EventType.CONTACT;
-import static com.gsapps.reminders.model.enums.Frequency.ONCE;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getTodaysCalendar;
@@ -48,7 +47,6 @@ public class LoadContactEventsTask extends AsyncTask<com.google.api.services.cal
                     EventDTO eventDTO = getEventDTOFactory().getEvent(CONTACT);
                     eventDTO.setTitle(item.getSummary());
                     eventDTO.setEventDesc(item.getDescription());
-                    eventDTO.setFrequency(ONCE);
                     eventDTO.setStartDate(getCalendar(item.getStart(), events.getTimeZone()));
                     eventDTOList.add(eventDTO);
                 }

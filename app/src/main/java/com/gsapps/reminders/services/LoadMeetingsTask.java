@@ -19,7 +19,6 @@ import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.model.enums.EventType.MEETING;
-import static com.gsapps.reminders.model.enums.Frequency.ONCE;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getOptions;
@@ -53,7 +52,6 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
                 eventDTO.setEventDesc(meeting.bodyPreview);
                 eventDTO.setStartDate(getCalendar(meeting.start));
                 eventDTO.setEndDate(getCalendar(meeting.end));
-                eventDTO.setFrequency(ONCE);
                 eventDTO.setRecurring(false);
                 eventDTOList.add(eventDTO);
             }

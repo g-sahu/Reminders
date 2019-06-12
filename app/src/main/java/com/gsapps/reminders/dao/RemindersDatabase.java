@@ -3,11 +3,12 @@ package com.gsapps.reminders.dao;
 import android.content.Context;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
+import com.gsapps.reminders.entities.ContactEvent;
 import com.gsapps.reminders.entities.Event;
 
 import static androidx.room.Room.databaseBuilder;
 
-@Database(entities = {Event.class}, version = 1)
+@Database(entities = {Event.class, ContactEvent.class}, version = 1)
 public abstract class RemindersDatabase extends RoomDatabase {
     public abstract RemindersDao getRemindersDao();
 

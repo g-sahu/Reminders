@@ -1,6 +1,30 @@
 package com.gsapps.reminders.entities;
 
-public class ContactEvent extends Event {
-    private String contactId;
-    private String eventType;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+import com.gsapps.reminders.converters.ContactEventTypeConverter;
+import com.gsapps.reminders.model.enums.ContactEventType;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity(tableName = "contact_event",
+        foreignKeys = @ForeignKey(entity = Event.class, parentColumns = "event_id", childColumns = "event_id"))
+@Getter @Setter
+public class ContactEvent {
+    @PrimaryKey
+    @ColumnInfo(name = "event_id")
+    public long eventId;
+
+    @NonNull
+    @ColumnInfo(name = "src_event_id")
+    public String sourceEventId;
+
+    @NonNull
+    @ColumnInfo(name = "contact_event_type")
+    @TypeConverters(ContactEventTypeConverter.class)
+    public ContactEventType contactEventType;
 }

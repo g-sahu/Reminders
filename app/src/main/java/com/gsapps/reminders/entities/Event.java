@@ -22,7 +22,7 @@ import static java.util.Objects.hash;
 public class Event {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "event_id")
-    public int eventId;
+    public long eventId;
 
     @NonNull
     public String title;

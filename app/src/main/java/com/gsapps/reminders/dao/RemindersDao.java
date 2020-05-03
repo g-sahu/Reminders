@@ -10,11 +10,8 @@ import java.util.List;
 
 @Dao
 public interface RemindersDao {
-    @Insert
-    long insertEvent(Event event);
-
-    @Insert
-    long insertContactEvent(ContactEvent contactEvent);
+    @Insert long insertEvent(Event event);
+    @Insert long insertContactEvent(ContactEvent contactEvent);
 
     @Query("SELECT * FROM event ORDER BY event_id")
     List<Event> getEvents();

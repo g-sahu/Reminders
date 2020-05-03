@@ -70,9 +70,8 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
     }
 
     private void updateMyCalendarView() {
-        Adapter eventListAdapter = new EventListAdapter(activity, eventDTOList);
         RecyclerView eventListView = activity.findViewById(meetings_view);
-        eventListView.setAdapter(eventListAdapter);
+        eventListView.setAdapter(new EventListAdapter(activity, eventDTOList));
         eventListView.setLayoutManager(new LinearLayoutManager(activity));
     }
 }

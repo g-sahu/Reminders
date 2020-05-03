@@ -36,8 +36,7 @@ public class EventListAdapter extends Adapter<Holder> {
 
     @Override @NonNull
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rowView = inflater.inflate(item_event, parent, false);
-        return new Holder(rowView);
+        return new Holder(inflater.inflate(item_event, parent, false));
     }
 
     @Override
@@ -45,8 +44,7 @@ public class EventListAdapter extends Adapter<Holder> {
         EventDTO eventDTO = eventDTOList.get(position);
         with(context).load(eventDTO.getIcon()).into(holder.eventIcon);
         holder.eventName.setText(eventDTO.getTitle());
-        String dateFormat = eventDTO instanceof MeetingEventDTO ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
-        holder.eventDate.setText(getDateString(eventDTO.getStartTs(), dateFormat));
+        holder.eventDate.setText(getDateString(eventDTO.getStartTs(), getDateFormat(eventDTO)));
     }
 
     @Override
@@ -69,5 +67,9 @@ public class EventListAdapter extends Adapter<Holder> {
             eventName = itemView.findViewById(event_name);
             eventDate = itemView.findViewById(event_date);
         }
+    }
+
+    private String getDateFormat(EventDTO eventDTO) {
+        return eventDTO instanceof MeetingEventDTO ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
     }
 }

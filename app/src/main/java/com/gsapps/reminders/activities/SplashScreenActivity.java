@@ -102,8 +102,7 @@ public class SplashScreenActivity extends AppCompatActivity
         fAuth.signInWithCredential(credential)
              .addOnCompleteListener(this, task -> {
                  if (task.isSuccessful()) {
-                     Intent intent = createIntent(SplashScreenActivity.this, HomeActivity.class,
-                             account.getDisplayName(), account.getPhotoUrl(), account.getEmail());
+                     Intent intent = createIntent(SplashScreenActivity.this, HomeActivity.class, account.getDisplayName(), account.getPhotoUrl(), account.getEmail());
                      startActivity(intent);
                      finish();
                  } else {

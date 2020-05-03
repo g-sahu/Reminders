@@ -10,9 +10,9 @@ import static androidx.room.Room.databaseBuilder;
 
 @Database(entities = {Event.class, ContactEvent.class}, version = 1)
 public abstract class RemindersDatabase extends RoomDatabase {
-    public abstract RemindersDao getRemindersDao();
-
     private static volatile RemindersDatabase INSTANCE;
+
+    public abstract RemindersDao getRemindersDao();
 
     public static RemindersDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {

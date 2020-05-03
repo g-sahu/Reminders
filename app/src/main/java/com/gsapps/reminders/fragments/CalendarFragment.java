@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.services.calendar.Calendar;
 import com.gsapps.reminders.services.LoadGoogleCalendarTask;
 import com.gsapps.reminders.util.Constants;
 
@@ -47,9 +46,8 @@ public class CalendarFragment extends Fragment {
     private void getCalendarEvents(String accountName) {
         credential = usingOAuth2(context, singleton(CALENDAR));
         credential.setSelectedAccountName(accountName);
-        Calendar calendar = getCalendar(credential, getString(app_name));
-        LoadGoogleCalendarTask calendarTask = new LoadGoogleCalendarTask((Activity) context);
-        calendarTask.execute(calendar);
+        new LoadGoogleCalendarTask((Activity) context)
+                .execute(getCalendar(credential, getString(app_name)));
     }
 
     @Override

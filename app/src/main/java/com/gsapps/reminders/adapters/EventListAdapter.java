@@ -1,13 +1,14 @@
 package com.gsapps.reminders.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
+import com.gsapps.reminders.adapters.EventListAdapter.Holder;
 import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.model.MeetingEventDTO;
 
@@ -20,9 +21,9 @@ import static com.gsapps.reminders.R.id.event_date;
 import static com.gsapps.reminders.R.id.event_icon;
 import static com.gsapps.reminders.R.id.event_name;
 import static com.gsapps.reminders.R.layout.item_event;
-import static com.gsapps.reminders.util.ReminderUtils.getDateString;
+import static com.gsapps.reminders.util.CalendarUtils.getDateString;
 
-public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Holder> {
+public class EventListAdapter extends Adapter<Holder> {
     private final List<EventDTO> eventDTOList;
     private static LayoutInflater inflater = null;
     private final Context context;
@@ -42,13 +43,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Hold
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         EventDTO eventDTO = eventDTOList.get(position);
-        with(context)
-                .load(eventDTO.getIcon())
-                .into(holder.eventIcon);
-
+        with(context).load(eventDTO.getIcon()).into(holder.eventIcon);
         holder.eventName.setText(eventDTO.getTitle());
         String dateFormat = eventDTO instanceof MeetingEventDTO ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
-        holder.eventDate.setText(getDateString(eventDTO.getStartDate(), dateFormat));
+        holder.eventDate.setText(getDateString(eventDTO.getStartTs(), dateFormat));
     }
 
     @Override

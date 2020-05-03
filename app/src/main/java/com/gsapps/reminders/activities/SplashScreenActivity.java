@@ -46,18 +46,7 @@ public class SplashScreenActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(activity_splash_screen);
         findViewById(sign_in_button).setOnClickListener(this);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(DEFAULT_SIGN_IN)
-                                        .requestIdToken(GOOGLE_AUTH_CLIENT_ID)
-                                        .requestEmail()
-                                        .build();
-
-        googleApiClient = new Builder(this)
-                                .enableAutoManage(this, this)
-                                .addApi(GOOGLE_SIGN_IN_API, gso)
-                                .addConnectionCallbacks(this)
-                                .build();
-
+        googleApiClient = getGoogleApiClient(getGoogleSignInOptions());
         fAuth = getInstance();
     }
 
@@ -150,5 +139,21 @@ public class SplashScreenActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         googleApiClient.unregisterConnectionCallbacks(this);
+    }
+
+
+    private GoogleSignInOptions getGoogleSignInOptions() {
+        return new GoogleSignInOptions.Builder(DEFAULT_SIGN_IN)
+                .requestIdToken(GOOGLE_AUTH_CLIENT_ID)
+                .requestEmail()
+                .build();
+    }
+
+    private GoogleApiClient getGoogleApiClient(GoogleSignInOptions gso) {
+        return new Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(GOOGLE_SIGN_IN_API, gso)
+                .addConnectionCallbacks(this)
+                .build();
     }
 }

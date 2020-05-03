@@ -17,8 +17,7 @@ import java.util.Calendar;
 
 import static java.util.Objects.hash;
 
-@Entity
-@Getter @Setter
+@Entity @Getter @Setter
 public class Event {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "event_id")

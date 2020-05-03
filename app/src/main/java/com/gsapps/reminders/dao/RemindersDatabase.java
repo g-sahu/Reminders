@@ -18,11 +18,9 @@ public abstract class RemindersDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (RemindersDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = databaseBuilder(context.getApplicationContext(),
-                                                RemindersDatabase.class,
-                                                "reminders")
-                                    .allowMainThreadQueries()
-                                    .build();
+                    INSTANCE = databaseBuilder(context.getApplicationContext(), RemindersDatabase.class, "reminders")
+                            .allowMainThreadQueries()
+                            .build();
                 }
             }
         }

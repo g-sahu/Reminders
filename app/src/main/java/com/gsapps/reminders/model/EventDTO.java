@@ -1,6 +1,7 @@
 package com.gsapps.reminders.model;
 
 import androidx.annotation.Nullable;
+import com.gsapps.reminders.model.enums.EventType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,19 +11,22 @@ import static java.util.Objects.hash;
 
 @Getter @Setter
 public abstract class EventDTO {
-    protected String eventId;
+    protected long eventId;
     protected String title;
+    protected EventType eventType;
     protected String eventDesc;
     protected boolean isRecurring;
+    protected Calendar startTs;
+    protected Calendar endTs;
+    protected Calendar createTs;
+    protected Calendar lastUpdateTs;
     protected byte[] icon;
-    protected Calendar startDate;
-    protected Calendar endDate;
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if(obj instanceof EventDTO) {
             EventDTO eventDTO = (EventDTO) obj;
-            return eventId.equals(eventDTO.eventId);
+            return eventId == eventDTO.eventId;
         }
 
         return false;

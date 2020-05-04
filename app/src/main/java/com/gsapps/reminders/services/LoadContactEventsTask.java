@@ -18,9 +18,9 @@ import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.contact_events_view;
 import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.model.enums.EventType.CONTACT;
+import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
+import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
-import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
-import static com.gsapps.reminders.util.ReminderUtils.getTodaysCalendar;
 
 public class LoadContactEventsTask extends AsyncTask<com.google.api.services.calendar.Calendar, Void, Void> {
     private final String LOG_TAG = getClass().getSimpleName();
@@ -47,7 +47,7 @@ public class LoadContactEventsTask extends AsyncTask<com.google.api.services.cal
                     EventDTO eventDTO = getEventDTOFactory().getEvent(CONTACT);
                     eventDTO.setTitle(item.getSummary());
                     eventDTO.setEventDesc(item.getDescription());
-                    eventDTO.setStartDate(getCalendar(item.getStart(), events.getTimeZone()));
+                    eventDTO.setStartTs(getCalendar(item.getStart(), events.getTimeZone()));
                     eventDTOList.add(eventDTO);
                 }
             }

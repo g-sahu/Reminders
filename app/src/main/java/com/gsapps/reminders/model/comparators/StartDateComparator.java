@@ -11,7 +11,7 @@ public class StartDateComparator implements Comparator<Object>  {
         if(lhs instanceof EventDTO && rhs instanceof EventDTO) {
             EventDTO eventDTO1 = (EventDTO) lhs;
             EventDTO eventDTO2 = (EventDTO) rhs;
-            return eventDTO1.getStartDate().compareTo(eventDTO2.getStartDate());
+            return eventDTO1.getStartTs().compareTo(eventDTO2.getStartTs());
         } else {
             throw new RuntimeException("Objects are not mutually comparable.");
         }

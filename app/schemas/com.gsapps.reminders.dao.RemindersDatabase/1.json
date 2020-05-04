@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "cdbfb7533ea6ff21fef0fc4345a2ba69",
+    "identityHash": "fa9270b0160445d0be8413b5c01c7c5f",
     "entities": [
       {
         "tableName": "Event",
@@ -71,12 +71,68 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "contact_event",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` INTEGER NOT NULL, `src_event_id` TEXT NOT NULL, `contact_event_type` INTEGER NOT NULL, `create_ts` TEXT NOT NULL, `last_updt_ts` TEXT, PRIMARY KEY(`event_id`), FOREIGN KEY(`event_id`) REFERENCES `Event`(`event_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "eventId",
+            "columnName": "event_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sourceEventId",
+            "columnName": "src_event_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "contactEventType",
+            "columnName": "contact_event_type",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createTs",
+            "columnName": "create_ts",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUpdateTs",
+            "columnName": "last_updt_ts",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "event_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "Event",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "event_id"
+            ],
+            "referencedColumns": [
+              "event_id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cdbfb7533ea6ff21fef0fc4345a2ba69')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fa9270b0160445d0be8413b5c01c7c5f')"
     ]
   }
 }

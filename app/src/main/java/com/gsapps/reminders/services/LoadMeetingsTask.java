@@ -2,25 +2,25 @@ package com.gsapps.reminders.services;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
 import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.model.comparators.StartDateComparator;
+import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.model.enums.EventType.MEETING;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
-import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
+import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getOptions;
 import static java.util.Collections.sort;
 
@@ -45,13 +45,13 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
                                             .buildRequest(getOptions())
                                             .get();
 
-            for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
+            for(Event meeting : result.getCurrentPage()) {
                 EventDTO eventDTO = getEventDTOFactory().getEvent(MEETING);
-                eventDTO.setEventId(meeting.id);
+                //eventDTO.setSourceEventId(meeting.id);
                 eventDTO.setTitle(meeting.subject);
                 eventDTO.setEventDesc(meeting.bodyPreview);
-                eventDTO.setStartDate(getCalendar(meeting.start));
-                eventDTO.setEndDate(getCalendar(meeting.end));
+                eventDTO.setStartTs(getCalendar(meeting.start));
+                eventDTO.setEndTs(getCalendar(meeting.end));
                 eventDTO.setRecurring(false);
                 eventDTOList.add(eventDTO);
             }

@@ -20,5 +20,5 @@ public interface RemindersDao {
             "FROM event e " +
             "INNER JOIN contact_event ce on e.event_id = ce.event_id " +
             "ORDER BY e.event_id")
-    List<Event> getContactEvents();
+    List<ContactEvent> getContactEvents();
 }

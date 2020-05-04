@@ -2,9 +2,9 @@ package com.gsapps.reminders.services;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
@@ -29,10 +29,10 @@ import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.model.enums.EventType.CONTACT;
 import static com.gsapps.reminders.model.enums.EventType.HOLIDAY;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
+import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
+import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
-import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getOptions;
-import static com.gsapps.reminders.util.ReminderUtils.getTodaysCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 import static java.util.Collections.sort;
 
@@ -75,7 +75,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
 
                     eventDTO.setTitle(item.getSummary());
                     eventDTO.setEventDesc(item.getDescription());
-                    eventDTO.setStartDate(getCalendar(item.getStart(), events.getTimeZone()));
+                    eventDTO.setStartTs(getCalendar(item.getStart(), events.getTimeZone()));
                     eventDTOList.add(eventDTO);
                 }
             }
@@ -90,11 +90,11 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
 
                 for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
                     EventDTO eventDTO = new MeetingEventDTO();
-                    eventDTO.setEventId(meeting.id);
+                    //eventDTO.setEventId(meeting.id);
                     eventDTO.setTitle(meeting.subject);
                     eventDTO.setEventDesc(meeting.bodyPreview);
-                    eventDTO.setStartDate(getCalendar(meeting.start));
-                    eventDTO.setEndDate(getCalendar(meeting.end));
+                    eventDTO.setStartTs(getCalendar(meeting.start));
+                    eventDTO.setEndTs(getCalendar(meeting.end));
                     eventDTO.setRecurring(false);
                     eventDTOList.add(eventDTO);
                 }

@@ -2,32 +2,32 @@ package com.gsapps.reminders.services;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
-import com.gsapps.reminders.model.Event;
-import com.gsapps.reminders.model.MeetingEvent;
+import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.model.comparators.StartDateComparator;
+import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.meetings_view;
-import static com.gsapps.reminders.model.Event.Frequency.ONCE;
+import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
+import static com.gsapps.reminders.model.enums.EventType.MEETING;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
-import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
+import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getOptions;
 import static java.util.Collections.sort;
 
 public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
     private final String LOG_TAG = getClass().getSimpleName();
     private final Activity activity;
-    private List<Event> eventList = new ArrayList<>();
+    private List<EventDTO> eventDTOList = new ArrayList<>();
 
     public LoadMeetingsTask(Activity activity) {
         this.activity = activity;
@@ -45,16 +45,15 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
                                             .buildRequest(getOptions())
                                             .get();
 
-            for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
-                Event event = new MeetingEvent();
-                event.setId(meeting.id);
-                event.setName(meeting.subject);
-                event.setDesc(meeting.bodyPreview);
-                event.setStartDate(getCalendar(meeting.start));
-                event.setEndDate(getCalendar(meeting.end));
-                event.setFrequency(ONCE);
-                event.setRecurring(false);
-                eventList.add(event);
+            for(Event meeting : result.getCurrentPage()) {
+                EventDTO eventDTO = getEventDTOFactory().getEvent(MEETING);
+                //eventDTO.setSourceEventId(meeting.id);
+                eventDTO.setTitle(meeting.subject);
+                eventDTO.setEventDesc(meeting.bodyPreview);
+                eventDTO.setStartTs(getCalendar(meeting.start));
+                eventDTO.setEndTs(getCalendar(meeting.end));
+                eventDTO.setRecurring(false);
+                eventDTOList.add(eventDTO);
             }
         } catch (GraphServiceException e) {
             Log.e(LOG_TAG, e.getMessage());
@@ -66,14 +65,13 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
     @Override
     protected void onPostExecute(List<Events> events) {
         super.onPostExecute(events);
-        sort(eventList, new StartDateComparator());
+        sort(eventDTOList, new StartDateComparator());
         updateMyCalendarView();
     }
 
     private void updateMyCalendarView() {
-        Adapter eventListAdapter = new EventListAdapter(activity, eventList);
         RecyclerView eventListView = activity.findViewById(meetings_view);
-        eventListView.setAdapter(eventListAdapter);
+        eventListView.setAdapter(new EventListAdapter(activity, eventDTOList));
         eventListView.setLayoutManager(new LinearLayoutManager(activity));
     }
 }

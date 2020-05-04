@@ -1,6 +1,6 @@
 package com.gsapps.reminders.model.comparators;
 
-import com.gsapps.reminders.model.Event;
+import com.gsapps.reminders.model.EventDTO;
 
 import java.util.Comparator;
 
@@ -8,10 +8,10 @@ public class StartDateComparator implements Comparator<Object>  {
 
     @Override
     public int compare(Object lhs, Object rhs) {
-        if(lhs instanceof Event && rhs instanceof Event) {
-            Event event1 = (Event) lhs;
-            Event event2 = (Event) rhs;
-            return event1.getStartDate().compareTo(event2.getStartDate());
+        if(lhs instanceof EventDTO && rhs instanceof EventDTO) {
+            EventDTO eventDTO1 = (EventDTO) lhs;
+            EventDTO eventDTO2 = (EventDTO) rhs;
+            return eventDTO1.getStartTs().compareTo(eventDTO2.getStartTs());
         } else {
             throw new RuntimeException("Objects are not mutually comparable.");
         }

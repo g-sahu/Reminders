@@ -2,9 +2,9 @@ package com.gsapps.reminders.services;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
@@ -12,8 +12,8 @@ import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
-import com.gsapps.reminders.model.Event;
-import com.gsapps.reminders.model.MeetingEvent;
+import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.model.MeetingEventDTO;
 import com.gsapps.reminders.model.comparators.StartDateComparator;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
@@ -22,22 +22,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.Adapter;
+import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.activities.HomeActivity.context;
-import static com.gsapps.reminders.model.Event.Frequency.ONCE;
-import static com.gsapps.reminders.model.EventFactory.getEventFactory;
-import static com.gsapps.reminders.model.EventType.BIRTHDAY;
-import static com.gsapps.reminders.model.EventType.HOLIDAY;
+import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
+import static com.gsapps.reminders.model.enums.EventType.CONTACT;
+import static com.gsapps.reminders.model.enums.EventType.HOLIDAY;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
+import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
+import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
 import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
-import static com.gsapps.reminders.util.ReminderUtils.*;
+import static com.gsapps.reminders.util.ReminderUtils.getOptions;
+import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 import static java.util.Collections.sort;
 
 public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
     private final String LOG_TAG = getClass().getSimpleName();
     private final Activity activity;
-    private List<Event> eventList = new ArrayList<>();
+    private List<EventDTO> eventDTOList = new ArrayList<>();
 
     public LoadGoogleCalendarTask(Activity activity) {
         this.activity = activity;
@@ -59,23 +61,22 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
                                           .execute();
 
                 for (com.google.api.services.calendar.model.Event item : events.getItems()) {
-                    Event event;
+                    EventDTO eventDTO;
 
                     if(calendarListEntry.getId().equals("en.indian#holiday@group.v.calendar.google.com")) {
-                        event = getEventFactory().getEvent(HOLIDAY);
+                        eventDTO = getEventDTOFactory().getEvent(HOLIDAY);
                     } else if(calendarListEntry.getId().equals("addressbook#contacts@group.v.calendar.google.com")) {
-                        String eventType = item.getGadget().getPreferences().get("goo.contactsEventType");
-                        event = getEvent(eventType);
+                        //String eventType = item.getGadget().getPreferences().get("goo.contactsEventType");
+                        eventDTO = getEventDTOFactory().getEvent(CONTACT);
                     } else {
-                        event = getEventFactory().getEvent(BIRTHDAY);
+                        eventDTO = getEventDTOFactory().getEvent(CONTACT);
                         // TODO: 15-04-2019 Add logic here to determine other types of events
                     }
 
-                    event.setName(item.getSummary());
-                    event.setDesc(item.getDescription());
-                    event.setFrequency(ONCE);
-                    event.setStartDate(getCalendar(item.getStart(), events.getTimeZone()));
-                    eventList.add(event);
+                    eventDTO.setTitle(item.getSummary());
+                    eventDTO.setEventDesc(item.getDescription());
+                    eventDTO.setStartTs(getCalendar(item.getStart(), events.getTimeZone()));
+                    eventDTOList.add(eventDTO);
                 }
             }
 
@@ -88,15 +89,14 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
                                                 .get();
 
                 for(com.microsoft.graph.extensions.Event meeting : result.getCurrentPage()) {
-                    Event event = new MeetingEvent();
-                    event.setId(meeting.id);
-                    event.setName(meeting.subject);
-                    event.setDesc(meeting.bodyPreview);
-                    event.setStartDate(getCalendar(meeting.start));
-                    event.setEndDate(getCalendar(meeting.end));
-                    event.setFrequency(ONCE);
-                    event.setRecurring(false);
-                    eventList.add(event);
+                    EventDTO eventDTO = new MeetingEventDTO();
+                    //eventDTO.setEventId(meeting.id);
+                    eventDTO.setTitle(meeting.subject);
+                    eventDTO.setEventDesc(meeting.bodyPreview);
+                    eventDTO.setStartTs(getCalendar(meeting.start));
+                    eventDTO.setEndTs(getCalendar(meeting.end));
+                    eventDTO.setRecurring(false);
+                    eventDTOList.add(eventDTO);
                 }
             }
         } catch (UserRecoverableAuthIOException e) {
@@ -114,12 +114,12 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
     @Override
     protected void onPostExecute(Void params) {
         super.onPostExecute(params);
-        sort(eventList, new StartDateComparator());
+        sort(eventDTOList, new StartDateComparator());
         updateMyCalendarView();
     }
 
     private void updateMyCalendarView() {
-        Adapter eventListAdapter = new EventListAdapter(activity, eventList);
+        Adapter eventListAdapter = new EventListAdapter(activity, eventDTOList);
         RecyclerView eventListView = activity.findViewById(my_calendar_view);
         eventListView.setAdapter(eventListAdapter);
         eventListView.setLayoutManager(new LinearLayoutManager(activity));

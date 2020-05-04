@@ -6,17 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.gsapps.reminders.services.LoadMeetingsTask;
 
-import static android.support.v4.content.LocalBroadcastManager.getInstance;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance;
 import static com.gsapps.reminders.R.id.connect_with_outlook;
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.R.layout.fragment_meetings;
@@ -71,8 +71,7 @@ public class MeetingsFragment extends Fragment {
     }
 
     private void getContactEvents() {
-        LoadMeetingsTask calendarTask = new LoadMeetingsTask((Activity) context);
-        calendarTask.execute();
+        new LoadMeetingsTask((Activity) context).execute();
     }
 
     private void toggleConnectOutlookMessage(boolean isOutlookConnected) {

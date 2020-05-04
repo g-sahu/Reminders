@@ -1,14 +1,16 @@
 package com.gsapps.reminders.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -32,7 +34,6 @@ import static com.gsapps.reminders.R.layout.activity_splash_screen;
 import static com.gsapps.reminders.R.string.*;
 import static com.gsapps.reminders.util.Constants.*;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
-import static java.lang.String.valueOf;
 
 public class SplashScreenActivity extends AppCompatActivity
         implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
@@ -46,18 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(activity_splash_screen);
         findViewById(sign_in_button).setOnClickListener(this);
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(DEFAULT_SIGN_IN)
-                                        .requestIdToken(GOOGLE_AUTH_CLIENT_ID)
-                                        .requestEmail()
-                                        .build();
-
-        googleApiClient = new Builder(this)
-                                .enableAutoManage(this, this)
-                                .addApi(GOOGLE_SIGN_IN_API, gso)
-                                .addConnectionCallbacks(this)
-                                .build();
-
+        googleApiClient = getGoogleApiClient(getGoogleSignInOptions());
         fAuth = getInstance();
     }
 
@@ -67,10 +57,7 @@ public class SplashScreenActivity extends AppCompatActivity
         FirebaseUser user = fAuth.getCurrentUser();
 
         if(user != null) {
-            Intent intent = new Intent(this, HomeActivity.class)
-                                    .putExtra(DISPLAY_NAME, user.getDisplayName())
-                                    .putExtra(PHOTO_URL, user.getPhotoUrl())
-                                    .putExtra(EMAIL, user.getEmail());
+            Intent intent = createIntent(this, HomeActivity.class, user.getDisplayName(), user.getPhotoUrl(), user.getEmail());
             startActivity(intent);
             finish();
         }
@@ -102,8 +89,8 @@ public class SplashScreenActivity extends AppCompatActivity
                 showToastMessage(this, getString(sign_in_success));
             } else {
                 Log.e(LOG_TAG, getString(sign_in_failure));
-                Log.e(LOG_TAG, "Status code: " + valueOf(result.getStatus().getStatusCode()));
-                Log.e(LOG_TAG, "Status msg: " + valueOf(result.getStatus().getStatusMessage()));
+                Log.e(LOG_TAG, "Status code: " + result.getStatus().getStatusCode());
+                Log.e(LOG_TAG, "Status msg: " + result.getStatus().getStatusMessage());
                 showToastMessage(this, getString(sign_in_failure));
             }
         }
@@ -115,10 +102,7 @@ public class SplashScreenActivity extends AppCompatActivity
         fAuth.signInWithCredential(credential)
              .addOnCompleteListener(this, task -> {
                  if (task.isSuccessful()) {
-                     Intent intent = new Intent(SplashScreenActivity.this, HomeActivity.class)
-                                            .putExtra(DISPLAY_NAME, account.getDisplayName())
-                                            .putExtra(PHOTO_URL, account.getPhotoUrl())
-                                            .putExtra(EMAIL, account.getEmail());
+                     Intent intent = createIntent(SplashScreenActivity.this, HomeActivity.class, account.getDisplayName(), account.getPhotoUrl(), account.getEmail());
                      startActivity(intent);
                      finish();
                  } else {
@@ -150,5 +134,28 @@ public class SplashScreenActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         googleApiClient.unregisterConnectionCallbacks(this);
+    }
+
+
+    private GoogleSignInOptions getGoogleSignInOptions() {
+        return new GoogleSignInOptions.Builder(DEFAULT_SIGN_IN)
+                .requestIdToken(GOOGLE_AUTH_CLIENT_ID)
+                .requestEmail()
+                .build();
+    }
+
+    private GoogleApiClient getGoogleApiClient(GoogleSignInOptions gso) {
+        return new Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(GOOGLE_SIGN_IN_API, gso)
+                .addConnectionCallbacks(this)
+                .build();
+    }
+
+    private Intent createIntent(Context context, Class<?> clazz, String displayName, Uri photoUrl, String email) {
+        return new Intent(context, clazz)
+                .putExtra(DISPLAY_NAME, displayName)
+                .putExtra(PHOTO_URL, photoUrl)
+                .putExtra(EMAIL, email);
     }
 }

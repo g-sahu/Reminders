@@ -4,26 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.services.calendar.Calendar;
 import com.gsapps.reminders.services.LoadGoogleCalendarTask;
 import com.gsapps.reminders.util.Constants;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.app.Activity.RESULT_OK;
-import static com.google.api.client.extensions.android.http.AndroidHttp.newCompatibleTransport;
 import static com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential.usingOAuth2;
-import static com.google.api.client.json.jackson2.JacksonFactory.getDefaultInstance;
 import static com.google.api.services.calendar.CalendarScopes.CALENDAR;
 import static com.gsapps.reminders.R.layout.fragment_calendar;
 import static com.gsapps.reminders.R.string.app_name;
 import static com.gsapps.reminders.util.Constants.EMAIL;
+import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
 import static java.util.Collections.singleton;
 
 public class CalendarFragment extends Fragment {
@@ -49,13 +46,8 @@ public class CalendarFragment extends Fragment {
     private void getCalendarEvents(String accountName) {
         credential = usingOAuth2(context, singleton(CALENDAR));
         credential.setSelectedAccountName(accountName);
-
-        Calendar service = new Calendar.Builder(newCompatibleTransport(), getDefaultInstance(), credential)
-                                        .setApplicationName(getString(app_name))
-                                        .build();
-
-        LoadGoogleCalendarTask calendarTask = new LoadGoogleCalendarTask((Activity) context);
-        calendarTask.execute(service);
+        new LoadGoogleCalendarTask((Activity) context)
+                .execute(getCalendar(credential, getString(app_name)));
     }
 
     @Override

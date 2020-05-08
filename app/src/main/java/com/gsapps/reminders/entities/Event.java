@@ -17,40 +17,35 @@ import java.util.Calendar;
 
 import static java.util.Objects.hash;
 
+@SuppressWarnings("NullableProblems")
 @Entity @Getter @Setter
 public class Event {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "event_id")
     public long eventId;
 
-    @NonNull
-    public String title;
+    @NonNull public String title;
 
-    @NonNull
-    @ColumnInfo(name = "event_type")
+    @NonNull @ColumnInfo(name = "event_type")
     @TypeConverters(EventTypeConverter.class)
     public EventType eventType;
 
     @ColumnInfo(name = "event_desc")
     public String eventDesc;
 
-    @NonNull
-    @ColumnInfo(name = "is_recurring")
+    @NonNull @ColumnInfo(name = "is_recurring")
     @TypeConverters(BooleanConverter.class)
     public boolean isRecurring;
 
-    @NonNull
-    @ColumnInfo(name = "start_ts")
+    @NonNull @ColumnInfo(name = "start_ts")
     @TypeConverters(CalendarConverter.class)
     public Calendar startTs;
 
-    @NonNull
-    @ColumnInfo(name = "end_ts")
+    @NonNull @ColumnInfo(name = "end_ts")
     @TypeConverters(CalendarConverter.class)
     public Calendar endTs;
 
-    @NonNull
-    @ColumnInfo(name = "create_ts")
+    @NonNull @ColumnInfo(name = "create_ts")
     @TypeConverters(CalendarConverter.class)
     public Calendar createTs;
 

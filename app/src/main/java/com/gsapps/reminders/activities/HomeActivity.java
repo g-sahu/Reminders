@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,6 +27,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.bumptech.glide.Glide.with;
 import static com.bumptech.glide.load.engine.DiskCacheStrategy.ALL;
+import static com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener;
 import static com.gsapps.reminders.R.id;
 import static com.gsapps.reminders.R.id.*;
 import static com.gsapps.reminders.R.layout.activity_home;
@@ -36,8 +38,7 @@ import static com.gsapps.reminders.services.MSAuthManager.getClientApplication;
 import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
 import static com.gsapps.reminders.util.Constants.*;
 
-public class HomeActivity extends AppCompatActivity {
-    private final String LOG_TAG = getClass().getSimpleName();
+public class HomeActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Fragment calendarFragment, contactEventsFragment, meetingsFragment, settingsFragment, testFragment;
@@ -59,38 +60,27 @@ public class HomeActivity extends AppCompatActivity {
 
         // Setup navigation drawer view
         NavigationView navView = findViewById(nav_view);
+        navView.setNavigationItemSelectedListener(this);
         View headerView = navView.getHeaderView(0);
-        CircleImageView profilePic = headerView.findViewById(profile_pic);
         Intent intent = getIntent();
-
-        with(this)
-            .load((Uri) intent.getParcelableExtra(PHOTO_URL))
-            .crossFade()
-            .diskCacheStrategy(ALL)
-            .into(profilePic);
-
-        TextView displayName = headerView.findViewById(display_name);
-        displayName.setText(intent.getStringExtra(DISPLAY_NAME));
-
-        navView.setNavigationItemSelectedListener(menuItem -> {
-            selectDrawerItem(menuItem);
-            return true;
-        });
+        loadProfilePic(headerView.findViewById(profile_pic), intent.getParcelableExtra(PHOTO_URL));
+        ((TextView) headerView.findViewById(display_name)).setText(intent.getStringExtra(DISPLAY_NAME));
 
         //Setting up the default fragment
         calendarFragment = new CalendarFragment();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT)
-                .commit();
-
+        replaceFragment();
         setTitle(my_calendar);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        selectDrawerItem(menuItem);
+        return true;
     }
 
     private void selectDrawerItem(MenuItem menuItem) {
@@ -146,6 +136,21 @@ public class HomeActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         getClientApplication(context).handleInteractiveRequestRedirect(requestCode, resultCode, data);
+    }
+
+    private void loadProfilePic(CircleImageView profilePic, Uri uri) {
+        with(this)
+                .load(uri)
+                .crossFade()
+                .diskCacheStrategy(ALL)
+                .into(profilePic);
+    }
+
+    private void replaceFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT)
+                .commit();
     }
 
     public void connectWithOutlook(View view) {

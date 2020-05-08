@@ -24,7 +24,6 @@ import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
 import static java.util.Collections.singleton;
 
 public class CalendarFragment extends Fragment {
-    private final String LOG_TAG = getClass().getSimpleName();
     private Context context;
     private static final int READ_REQUEST_CODE = 42, REQUEST_ACCOUNT_PICKER = 3;
     private GoogleAccountCredential credential;

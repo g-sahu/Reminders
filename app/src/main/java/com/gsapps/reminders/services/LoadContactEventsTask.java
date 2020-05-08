@@ -44,7 +44,7 @@ public class LoadContactEventsTask extends AsyncTask<com.google.api.services.cal
             if(events != null) {
                 for (com.google.api.services.calendar.model.Event item : events.getItems()) {
                     String eventType = item.getGadget().getPreferences().get("goo.contactsEventType");
-                    EventDTO eventDTO = getEventDTOFactory().getEvent(CONTACT);
+                    EventDTO eventDTO = getEventDTOFactory().createEvent(CONTACT);
                     eventDTO.setTitle(item.getSummary());
                     eventDTO.setEventDesc(item.getDescription());
                     eventDTO.setStartTs(getCalendar(item.getStart(), events.getTimeZone()));

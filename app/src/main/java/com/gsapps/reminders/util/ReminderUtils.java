@@ -83,18 +83,6 @@ public class ReminderUtils {
         return (str != null) && !(str.trim().isEmpty());
     }
 
-    /*public static EventDTO getEvent(String eventType) {
-        EventDTO event = null;
-
-        if(eventType.equals(ANNIVERSARY.toString())) {
-            event = getEventDTOFactory().getEvent(ANNIVERSARY);
-        } else if (eventType.equals(BIRTHDAY.toString()) || eventType.equals("SELF")){ // TODO: 15-04-2019 Check if EventDTO Type 'Self' is for events other than own birthday
-            event = getEventDTOFactory().getEvent(BIRTHDAY);
-        }
-
-        return event;
-    }*/
-
     public static Calendar getCalendar(GoogleAccountCredential credential, String appName) {
         return new Calendar.Builder(newCompatibleTransport(), getDefaultInstance(), credential)
                 .setApplicationName(appName)

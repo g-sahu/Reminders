@@ -1,8 +1,10 @@
 package com.gsapps.reminders.util;
 
+import android.util.Log;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
+import lombok.NoArgsConstructor;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -12,9 +14,13 @@ import java.util.Date;
 
 import static java.util.Calendar.*;
 import static java.util.TimeZone.getTimeZone;
+import static lombok.AccessLevel.PRIVATE;
 
-public class CalendarUtils {
-    static String getTodaysDateString(String format) {
+@NoArgsConstructor(access = PRIVATE)
+public final class CalendarUtils {
+    private static final String LOG_TAG = CalendarUtils.class.getSimpleName();
+
+    public static String getTodaysDateString(String format) {
          return getDateString(getTodaysCalendar(), format);
     }
 
@@ -42,14 +48,14 @@ public class CalendarUtils {
     public static Calendar getCalendar(DateTimeTimeZone dateTimeTimeZone) {
         String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
         DateFormat dateFormat = new SimpleDateFormat(pattern);
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = getInstance();
 
         try {
             Date date = dateFormat.parse(dateTimeTimeZone.dateTime);
             calendar.setTimeInMillis(date.getTime());
             calendar.setTimeZone(getTimeZone(dateTimeTimeZone.timeZone));
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, "Exception while parsing date: ", e);
         }
 
         return calendar;

@@ -12,6 +12,7 @@ import com.google.api.services.calendar.Calendar;
 import com.microsoft.graph.options.HeaderOption;
 import com.microsoft.graph.options.Option;
 import com.microsoft.graph.options.QueryOption;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,12 @@ import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.google.api.client.extensions.android.http.AndroidHttp.newCompatibleTransport;
 import static com.google.api.client.json.jackson2.JacksonFactory.getDefaultInstance;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
+import static com.gsapps.reminders.util.CalendarUtils.getTodaysDateString;
 import static java.util.TimeZone.getDefault;
+import static lombok.AccessLevel.PRIVATE;
 
-public class ReminderUtils {
+@NoArgsConstructor(access = PRIVATE)
+public final class ReminderUtils {
     private static Toast toast;
 
     public static boolean hasPermission(@NonNull Context context, @NonNull String permission) {
@@ -74,7 +78,7 @@ public class ReminderUtils {
         List<Option> options = new ArrayList<>();
         options.add(new HeaderOption("Prefer", "outlook.timezone=\"" + getDefault().getID() + "\""));
         options.add(new QueryOption("select", "subject,bodyPreview,start,end,location"));
-        options.add(new QueryOption("filter", "start/dateTime ge '" + CalendarUtils.getTodaysDateString("yyyy-MM-dd HH:mm") + "'"));
+        options.add(new QueryOption("filter", "start/dateTime ge '" + getTodaysDateString("yyyy-MM-dd HH:mm") + "'"));
         options.add(new QueryOption("orderby", "start/dateTime"));
         return options;
     }
@@ -87,5 +91,9 @@ public class ReminderUtils {
         return new Calendar.Builder(newCompatibleTransport(), getDefaultInstance(), credential)
                 .setApplicationName(appName)
                 .build();
+    }
+
+    public static String getResourceString(Context context, int resource) {
+        return context.getResources().getString(resource);
     }
 }

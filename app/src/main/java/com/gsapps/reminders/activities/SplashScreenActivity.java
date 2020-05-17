@@ -37,7 +37,7 @@ import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 
 public class SplashScreenActivity extends AppCompatActivity
         implements ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
-    private final String LOG_TAG = getClass().getSimpleName();
+    private static final String LOG_TAG = SplashScreenActivity.class.getSimpleName();
     private GoogleApiClient googleApiClient;
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth fAuth;
@@ -102,12 +102,12 @@ public class SplashScreenActivity extends AppCompatActivity
         fAuth.signInWithCredential(credential)
              .addOnCompleteListener(this, task -> {
                  if (task.isSuccessful()) {
-                     Intent intent = createIntent(SplashScreenActivity.this, HomeActivity.class, account.getDisplayName(), account.getPhotoUrl(), account.getEmail());
+                     Intent intent = createIntent(this, HomeActivity.class, account.getDisplayName(), account.getPhotoUrl(), account.getEmail());
                      startActivity(intent);
                      finish();
                  } else {
                      Log.e(LOG_TAG, "Firebase authentication failed.", task.getException());
-                     showToastMessage(SplashScreenActivity.this, getString(auth_failed));
+                     showToastMessage(this, getString(auth_failed));
                  }
              });
     }

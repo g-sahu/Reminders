@@ -23,9 +23,11 @@
     <string name="event_desc">Event Description</string>
     <string name="meetings">Meetings</string>
     <string name="connect_with_outlook">Connect with Outlook</string>
-    <string name="key_logout">LOGOUT</string>
+    <string name="connect_with_outlook_message">You are not connected to Outlook currently. To view your meetings, connect your Outlook account.</string>
+
+    <!-- Added here because used both in XML and Java -->
     <string name="key_connect_with_outlook">CONNECT_WITH_OUTLOOK</string>
-    <string name="connect_with_outlook_message">You are not connected to Outlook currently. To view your meetings,
-        connect your Outlook account.
-    </string>
+    <string name="key_logout">LOGOUT</string>
+    <string name="authority">com.gsapps.reminders.provider</string>
+    <string name="account_type">com.gsapps.reminders</string>
 </resources>

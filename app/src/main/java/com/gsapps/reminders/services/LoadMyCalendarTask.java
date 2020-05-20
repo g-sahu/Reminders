@@ -15,12 +15,12 @@ import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static java.util.Collections.sort;
 
-public class LoadGoogleCalendarTask extends AsyncTask<Void, Void, Void> {
-    private final String LOG_TAG = getClass().getSimpleName();
+public class LoadMyCalendarTask extends AsyncTask<Void, Void, Void> {
+    private static final String LOG_TAG = LoadMyCalendarTask.class.getSimpleName();
     private final Activity activity;
-    private List<EventDTO> eventDTOList = new ArrayList<>();
+    private final List<EventDTO> eventDTOList = new ArrayList<>();
 
-    public LoadGoogleCalendarTask(Activity activity) {
+    public LoadMyCalendarTask(Activity activity) {
         this.activity = activity;
     }
 

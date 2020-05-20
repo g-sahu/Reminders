@@ -14,9 +14,9 @@ import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.contact_events_view;
 
 public class LoadContactEventsTask extends AsyncTask<Void, Void, Void> {
-    private final String LOG_TAG = getClass().getSimpleName();
+    private static final String LOG_TAG = LoadContactEventsTask.class.getSimpleName();
     final private Activity activity;
-    private List<EventDTO> eventDTOList = new ArrayList<>();
+    private final List<EventDTO> eventDTOList = new ArrayList<>();
 
     public LoadContactEventsTask(Activity activity) {
         this.activity = activity;

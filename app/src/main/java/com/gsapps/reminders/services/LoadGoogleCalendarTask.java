@@ -2,41 +2,24 @@ package com.gsapps.reminders.services;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.util.Log;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.Calendar;
-import com.google.api.services.calendar.model.CalendarList;
-import com.google.api.services.calendar.model.CalendarListEntry;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.model.EventDTOFactory;
 import com.gsapps.reminders.model.comparators.StartDateComparator;
-import com.microsoft.graph.http.GraphServiceException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.my_calendar_view;
-import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
-import static com.gsapps.reminders.model.enums.EventType.CONTACT;
-import static com.gsapps.reminders.model.enums.EventType.HOLIDAY;
-import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
-import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
-import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 import static java.util.Collections.sort;
 
-public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
-    private static final String CALENDAR_LIST_FIELDS = "items/id";
+public class LoadGoogleCalendarTask extends AsyncTask<Void, Void, Void> {
+    /*private static final String CALENDAR_LIST_FIELDS = "items/id";
     private static final String EVENTS_FIELDS = "timeZone, items/summary, items/start, items/description";
     private static final String INDIAN_HOLIDAY_CALENDAR = "en.indian#holiday@group.v.calendar.google.com";
-    private static final String CONTACTS_CALENDAR = "addressbook#contacts@group.v.calendar.google.com";
+    private static final String CONTACTS_CALENDAR = "addressbook#contacts@group.v.calendar.google.com";*/
 
     private final String LOG_TAG = getClass().getSimpleName();
     private final Activity activity;
@@ -46,7 +29,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
         this.activity = activity;
     }
 
-    @Override
+    /*@Override
     protected Void doInBackground(Calendar... calendars) {
         try {
             CalendarList calendarList = getCalendarList(calendars[0]);
@@ -64,7 +47,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
                 }
             }
 
-            /*if(isOutlookConnected(context)) {
+            *//*if(isOutlookConnected(context)) {
                 IEventCollectionPage result = getInstance()
                                                 .getGraphServiceClient()
                                                 .getMe()
@@ -82,7 +65,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
                     eventDTO.setRecurring(false);
                     eventDTOList.add(eventDTO);
                 }
-            }*/
+            }*//*
         } catch (UserRecoverableAuthIOException e) {
             activity.startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
             Log.e(LOG_TAG, e.getMessage());
@@ -92,6 +75,11 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
             Log.e(LOG_TAG, e.getMessage());
         }
 
+        return null;
+    }*/
+
+    @Override
+    protected Void doInBackground(Void... voids) {
         return null;
     }
 
@@ -109,7 +97,7 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
         eventListView.setLayoutManager(new LinearLayoutManager(activity));
     }
 
-    private CalendarList getCalendarList(Calendar calendar) throws IOException {
+    /*private CalendarList getCalendarList(Calendar calendar) throws IOException {
         return calendar.calendarList()
                        .list()
                        .setFields(CALENDAR_LIST_FIELDS)
@@ -146,5 +134,5 @@ public class LoadGoogleCalendarTask extends AsyncTask<Calendar, Void, Void> {
         }
 
         return eventDTO;
-    }
+    }*/
 }

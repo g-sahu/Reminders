@@ -1,21 +1,17 @@
 package com.gsapps.reminders.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import com.gsapps.reminders.activities.SplashScreenActivity;
 
 import static androidx.preference.Preference.OnPreferenceChangeListener;
 import static androidx.preference.Preference.OnPreferenceClickListener;
-import static com.google.firebase.auth.FirebaseAuth.getInstance;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static com.gsapps.reminders.R.string.key_logout;
 import static com.gsapps.reminders.R.xml.settings;
 import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
 import static com.gsapps.reminders.services.MSAuthManager.logoutOutlook;
-import static com.gsapps.reminders.util.Constants.IS_LOGGED_OUT;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 
 public class SettingsFragment extends PreferenceFragmentCompat
@@ -50,7 +46,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public boolean onPreferenceClick(Preference preference) {
         if(preference.getKey().equals(getString(key_logout))) {
-            logoutGoogle();
+            //logoutGoogle();
             return true;
         }
 
@@ -66,10 +62,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
         }
     }
 
-    public void logoutGoogle() {
+    /*public void logoutGoogle() {
         getInstance().signOut();
         Intent intent = new Intent(getContext(), SplashScreenActivity.class).putExtra(IS_LOGGED_OUT, true);
         startActivity(intent);
         getActivity().finish();
-    }
+    }*/
 }

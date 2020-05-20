@@ -19,13 +19,13 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-    <com.google.android.gms.common.SignInButton
+    <!--<com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:buttonSize="wide"
             android:layout_marginTop="40dp"
             android:layout_below="@+id/appName"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true" />-->
 
 </RelativeLayout>

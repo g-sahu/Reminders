@@ -4,25 +4,16 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-import com.google.api.client.util.DateTime;
-import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.R.id.contact_events_view;
-import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
-import static com.gsapps.reminders.model.enums.EventType.CONTACT;
-import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
-import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
-import static com.gsapps.reminders.util.Constants.REQUEST_AUTHORIZATION;
 
-public class LoadContactEventsTask extends AsyncTask<com.google.api.services.calendar.Calendar, Void, Void> {
+public class LoadContactEventsTask extends AsyncTask<Void, Void, Void> {
     private final String LOG_TAG = getClass().getSimpleName();
     final private Activity activity;
     private List<EventDTO> eventDTOList = new ArrayList<>();
@@ -31,7 +22,7 @@ public class LoadContactEventsTask extends AsyncTask<com.google.api.services.cal
         this.activity = activity;
     }
 
-    @Override
+    /*@Override
     protected Void doInBackground(com.google.api.services.calendar.Calendar... service) {
         try {
             Events events = service[0].events()
@@ -57,6 +48,11 @@ public class LoadContactEventsTask extends AsyncTask<com.google.api.services.cal
             e.printStackTrace();
         }
 
+        return null;
+    }*/
+
+    @Override
+    protected Void doInBackground(Void... voids) {
         return null;
     }
 

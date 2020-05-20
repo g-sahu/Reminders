@@ -22,35 +22,6 @@ public class LoadContactEventsTask extends AsyncTask<Void, Void, Void> {
         this.activity = activity;
     }
 
-    /*@Override
-    protected Void doInBackground(com.google.api.services.calendar.Calendar... service) {
-        try {
-            Events events = service[0].events()
-                               .list("addressbook#contacts@group.v.calendar.google.com")
-                               .setOrderBy("startTime")
-                               .setSingleEvents(true)
-                               .setTimeMin(new DateTime(getTodaysCalendar().getTimeInMillis()))
-                               .execute();
-
-            if(events != null) {
-                for (com.google.api.services.calendar.model.Event item : events.getItems()) {
-                    String eventType = item.getGadget().getPreferences().get("goo.contactsEventType");
-                    EventDTO eventDTO = getEventDTOFactory().createEvent(CONTACT);
-                    eventDTO.setTitle(item.getSummary());
-                    eventDTO.setEventDesc(item.getDescription());
-                    eventDTO.setStartTs(getCalendar(item.getStart(), events.getTimeZone()));
-                    eventDTOList.add(eventDTO);
-                }
-            }
-        } catch (UserRecoverableAuthIOException ure) {
-            activity.startActivityForResult(ure.getIntent(), REQUEST_AUTHORIZATION);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }*/
-
     @Override
     protected Void doInBackground(Void... voids) {
         return null;

@@ -36,13 +36,6 @@ public final class CalendarUtils {
         return dateFormat.format(calendar.getTime());
     }
 
-    /*public static Calendar getCalendar(EventDateTime eventDateTime, String timezone) {
-        DateTime dateTime = (eventDateTime.getDate() != null) ? eventDateTime.getDate() : eventDateTime.getDateTime();
-        Calendar calendar = getInstance(getTimeZone(timezone));
-        calendar.setTimeInMillis(dateTime.getValue());
-        return calendar;
-    }*/
-
     public static Calendar getCalendar(DateTimeTimeZone dateTimeTimeZone) {
         String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
         DateFormat dateFormat = new SimpleDateFormat(pattern);

@@ -61,11 +61,4 @@ public class SettingsFragment extends PreferenceFragmentCompat
             showToastMessage(context, "Logged out of Outlook");
         }
     }
-
-    /*public void logoutGoogle() {
-        getInstance().signOut();
-        Intent intent = new Intent(getContext(), SplashScreenActivity.class).putExtra(IS_LOGGED_OUT, true);
-        startActivity(intent);
-        getActivity().finish();
-    }*/
 }

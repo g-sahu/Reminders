@@ -82,9 +82,4 @@ public final class ReminderUtils {
         return (str != null) && !(str.trim().isEmpty());
     }
 
-    /*public static Calendar getCalendar(GoogleAccountCredential credential, String appName) {
-        return new Calendar.Builder(newCompatibleTransport(), getDefaultInstance(), credential)
-                .setApplicationName(appName)
-                .build();
-    }*/
 }

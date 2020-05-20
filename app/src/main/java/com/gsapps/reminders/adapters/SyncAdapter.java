@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential.usingOAuth2;
-import static com.google.api.services.calendar.CalendarScopes.CALENDAR;
 import static com.gsapps.reminders.R.string.app_name;
 import static com.gsapps.reminders.dao.RemindersDatabase.getDatabase;
 import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
@@ -41,7 +39,6 @@ import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getResourceString;
 import static java.util.Calendar.getInstance;
-import static java.util.Collections.singleton;
 
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String LOG_TAG = SyncAdapter.class.getSimpleName();
@@ -69,7 +66,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
         contentResolver = context.getContentResolver();
-        this.context = context;
     }
 
     @Override
@@ -78,8 +74,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.i(LOG_TAG, "Starting sync for Reminders app");
 
         try {
-            credential = usingOAuth2(context, singleton(CALENDAR));
-            credential.setSelectedAccountName(accountName);
             Calendar calendar = getCalendar(credential, getResourceString(getContext(), app_name));
             CalendarList calendarList = getCalendarList(calendar);
 

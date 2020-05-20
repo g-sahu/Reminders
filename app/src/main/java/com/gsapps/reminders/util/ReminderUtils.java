@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.Calendar;
 import com.microsoft.graph.options.HeaderOption;
 import com.microsoft.graph.options.Option;
@@ -31,6 +33,8 @@ import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public final class ReminderUtils {
+    private static final HttpTransport HTTP_TRANSPORT = newCompatibleTransport();
+    private static final JacksonFactory JSON_FACTORY = getDefaultInstance();
     private static Toast toast;
 
     public static boolean hasPermission(@NonNull Context context, @NonNull String permission) {
@@ -88,7 +92,7 @@ public final class ReminderUtils {
     }
 
     public static Calendar getCalendar(GoogleAccountCredential credential, String appName) {
-        return new Calendar.Builder(newCompatibleTransport(), getDefaultInstance(), credential)
+        return new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
                 .setApplicationName(appName)
                 .build();
     }

@@ -51,4 +51,10 @@ public final class CalendarUtils {
 
         return calendar;
     }
+
+    public static Calendar getCalendar(long timeInMillis) {
+        Calendar calendar = getInstance();
+        calendar.setTimeInMillis(timeInMillis);
+        return calendar;
+    }
 }

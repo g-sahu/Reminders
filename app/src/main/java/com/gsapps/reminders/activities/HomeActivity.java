@@ -16,7 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
-import com.gsapps.reminders.fragments.CalendarFragment;
+import com.gsapps.reminders.fragments.MyCalendarFragment;
 import com.gsapps.reminders.fragments.ContactEventsFragment;
 import com.gsapps.reminders.fragments.MeetingsFragment;
 import com.gsapps.reminders.fragments.SettingsFragment;
@@ -67,7 +67,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         ((TextView) headerView.findViewById(display_name)).setText(intent.getStringExtra(DISPLAY_NAME));
 
         //Setting up the default fragment
-        calendarFragment = new CalendarFragment();
+        calendarFragment = new MyCalendarFragment();
         replaceFragment();
         setTitle(my_calendar);
     }
@@ -88,7 +88,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
         switch(menuItem.getItemId()) {
             case item_calendar:
-                calendarFragment = (calendarFragment == null) ? new CalendarFragment() : calendarFragment;
+                calendarFragment = (calendarFragment == null) ? new MyCalendarFragment() : calendarFragment;
                 fragmentTransaction.replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT);
                 break;
 

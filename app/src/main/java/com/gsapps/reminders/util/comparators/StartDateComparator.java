@@ -1,4 +1,4 @@
-package com.gsapps.reminders.model.comparators;
+package com.gsapps.reminders.util.comparators;
 
 import com.gsapps.reminders.model.EventDTO;
 

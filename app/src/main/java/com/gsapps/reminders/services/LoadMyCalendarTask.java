@@ -11,7 +11,7 @@ import com.gsapps.reminders.R;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.model.EventDTOFactory;
-import com.gsapps.reminders.model.comparators.StartDateComparator;
+import com.gsapps.reminders.util.comparators.StartDateComparator;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.model.comparators.StartDateComparator;
+import com.gsapps.reminders.util.comparators.StartDateComparator;
 import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;

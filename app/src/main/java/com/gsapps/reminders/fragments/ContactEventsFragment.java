@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import static com.gsapps.reminders.R.layout.fragment_contact_events;
 
 public class ContactEventsFragment extends Fragment {
-    private final String LOG_TAG = getClass().getSimpleName();
+    private static final String LOG_TAG = ContactEventsFragment.class.getSimpleName();
     private Context context;
 
     @Override

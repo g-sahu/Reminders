@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gsapps.reminders.R;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.model.EventDTOFactory;
+import com.gsapps.reminders.factories.EventDTOFactory;
 import com.gsapps.reminders.util.comparators.StartDateComparator;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ import static android.provider.CalendarContract.Events.DESCRIPTION;
 import static android.provider.CalendarContract.Events.DTSTART;
 import static android.provider.CalendarContract.Events.TITLE;
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
-import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
+import static com.gsapps.reminders.factories.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.util.enums.EventType.CONTACT;
 import static com.gsapps.reminders.util.enums.EventType.HOLIDAY;
 import static com.gsapps.reminders.util.CalendarUtils.getCalendar;

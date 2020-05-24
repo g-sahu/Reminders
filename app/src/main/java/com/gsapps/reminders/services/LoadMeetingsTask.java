@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gsapps.reminders.R.id.meetings_view;
-import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
+import static com.gsapps.reminders.factories.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.util.enums.EventType.MEETING;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.CalendarUtils.getCalendar;

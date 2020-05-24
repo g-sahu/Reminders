@@ -16,7 +16,7 @@ import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 
 public class SettingsFragment extends PreferenceFragmentCompat
         implements OnPreferenceChangeListener, OnPreferenceClickListener {
-    private final String LOG_TAG = getClass().getSimpleName();
+    private static final String LOG_TAG = SettingsFragment.class.getSimpleName();
     private Context context;
 
     @Override

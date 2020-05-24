@@ -16,11 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
-import com.gsapps.reminders.fragments.MyCalendarFragment;
-import com.gsapps.reminders.fragments.ContactEventsFragment;
-import com.gsapps.reminders.fragments.MeetingsFragment;
-import com.gsapps.reminders.fragments.SettingsFragment;
-import com.gsapps.reminders.fragments.TestFragment;
+import com.gsapps.reminders.factories.FragmentFactory;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
@@ -34,15 +30,22 @@ import static com.gsapps.reminders.R.layout.activity_home;
 import static com.gsapps.reminders.R.string.drawer_close;
 import static com.gsapps.reminders.R.string.drawer_open;
 import static com.gsapps.reminders.R.string.my_calendar;
+import static com.gsapps.reminders.factories.FragmentFactory.getFragmentFactory;
 import static com.gsapps.reminders.services.MSAuthManager.getClientApplication;
 import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
-import static com.gsapps.reminders.util.Constants.*;
+import static com.gsapps.reminders.util.Constants.DISPLAY_NAME;
+import static com.gsapps.reminders.util.Constants.PHOTO_URL;
+import static com.gsapps.reminders.util.enums.FragmentTag.CONTACT_EVENTS_FRAGMENT;
+import static com.gsapps.reminders.util.enums.FragmentTag.MEETINGS_FRAGMENT;
+import static com.gsapps.reminders.util.enums.FragmentTag.MY_CALENDAR_FRAGMENT;
+import static com.gsapps.reminders.util.enums.FragmentTag.SETTINGS_FRAGMENT;
 
 public class HomeActivity extends AppCompatActivity implements OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private Fragment calendarFragment, contactEventsFragment, meetingsFragment, settingsFragment, testFragment;
+    private Fragment calendarFragment, contactEventsFragment, meetingsFragment, settingsFragment;
     public static Context context; // TODO: 24-03-2019 To be changed to a better way to access activity context in other classes.
+    private final FragmentFactory fragmentFactory = getFragmentFactory();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         ((TextView) headerView.findViewById(display_name)).setText(intent.getStringExtra(DISPLAY_NAME));
 
         //Setting up the default fragment
-        calendarFragment = new MyCalendarFragment();
+        calendarFragment = fragmentFactory.createFragment(MY_CALENDAR_FRAGMENT);
         replaceFragment();
         setTitle(my_calendar);
     }
@@ -88,28 +91,23 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
         switch(menuItem.getItemId()) {
             case item_calendar:
-                calendarFragment = (calendarFragment == null) ? new MyCalendarFragment() : calendarFragment;
-                fragmentTransaction.replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT);
+                calendarFragment = (calendarFragment == null) ? fragmentFactory.createFragment(MY_CALENDAR_FRAGMENT) : calendarFragment;
+                fragmentTransaction.replace(fragment_content, calendarFragment, MY_CALENDAR_FRAGMENT.name());
                 break;
 
             case item_contact_events:
-                contactEventsFragment = (contactEventsFragment == null) ? new ContactEventsFragment() : contactEventsFragment;
-                fragmentTransaction.replace(fragment_content, contactEventsFragment, CONTACT_EVENTS_FRAGMENT);
+                contactEventsFragment = (contactEventsFragment == null) ? fragmentFactory.createFragment(CONTACT_EVENTS_FRAGMENT) : contactEventsFragment;
+                fragmentTransaction.replace(fragment_content, contactEventsFragment, CONTACT_EVENTS_FRAGMENT.name());
                 break;
 
             case item_meetings:
-                meetingsFragment = (meetingsFragment == null) ? new MeetingsFragment() : meetingsFragment;
-                fragmentTransaction.replace(fragment_content, meetingsFragment, MEETINGS_FRAGMENT);
+                meetingsFragment = (meetingsFragment == null) ? fragmentFactory.createFragment(MEETINGS_FRAGMENT) : meetingsFragment;
+                fragmentTransaction.replace(fragment_content, meetingsFragment, MEETINGS_FRAGMENT.name());
                 break;
 
             case item_settings:
-                settingsFragment = (settingsFragment == null) ? new SettingsFragment() : settingsFragment;
-                fragmentTransaction.replace(fragment_content, settingsFragment, SETTINGS_FRAGMENT);
-                break;
-
-            case item_test:
-                testFragment = (testFragment == null) ? new TestFragment() : testFragment;
-                fragmentTransaction.replace(fragment_content, testFragment, "TEST_FRAGMENT");
+                settingsFragment = (settingsFragment == null) ? fragmentFactory.createFragment(SETTINGS_FRAGMENT) : settingsFragment;
+                fragmentTransaction.replace(fragment_content, settingsFragment, SETTINGS_FRAGMENT.name());
                 break;
         }
 
@@ -149,7 +147,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private void replaceFragment() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(fragment_content, calendarFragment, CALENDAR_FRAGMENT)
+                .replace(fragment_content, calendarFragment, MY_CALENDAR_FRAGMENT.name())
                 .commit();
     }
 

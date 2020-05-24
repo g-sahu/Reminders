@@ -1,6 +1,6 @@
 package com.gsapps.reminders.model;
 
-import com.gsapps.reminders.model.enums.EventType;
+import com.gsapps.reminders.util.enums.EventType;
 
 public class EventDTOFactory {
     private static EventDTOFactory eventDTOFactory = null;

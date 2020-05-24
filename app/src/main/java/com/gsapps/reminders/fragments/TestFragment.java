@@ -16,8 +16,8 @@ import com.gsapps.reminders.entities.Event;
 import java.util.List;
 
 import static com.gsapps.reminders.R.layout.fragment_test;
-import static com.gsapps.reminders.model.enums.ContactEventType.BIRTHDAY;
-import static com.gsapps.reminders.model.enums.EventType.CONTACT;
+import static com.gsapps.reminders.util.enums.ContactEventType.BIRTHDAY;
+import static com.gsapps.reminders.util.enums.EventType.CONTACT;
 import static java.util.Calendar.getInstance;
 
 public class TestFragment extends Fragment {

@@ -1,10 +1,10 @@
 package com.gsapps.reminders.converters;
 
 import androidx.room.TypeConverter;
-import com.gsapps.reminders.model.enums.ContactEventType;
+import com.gsapps.reminders.util.enums.ContactEventType;
 
-import static com.gsapps.reminders.model.enums.ContactEventType.ANNIVERSARY;
-import static com.gsapps.reminders.model.enums.ContactEventType.BIRTHDAY;
+import static com.gsapps.reminders.util.enums.ContactEventType.ANNIVERSARY;
+import static com.gsapps.reminders.util.enums.ContactEventType.BIRTHDAY;
 
 public class ContactEventTypeConverter {
 

@@ -1,12 +1,12 @@
 package com.gsapps.reminders.converters;
 
 import androidx.room.TypeConverter;
-import com.gsapps.reminders.model.enums.EventType;
+import com.gsapps.reminders.util.enums.EventType;
 
-import static com.gsapps.reminders.model.enums.EventType.CONTACT;
-import static com.gsapps.reminders.model.enums.EventType.HOLIDAY;
-import static com.gsapps.reminders.model.enums.EventType.MEETING;
-import static com.gsapps.reminders.model.enums.EventType.TRAVEL;
+import static com.gsapps.reminders.util.enums.EventType.CONTACT;
+import static com.gsapps.reminders.util.enums.EventType.HOLIDAY;
+import static com.gsapps.reminders.util.enums.EventType.MEETING;
+import static com.gsapps.reminders.util.enums.EventType.TRAVEL;
 
 public class EventTypeConverter {
 

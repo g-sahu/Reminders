@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.gsapps.reminders.R;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.factories.EventDTOFactory;
 import com.gsapps.reminders.model.EventDTO;
@@ -24,6 +23,7 @@ import static android.provider.CalendarContract.Events.DESCRIPTION;
 import static android.provider.CalendarContract.Events.DTSTART;
 import static android.provider.CalendarContract.Events.TITLE;
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
+import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.factories.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
 import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
@@ -103,7 +103,7 @@ public class LoadMyCalendarTask extends AsyncTask<Void, Void, List<EventDTO>> {
 
     private void updateMyCalendarView(List<EventDTO> eventDTOList) {
         Adapter eventListAdapter = new EventListAdapter(context, eventDTOList);
-        RecyclerView eventListView = ((Activity) context).findViewById(R.id.my_calendar_view);
+        RecyclerView eventListView = ((Activity) context).findViewById(my_calendar_view);
         eventListView.setAdapter(eventListAdapter);
         eventListView.setLayoutManager(new LinearLayoutManager(context));
     }

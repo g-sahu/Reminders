@@ -11,7 +11,7 @@ import com.gsapps.reminders.services.LoadMyCalendarTask;
 
 import static android.Manifest.permission.READ_CALENDAR;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static com.gsapps.reminders.R.layout.fragment_calendar;
+import static com.gsapps.reminders.R.layout.fragment_my_calendar;
 import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
 
 public class MyCalendarFragment extends Fragment {
@@ -32,7 +32,7 @@ public class MyCalendarFragment extends Fragment {
             requestPermissions(new String[]{READ_CALENDAR}, REQUEST_READ_CALENDAR);
         }
 
-        return inflater.inflate(fragment_calendar, container, false);
+        return inflater.inflate(fragment_my_calendar, container, false);
     }
 
     @Override

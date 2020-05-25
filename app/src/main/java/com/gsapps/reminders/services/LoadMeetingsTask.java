@@ -43,7 +43,7 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, Void> {
                                             .get();
 
             for(Event meeting : result.getCurrentPage()) {
-                EventDTO eventDTO = getEventDTOFactory().createEvent(MEETING);
+                EventDTO eventDTO = getEventDTOFactory().createEventDTO(MEETING);
                 //eventDTO.setSourceEventId(meeting.id);
                 eventDTO.setTitle(meeting.subject);
                 eventDTO.setEventDesc(meeting.bodyPreview);

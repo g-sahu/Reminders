@@ -26,7 +26,7 @@ public class EventDTOFactory {
         return eventDTOFactory;
     }
 
-    public EventDTO createEvent(EventType eventType) {
+    public EventDTO createEventDTO(EventType eventType) {
         switch (eventType) {
             case CONTACT:
                 return new ContactEventDTO();

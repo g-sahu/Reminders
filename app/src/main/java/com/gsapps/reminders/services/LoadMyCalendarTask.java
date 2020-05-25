@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.gsapps.reminders.R;
 import com.gsapps.reminders.adapters.EventListAdapter;
-import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.factories.EventDTOFactory;
+import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.util.comparators.StartDateComparator;
 import lombok.RequiredArgsConstructor;
 
@@ -25,12 +25,13 @@ import static android.provider.CalendarContract.Events.DTSTART;
 import static android.provider.CalendarContract.Events.TITLE;
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
 import static com.gsapps.reminders.factories.EventDTOFactory.getEventDTOFactory;
-import static com.gsapps.reminders.util.enums.EventType.CONTACT;
-import static com.gsapps.reminders.util.enums.EventType.HOLIDAY;
 import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
+import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_IN;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_US;
+import static com.gsapps.reminders.util.enums.EventType.CONTACT;
+import static com.gsapps.reminders.util.enums.EventType.HOLIDAY;
 import static java.lang.String.valueOf;
 import static java.util.Collections.sort;
 
@@ -48,21 +49,23 @@ public class LoadMyCalendarTask extends AsyncTask<Void, Void, List<EventDTO>> {
 
         String calendarsSelection = "((" + ACCOUNT_NAME + " = ?) AND (" + ACCOUNT_TYPE + " = ?))";
         String[] calendarsSelectionArgs = {"simplygaurav07@gmail.com", "com.google"};
-        String eventsSelection = "((" + CALENDAR_ID + " = ?))";
+        String eventsSelection = "((" + CALENDAR_ID + " = ?) AND (" + DTSTART + " >= ?))";
+        String todayTimeMillis = valueOf(getTodaysCalendar().getTimeInMillis());
 
-        try (Cursor cursor = contentResolver.query(CONTENT_URI, PROJECTION_CALENDARS, calendarsSelection, calendarsSelectionArgs, null)) {
-            while (cursor != null && cursor.moveToNext()) {
-                long calID = cursor.getLong(0);
-                String ownerName = cursor.getString(1);
+        try (Cursor calendarsCursor = contentResolver.query(CONTENT_URI, PROJECTION_CALENDARS, calendarsSelection, calendarsSelectionArgs, null)) {
+            while (calendarsCursor != null && calendarsCursor.moveToNext()) {
+                long calID = calendarsCursor.getLong(0);
+                String ownerName = calendarsCursor.getString(1);
+                String[] eventsSelectionArgs = {valueOf(calID), todayTimeMillis};
 
-                try (Cursor cursor1 = contentResolver.query(Events.CONTENT_URI, PROJECTION_EVENTS, eventsSelection, new String[]{valueOf(calID)}, null)) {
-                    while (cursor1 != null && cursor1.moveToNext()) {
+                try (Cursor eventsCursor = contentResolver.query(Events.CONTENT_URI, PROJECTION_EVENTS, eventsSelection, eventsSelectionArgs, null)) {
+                    while (eventsCursor != null && eventsCursor.moveToNext()) {
                         EventDTO eventDTO = createEventDTO(ownerName);
 
                         if (eventDTO != null) {
-                            eventDTO.setTitle(cursor1.getString(1));
-                            eventDTO.setEventDesc(cursor1.getString(2));
-                            eventDTO.setStartTs(getCalendar(cursor1.getLong(3)));
+                            eventDTO.setTitle(eventsCursor.getString(1));
+                            eventDTO.setEventDesc(eventsCursor.getString(2));
+                            eventDTO.setStartTs(getCalendar(eventsCursor.getLong(3)));
                             eventDTOList.add(eventDTO);
                         }
                     }
@@ -79,12 +82,12 @@ public class LoadMyCalendarTask extends AsyncTask<Void, Void, List<EventDTO>> {
 
         switch (ownerAccount) {
             case ADDRESS_BOOK_CONTACTS:
-                eventDTO = eventDTOFactory.createEvent(CONTACT);
+                eventDTO = eventDTOFactory.createEventDTO(CONTACT);
                 break;
 
             case HOLIDAY_IN:
             case HOLIDAY_US:
-                eventDTO = eventDTOFactory.createEvent(HOLIDAY);
+                eventDTO = eventDTOFactory.createEventDTO(HOLIDAY);
                 break;
         }
 

@@ -19,12 +19,12 @@ import static com.gsapps.reminders.R.layout.fragment_contact_events;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
 import static com.gsapps.reminders.util.Constants.Key.CALENDAR_SELECTION;
 import static com.gsapps.reminders.util.Constants.Key.CALENDAR_SELECTION_ARGS;
+import static com.gsapps.reminders.util.Constants.RequestCode;
 import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
 
 public class ContactEventsFragment extends Fragment {
     private static final String LOG_TAG = ContactEventsFragment.class.getSimpleName();
     private Context context;
-    private static final int REQUEST_READ_CALENDAR = 1;
     private final Bundle bundle = new Bundle();
 
     @Override
@@ -42,7 +42,7 @@ public class ContactEventsFragment extends Fragment {
         if(hasPermission(context, READ_CALENDAR)) {
             new LoadMyCalendarTask(context, contact_events_view).execute(bundle);
         } else {
-            requestPermissions(new String[]{READ_CALENDAR}, REQUEST_READ_CALENDAR);
+            requestPermissions(new String[]{READ_CALENDAR}, RequestCode.READ_CALENDAR);
         }
 
         return inflater.inflate(fragment_contact_events, container, false);
@@ -51,7 +51,7 @@ public class ContactEventsFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch(requestCode) {
-            case REQUEST_READ_CALENDAR: {
+            case RequestCode.READ_CALENDAR: {
                 if(grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
                     new LoadMyCalendarTask(context, contact_events_view).execute(bundle);
                 } else {

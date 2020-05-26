@@ -15,6 +15,8 @@ import static android.provider.CalendarContract.Calendars.ACCOUNT_NAME;
 import static android.provider.CalendarContract.Calendars.ACCOUNT_TYPE;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.R.layout.fragment_my_calendar;
+import static com.gsapps.reminders.util.Constants.Key.CALENDAR_SELECTION;
+import static com.gsapps.reminders.util.Constants.Key.CALENDAR_SELECTION_ARGS;
 import static com.gsapps.reminders.util.Constants.RequestCode;
 import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
 
@@ -28,8 +30,8 @@ public class MyCalendarFragment extends Fragment {
         context = getActivity();
         String calendarsSelection = ACCOUNT_NAME + " = ? AND " + ACCOUNT_TYPE + " = ?";
         String[] calendarsSelectionArgs = {"simplygaurav07@gmail.com", "com.google"};
-        bundle.putString("calendarsSelection", calendarsSelection);
-        bundle.putStringArray("calendarsSelectionArgs", calendarsSelectionArgs);
+        bundle.putString(CALENDAR_SELECTION, calendarsSelection);
+        bundle.putStringArray(CALENDAR_SELECTION_ARGS, calendarsSelectionArgs);
     }
 
     @Override

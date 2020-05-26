@@ -32,6 +32,8 @@ import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_IN;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_US;
+import static com.gsapps.reminders.util.Constants.Key.CALENDAR_SELECTION;
+import static com.gsapps.reminders.util.Constants.Key.CALENDAR_SELECTION_ARGS;
 import static com.gsapps.reminders.util.enums.EventType.CONTACT;
 import static com.gsapps.reminders.util.enums.EventType.HOLIDAY;
 import static java.lang.String.valueOf;
@@ -49,8 +51,8 @@ public class LoadMyCalendarTask extends AsyncTask<Bundle, Void, List<EventDTO>> 
     @Override
     protected List<EventDTO> doInBackground(Bundle... params) {
         ContentResolver contentResolver = context.getContentResolver();
-        String calendarsSelection = params[0].getString("calendarsSelection");
-        String[] calendarsSelectionArgs = params[0].getStringArray("calendarsSelectionArgs");
+        String calendarsSelection = params[0].getString(CALENDAR_SELECTION);
+        String[] calendarsSelectionArgs = params[0].getStringArray(CALENDAR_SELECTION_ARGS);
         String eventsSelection = CALENDAR_ID + " = ? AND " + DTSTART + " >= ?";
         String todayTimeMillis = valueOf(getTodaysCalendar().getTimeInMillis());
 

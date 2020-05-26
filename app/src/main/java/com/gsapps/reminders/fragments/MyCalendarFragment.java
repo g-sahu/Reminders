@@ -15,11 +15,11 @@ import static android.provider.CalendarContract.Calendars.ACCOUNT_NAME;
 import static android.provider.CalendarContract.Calendars.ACCOUNT_TYPE;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.R.layout.fragment_my_calendar;
+import static com.gsapps.reminders.util.Constants.RequestCode;
 import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
 
 public class MyCalendarFragment extends Fragment {
     private Context context;
-    private static final int REQUEST_READ_CALENDAR = 1;
     private final Bundle bundle = new Bundle();
 
     @Override
@@ -37,7 +37,7 @@ public class MyCalendarFragment extends Fragment {
         if(hasPermission(context, READ_CALENDAR)) {
             new LoadMyCalendarTask(context, my_calendar_view).execute(bundle);
         } else {
-            requestPermissions(new String[]{READ_CALENDAR}, REQUEST_READ_CALENDAR);
+            requestPermissions(new String[]{READ_CALENDAR}, RequestCode.READ_CALENDAR);
         }
 
         return inflater.inflate(fragment_my_calendar, container, false);
@@ -46,7 +46,7 @@ public class MyCalendarFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch(requestCode) {
-            case REQUEST_READ_CALENDAR: {
+            case RequestCode.READ_CALENDAR: {
                 if(grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
                     new LoadMyCalendarTask(context, my_calendar_view).execute(bundle);
                 } else {

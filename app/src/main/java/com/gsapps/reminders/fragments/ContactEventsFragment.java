@@ -17,6 +17,8 @@ import static android.provider.CalendarContract.Calendars.OWNER_ACCOUNT;
 import static com.gsapps.reminders.R.id.contact_events_view;
 import static com.gsapps.reminders.R.layout.fragment_contact_events;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
+import static com.gsapps.reminders.util.Constants.Key.CALENDAR_SELECTION;
+import static com.gsapps.reminders.util.Constants.Key.CALENDAR_SELECTION_ARGS;
 import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
 
 public class ContactEventsFragment extends Fragment {
@@ -31,8 +33,8 @@ public class ContactEventsFragment extends Fragment {
         context = getActivity();
         String calendarsSelection = ACCOUNT_NAME + " = ? AND " + ACCOUNT_TYPE + " = ? AND " + OWNER_ACCOUNT + " = ?";
         String[] calendarsSelectionArgs = {"simplygaurav07@gmail.com", "com.google", ADDRESS_BOOK_CONTACTS};
-        bundle.putString("calendarsSelection", calendarsSelection);
-        bundle.putStringArray("calendarsSelectionArgs", calendarsSelectionArgs);
+        bundle.putString(CALENDAR_SELECTION, calendarsSelection);
+        bundle.putStringArray(CALENDAR_SELECTION_ARGS, calendarsSelectionArgs);
     }
 
     @Override

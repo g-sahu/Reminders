@@ -46,21 +46,20 @@ public class LoadMyCalendarTask extends AsyncTask<Void, Void, List<EventDTO>> {
     @Override
     protected List<EventDTO> doInBackground(Void... voids) {
         ContentResolver contentResolver = context.getContentResolver();
-
-        String calendarsSelection = "((" + ACCOUNT_NAME + " = ?) AND (" + ACCOUNT_TYPE + " = ?))";
+        String calendarsSelection = ACCOUNT_NAME + " = ? AND " + ACCOUNT_TYPE + " = ?";
         String[] calendarsSelectionArgs = {"simplygaurav07@gmail.com", "com.google"};
-        String eventsSelection = "((" + CALENDAR_ID + " = ?) AND (" + DTSTART + " >= ?))";
+        String eventsSelection = CALENDAR_ID + " = ? AND " + DTSTART + " >= ?";
         String todayTimeMillis = valueOf(getTodaysCalendar().getTimeInMillis());
 
         try (Cursor calendarsCursor = contentResolver.query(CONTENT_URI, PROJECTION_CALENDARS, calendarsSelection, calendarsSelectionArgs, null)) {
             while (calendarsCursor != null && calendarsCursor.moveToNext()) {
                 long calID = calendarsCursor.getLong(0);
-                String ownerName = calendarsCursor.getString(1);
+                String ownerAccount = calendarsCursor.getString(1);
                 String[] eventsSelectionArgs = {valueOf(calID), todayTimeMillis};
 
                 try (Cursor eventsCursor = contentResolver.query(Events.CONTENT_URI, PROJECTION_EVENTS, eventsSelection, eventsSelectionArgs, null)) {
                     while (eventsCursor != null && eventsCursor.moveToNext()) {
-                        EventDTO eventDTO = createEventDTO(ownerName);
+                        EventDTO eventDTO = createEventDTO(ownerAccount);
 
                         if (eventDTO != null) {
                             eventDTO.setTitle(eventsCursor.getString(1));

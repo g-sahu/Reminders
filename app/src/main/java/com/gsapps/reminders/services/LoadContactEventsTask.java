@@ -46,10 +46,9 @@ public class LoadContactEventsTask extends AsyncTask<Void, Void, List<EventDTO>>
     @Override
     protected List<EventDTO> doInBackground(Void... voids) {
         ContentResolver contentResolver = context.getContentResolver();
-
         String calendarsSelection = ACCOUNT_NAME + " = ? AND " + ACCOUNT_TYPE + " = ? AND " + OWNER_ACCOUNT + " = ?";
         String[] calendarsSelectionArgs = {"simplygaurav07@gmail.com", "com.google", ADDRESS_BOOK_CONTACTS};
-        String eventsSelection = "((" + CALENDAR_ID + " = ?) AND (" + DTSTART + " >= ?))";
+        String eventsSelection = CALENDAR_ID + " = ? AND " + DTSTART + " >= ?";
         String todayTimeMillis = valueOf(getTodaysCalendar().getTimeInMillis());
 
         try (Cursor calendarsCursor = contentResolver.query(CONTENT_URI, PROJECTION_CALENDARS, calendarsSelection, calendarsSelectionArgs, null)) {

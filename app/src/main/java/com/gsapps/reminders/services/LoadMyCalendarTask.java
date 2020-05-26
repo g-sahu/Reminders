@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.gsapps.reminders.adapters.EventListAdapter;
@@ -16,14 +17,15 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.provider.CalendarContract.Calendars.*;
+import static android.provider.CalendarContract.Calendars.CONTENT_URI;
+import static android.provider.CalendarContract.Calendars.OWNER_ACCOUNT;
+import static android.provider.CalendarContract.Calendars._ID;
 import static android.provider.CalendarContract.Events;
 import static android.provider.CalendarContract.Events.CALENDAR_ID;
 import static android.provider.CalendarContract.Events.DESCRIPTION;
 import static android.provider.CalendarContract.Events.DTSTART;
 import static android.provider.CalendarContract.Events.TITLE;
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
-import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.factories.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
 import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
@@ -36,18 +38,19 @@ import static java.lang.String.valueOf;
 import static java.util.Collections.sort;
 
 @RequiredArgsConstructor
-public class LoadMyCalendarTask extends AsyncTask<Void, Void, List<EventDTO>> {
+public class LoadMyCalendarTask extends AsyncTask<Bundle, Void, List<EventDTO>> {
     private static final String LOG_TAG = LoadMyCalendarTask.class.getSimpleName();
     private final Context context;
+    private final int viewId;
     private final List<EventDTO> eventDTOList = new ArrayList<>();
     private static final String[] PROJECTION_CALENDARS = {_ID, OWNER_ACCOUNT};
     private static final String[] PROJECTION_EVENTS = {_ID, TITLE, DESCRIPTION, DTSTART};
 
     @Override
-    protected List<EventDTO> doInBackground(Void... voids) {
+    protected List<EventDTO> doInBackground(Bundle... params) {
         ContentResolver contentResolver = context.getContentResolver();
-        String calendarsSelection = ACCOUNT_NAME + " = ? AND " + ACCOUNT_TYPE + " = ?";
-        String[] calendarsSelectionArgs = {"simplygaurav07@gmail.com", "com.google"};
+        String calendarsSelection = params[0].getString("calendarsSelection");
+        String[] calendarsSelectionArgs = params[0].getStringArray("calendarsSelectionArgs");
         String eventsSelection = CALENDAR_ID + " = ? AND " + DTSTART + " >= ?";
         String todayTimeMillis = valueOf(getTodaysCalendar().getTimeInMillis());
 
@@ -102,7 +105,7 @@ public class LoadMyCalendarTask extends AsyncTask<Void, Void, List<EventDTO>> {
 
     private void updateMyCalendarView(List<EventDTO> eventDTOList) {
         Adapter eventListAdapter = new EventListAdapter(context, eventDTOList);
-        RecyclerView eventListView = ((Activity) context).findViewById(my_calendar_view);
+        RecyclerView eventListView = ((Activity) context).findViewById(viewId);
         eventListView.setAdapter(eventListAdapter);
         eventListView.setLayoutManager(new LinearLayoutManager(context));
     }

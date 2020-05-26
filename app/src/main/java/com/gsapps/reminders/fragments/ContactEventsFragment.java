@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.gsapps.reminders.services.LoadMyCalendarTask;
+import com.gsapps.reminders.services.LoadCalendarTask;
 
 import static android.Manifest.permission.READ_CALENDAR;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -40,7 +40,7 @@ public class ContactEventsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(hasPermission(context, READ_CALENDAR)) {
-            new LoadMyCalendarTask(context, contact_events_view).execute(bundle);
+            new LoadCalendarTask(context, contact_events_view).execute(bundle);
         } else {
             requestPermissions(new String[]{READ_CALENDAR}, RequestCode.READ_CALENDAR);
         }
@@ -53,7 +53,7 @@ public class ContactEventsFragment extends Fragment {
         switch(requestCode) {
             case RequestCode.READ_CALENDAR: {
                 if(grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
-                    new LoadMyCalendarTask(context, contact_events_view).execute(bundle);
+                    new LoadCalendarTask(context, contact_events_view).execute(bundle);
                 } else {
                     // TODO: 21-05-2020 Permission not granted. Show a message to the user
                 }

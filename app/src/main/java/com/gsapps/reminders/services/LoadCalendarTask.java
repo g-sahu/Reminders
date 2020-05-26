@@ -40,8 +40,8 @@ import static java.lang.String.valueOf;
 import static java.util.Collections.sort;
 
 @RequiredArgsConstructor
-public class LoadMyCalendarTask extends AsyncTask<Bundle, Void, List<EventDTO>> {
-    private static final String LOG_TAG = LoadMyCalendarTask.class.getSimpleName();
+public class LoadCalendarTask extends AsyncTask<Bundle, Void, List<EventDTO>> {
+    private static final String LOG_TAG = LoadCalendarTask.class.getSimpleName();
     private final Context context;
     private final int viewId;
     private final List<EventDTO> eventDTOList = new ArrayList<>();

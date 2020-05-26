@@ -5,10 +5,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.api.services.calendar.model.Events;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.model.comparators.StartDateComparator;
+import com.gsapps.reminders.util.comparators.StartDateComparator;
 import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
@@ -17,14 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gsapps.reminders.R.id.meetings_view;
-import static com.gsapps.reminders.model.EventDTOFactory.getEventDTOFactory;
-import static com.gsapps.reminders.model.enums.EventType.MEETING;
+import static com.gsapps.reminders.factories.EventDTOFactory.getEventDTOFactory;
+import static com.gsapps.reminders.util.enums.EventType.MEETING;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getOptions;
 import static java.util.Collections.sort;
 
-public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
+public class LoadMeetingsTask extends AsyncTask<Void, Void, Void> {
     private final String LOG_TAG = getClass().getSimpleName();
     private final Activity activity;
     private List<EventDTO> eventDTOList = new ArrayList<>();
@@ -34,9 +33,7 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
     }
 
     @Override
-    protected List<Events> doInBackground(Void... params) {
-        List<Events> eventsList = new ArrayList<>();
-
+    protected Void doInBackground(Void... params) {
         try {
             IEventCollectionPage result = getInstance()
                                             .getGraphServiceClient()
@@ -46,7 +43,7 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
                                             .get();
 
             for(Event meeting : result.getCurrentPage()) {
-                EventDTO eventDTO = getEventDTOFactory().createEvent(MEETING);
+                EventDTO eventDTO = getEventDTOFactory().createEventDTO(MEETING);
                 //eventDTO.setSourceEventId(meeting.id);
                 eventDTO.setTitle(meeting.subject);
                 eventDTO.setEventDesc(meeting.bodyPreview);
@@ -59,12 +56,12 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, List<Events>> {
             Log.e(LOG_TAG, e.getMessage());
         }
 
-        return eventsList;
+        return null;
     }
 
     @Override
-    protected void onPostExecute(List<Events> events) {
-        super.onPostExecute(events);
+    protected void onPostExecute(Void result) {
+        super.onPostExecute(result);
         sort(eventDTOList, new StartDateComparator());
         updateMyCalendarView();
     }

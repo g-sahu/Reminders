@@ -23,7 +23,7 @@ import static android.provider.CalendarContract.Events.DESCRIPTION;
 import static android.provider.CalendarContract.Events.DTSTART;
 import static android.provider.CalendarContract.Events.TITLE;
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
-import static com.gsapps.reminders.R.id.contact_events_view;
+import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.factories.EventDTOFactory.getEventDTOFactory;
 import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
 import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
@@ -36,8 +36,8 @@ import static java.lang.String.valueOf;
 import static java.util.Collections.sort;
 
 @RequiredArgsConstructor
-public class LoadContactEventsTask extends AsyncTask<Void, Void, List<EventDTO>> {
-    private static final String LOG_TAG = LoadContactEventsTask.class.getSimpleName();
+public class LoadMyCalendarTask extends AsyncTask<Void, Void, List<EventDTO>> {
+    private static final String LOG_TAG = LoadMyCalendarTask.class.getSimpleName();
     private final Context context;
     private final List<EventDTO> eventDTOList = new ArrayList<>();
     private static final String[] PROJECTION_CALENDARS = {_ID, OWNER_ACCOUNT};
@@ -47,20 +47,20 @@ public class LoadContactEventsTask extends AsyncTask<Void, Void, List<EventDTO>>
     protected List<EventDTO> doInBackground(Void... voids) {
         ContentResolver contentResolver = context.getContentResolver();
 
-        String calendarsSelection = ACCOUNT_NAME + " = ? AND " + ACCOUNT_TYPE + " = ? AND " + OWNER_ACCOUNT + " = ?";
-        String[] calendarsSelectionArgs = {"simplygaurav07@gmail.com", "com.google", ADDRESS_BOOK_CONTACTS};
+        String calendarsSelection = "((" + ACCOUNT_NAME + " = ?) AND (" + ACCOUNT_TYPE + " = ?))";
+        String[] calendarsSelectionArgs = {"simplygaurav07@gmail.com", "com.google"};
         String eventsSelection = "((" + CALENDAR_ID + " = ?) AND (" + DTSTART + " >= ?))";
         String todayTimeMillis = valueOf(getTodaysCalendar().getTimeInMillis());
 
         try (Cursor calendarsCursor = contentResolver.query(CONTENT_URI, PROJECTION_CALENDARS, calendarsSelection, calendarsSelectionArgs, null)) {
             while (calendarsCursor != null && calendarsCursor.moveToNext()) {
                 long calID = calendarsCursor.getLong(0);
-                String ownerAccount = calendarsCursor.getString(1);
+                String ownerName = calendarsCursor.getString(1);
                 String[] eventsSelectionArgs = {valueOf(calID), todayTimeMillis};
 
                 try (Cursor eventsCursor = contentResolver.query(Events.CONTENT_URI, PROJECTION_EVENTS, eventsSelection, eventsSelectionArgs, null)) {
                     while (eventsCursor != null && eventsCursor.moveToNext()) {
-                        EventDTO eventDTO = createEventDTO(ownerAccount);
+                        EventDTO eventDTO = createEventDTO(ownerName);
 
                         if (eventDTO != null) {
                             eventDTO.setTitle(eventsCursor.getString(1));
@@ -103,7 +103,7 @@ public class LoadContactEventsTask extends AsyncTask<Void, Void, List<EventDTO>>
 
     private void updateMyCalendarView(List<EventDTO> eventDTOList) {
         Adapter eventListAdapter = new EventListAdapter(context, eventDTOList);
-        RecyclerView eventListView = ((Activity) context).findViewById(contact_events_view);
+        RecyclerView eventListView = ((Activity) context).findViewById(my_calendar_view);
         eventListView.setAdapter(eventListAdapter);
         eventListView.setLayoutManager(new LinearLayoutManager(context));
     }

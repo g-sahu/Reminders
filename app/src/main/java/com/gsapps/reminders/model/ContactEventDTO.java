@@ -1,6 +1,6 @@
 package com.gsapps.reminders.model;
 
-import com.gsapps.reminders.model.enums.ContactEventType;
+import com.gsapps.reminders.util.enums.ContactEventType;
 import lombok.Getter;
 import lombok.Setter;
 

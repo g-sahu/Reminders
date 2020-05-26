@@ -9,7 +9,7 @@ import androidx.room.TypeConverters;
 import com.gsapps.reminders.converters.BooleanConverter;
 import com.gsapps.reminders.converters.CalendarConverter;
 import com.gsapps.reminders.converters.EventTypeConverter;
-import com.gsapps.reminders.model.enums.EventType;
+import com.gsapps.reminders.util.enums.EventType;
 import lombok.Getter;
 import lombok.Setter;
 

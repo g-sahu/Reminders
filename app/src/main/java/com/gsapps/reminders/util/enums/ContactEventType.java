@@ -1,8 +1,8 @@
-package com.gsapps.reminders.model.enums;
+package com.gsapps.reminders.util.enums;
 
 public enum ContactEventType {
     BIRTHDAY(1), ANNIVERSARY(2);
-    private int code;
+    private final int code;
 
     ContactEventType(int code) {
         this.code = code;

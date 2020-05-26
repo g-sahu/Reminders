@@ -1,7 +1,7 @@
 package com.gsapps.reminders.model;
 
 import androidx.annotation.Nullable;
-import com.gsapps.reminders.model.enums.EventType;
+import com.gsapps.reminders.util.enums.EventType;
 import lombok.Getter;
 import lombok.Setter;
 

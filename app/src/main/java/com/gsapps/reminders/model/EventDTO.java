@@ -1,16 +1,19 @@
 package com.gsapps.reminders.model;
 
-import androidx.annotation.Nullable;
 import com.gsapps.reminders.util.enums.EventType;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.Calendar;
 
-import static java.util.Objects.hash;
+import static lombok.EqualsAndHashCode.Include;
 
-@Getter @Setter
+@SuppressWarnings("UseOfObsoleteDateTimeApi")
+@Getter @Setter @RequiredArgsConstructor @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class EventDTO {
+    @Include
     protected long eventId;
     protected String title;
     protected EventType eventType;
@@ -20,21 +23,5 @@ public abstract class EventDTO {
     protected Calendar endTs;
     protected Calendar createTs;
     protected Calendar lastUpdateTs;
-    protected byte[] icon;
-
-    @Override
-    public boolean equals(@Nullable Object obj) {
-        if(obj instanceof EventDTO) {
-            EventDTO eventDTO = (EventDTO) obj;
-            return eventId == eventDTO.eventId;
-        }
-
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return hash(eventId);
-    }
-
+    protected final int icon;
 }

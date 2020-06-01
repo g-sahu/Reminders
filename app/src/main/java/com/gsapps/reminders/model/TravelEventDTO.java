@@ -7,4 +7,8 @@ import lombok.Setter;
 public class TravelEventDTO extends EventDTO {
     private String source;
     private String destination;
+
+    public TravelEventDTO(int icon) {
+        super(icon);
+    }
 }

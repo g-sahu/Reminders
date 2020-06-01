@@ -7,7 +7,8 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class Constants {
 
-    public static class GoogleCalendarOwner {
+    @NoArgsConstructor(access = PRIVATE)
+    public static final class GoogleCalendarOwner {
         public static final String ADDRESS_BOOK_CONTACTS = "addressbook#contacts@group.v.calendar.google.com";
         public static final String HOLIDAY_IN = "en.indian#holiday@group.v.calendar.google.com";
         public static final String HOLIDAY_US = "en.usa#holiday@group.v.calendar.google.com";

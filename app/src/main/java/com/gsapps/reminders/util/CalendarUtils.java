@@ -14,11 +14,12 @@ import static java.util.Calendar.*;
 import static java.util.TimeZone.getTimeZone;
 import static lombok.AccessLevel.PRIVATE;
 
+@SuppressWarnings("UseOfObsoleteDateTimeApi")
 @NoArgsConstructor(access = PRIVATE)
 public final class CalendarUtils {
     private static final String LOG_TAG = CalendarUtils.class.getSimpleName();
 
-    static String getTodaysDateString(String format) {
+    public static String getTodaysDateString(String format) {
          return getDateString(getTodaysCalendar(), format);
     }
 

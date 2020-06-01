@@ -8,4 +8,8 @@ import lombok.Setter;
 public class ContactEventDTO extends EventDTO {
     private String sourceEventId;
     private ContactEventType contactEventType;
+
+    public ContactEventDTO(int icon) {
+        super(icon);
+    }
 }

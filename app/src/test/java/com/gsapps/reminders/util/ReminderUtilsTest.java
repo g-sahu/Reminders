@@ -10,12 +10,10 @@ import static org.junit.Assert.*;
 public class ReminderUtilsTest {
 
     @Before
-    public void setUp() throws Exception {
-    }
+    public void setUp() throws Exception {}
 
     @After
-    public void tearDown() throws Exception {
-    }
+    public void tearDown() throws Exception {}
 
     @Test
     public void isNotNullOrEmpty_Null() {

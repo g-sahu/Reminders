@@ -20,7 +20,7 @@ public final class CalendarUtils {
     private static final String LOG_TAG = CalendarUtils.class.getSimpleName();
 
     public static String getTodaysDateString(String format) {
-         return getDateString(getTodaysCalendar(), format);
+        return getDateString(getTodaysCalendar(), format);
     }
 
     public static Calendar getTodaysCalendar() {

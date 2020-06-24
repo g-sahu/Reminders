@@ -26,6 +26,20 @@ public class HomeActivityTest {
     @Rule
     public ActivityScenarioRule<HomeActivity> activityRule = new ActivityScenarioRule<>(HomeActivity.class);
 
+    // *** Navigation drawer ***
+    @Test
+    public void drawerLayout_displayed() {
+        onView(withId(drawer_layout))
+                .check(matches(isDisplayed()));
+    }
+
+    // *** Activity content ***
+    @Test
+    public void activityContent_displayed() {
+        onView(withId(home_activity_content))
+                .check(matches(isDisplayed()));
+    }
+
     // *** Toolbar ***
     @Test
     public void toolbar_displayed() {
@@ -39,10 +53,10 @@ public class HomeActivityTest {
                 .check(matches(hasDescendant(withText(my_calendar))));
     }
 
-    // *** Navigation drawer ***
+    // *** Fragment content ***
     @Test
-    public void drawerLayout_displayed() {
-        onView(withId(drawer_layout))
+    public void fragmentContent_displayed() {
+        onView(withId(fragment_content))
                 .check(matches(isDisplayed()));
     }
 

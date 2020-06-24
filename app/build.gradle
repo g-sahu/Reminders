@@ -19,8 +19,16 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        testOptions {
+            unitTests {
+                includeAndroidResources = true
+            }
+        }
     }
     buildTypes {
+        debug {
+            testCoverageEnabled = true
+        }
         release {
             minifyEnabled false
         }
@@ -64,7 +72,12 @@ dependencies {
     compileOnly "org.projectlombok:lombok:$lombok_version"
     annotationProcessor "org.projectlombok:lombok:$lombok_version"
 
+    //Test dependencies
     testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:core:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
 }

@@ -13,10 +13,9 @@ import static lombok.EqualsAndHashCode.Include;
 @SuppressWarnings("UseOfObsoleteDateTimeApi")
 @Getter @Setter @RequiredArgsConstructor @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class EventDTO {
-    @Include
-    protected long eventId;
+    @Include protected long eventId;
     protected String title;
-    protected EventType eventType;
+    protected final EventType eventType;
     protected String eventDesc;
     protected boolean isRecurring;
     protected Calendar startTs;

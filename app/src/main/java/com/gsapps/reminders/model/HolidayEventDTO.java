@@ -1,5 +1,6 @@
 package com.gsapps.reminders.model;
 
+import com.gsapps.reminders.util.enums.EventType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,7 @@ import lombok.Setter;
 public class HolidayEventDTO extends EventDTO {
     private String calendar;
 
-    public HolidayEventDTO(int icon) {
-        super(icon);
+    public HolidayEventDTO(EventType eventType, int icon) {
+        super(eventType, icon);
     }
 }

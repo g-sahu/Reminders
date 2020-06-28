@@ -1,5 +1,6 @@
 package com.gsapps.reminders.model;
 
+import com.gsapps.reminders.util.enums.EventType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ public class MeetingEventDTO extends EventDTO {
     private String organiser;
     private String location;
 
-    public MeetingEventDTO(int icon) {
-        super(icon);
+    public MeetingEventDTO(EventType eventType, int icon) {
+        super(eventType, icon);
     }
 }

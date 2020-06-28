@@ -4,23 +4,16 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
-import com.gsapps.reminders.factories.EventDTOFactory;
 import com.gsapps.reminders.model.EventDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.gsapps.reminders.factories.EventDTOFactory.getEventDTOFactory;
+import static com.gsapps.reminders.factories.EventDTOFactory.createEventDTO;
 import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
 import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
-import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
-import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_IN;
-import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_US;
 import static com.gsapps.reminders.util.ContentProviderUtils.SELECTION_ARGS;
 import static com.gsapps.reminders.util.ContentProviderUtils.query;
-import static com.gsapps.reminders.util.enums.EventType.CONTACT;
-import static com.gsapps.reminders.util.enums.EventType.HOLIDAY;
 import static java.lang.String.valueOf;
 
 public class RemindersService {
@@ -54,26 +47,5 @@ public class RemindersService {
         }
 
         return eventDTOList;
-    }
-
-    private static EventDTO createEventDTO(String ownerAccount) {
-        final EventDTOFactory eventDTOFactory = getEventDTOFactory();
-        EventDTO eventDTO = null;
-
-        switch (ownerAccount) {
-            case ADDRESS_BOOK_CONTACTS:
-                eventDTO = eventDTOFactory.createEventDTO(CONTACT);
-                break;
-
-            case HOLIDAY_IN:
-            case HOLIDAY_US:
-                eventDTO = eventDTOFactory.createEventDTO(HOLIDAY);
-                break;
-
-            default:
-                Log.e(LOG_TAG, "Unrecognised owner account: " + ownerAccount);
-        }
-
-        return eventDTO;
     }
 }

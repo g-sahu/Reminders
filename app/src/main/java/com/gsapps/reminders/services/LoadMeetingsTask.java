@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gsapps.reminders.R.id.meetings_view;
-import static com.gsapps.reminders.factories.EventDTOFactory.getEventDTOFactory;
-import static com.gsapps.reminders.util.enums.EventType.MEETING;
+import static com.gsapps.reminders.factories.EventDTOFactory.createEventDTO;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getOptions;
+import static com.gsapps.reminders.util.enums.EventType.MEETING_EVENT;
 import static java.util.Collections.sort;
 
 public class LoadMeetingsTask extends AsyncTask<Void, Void, Void> {
@@ -43,7 +43,7 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, Void> {
                                             .get();
 
             for(Event meeting : result.getCurrentPage()) {
-                EventDTO eventDTO = getEventDTOFactory().createEventDTO(MEETING);
+                EventDTO eventDTO = createEventDTO(MEETING_EVENT);
                 //eventDTO.setSourceEventId(meeting.id);
                 eventDTO.setTitle(meeting.subject);
                 eventDTO.setEventDesc(meeting.bodyPreview);

@@ -1,14 +1,10 @@
 package com.gsapps.reminders.util.enums;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor @Getter
 public enum EventType {
-    CONTACT(1), HOLIDAY(2), MEETING(3), TRAVEL(4);
+    CONTACT_EVENT(1), HOLIDAY_EVENT(2), MEETING_EVENT(3), TRAVEL_EVENT(4);
     private final int code;
-
-    EventType(int code) {
-        this.code = code;
-    }
-
-    public int getCode() {
-        return code;
-    }
 }

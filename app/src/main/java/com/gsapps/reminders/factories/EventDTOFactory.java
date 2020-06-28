@@ -1,5 +1,6 @@
 package com.gsapps.reminders.factories;
 
+import android.util.Log;
 import com.gsapps.reminders.model.ContactEventDTO;
 import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.model.HolidayEventDTO;
@@ -10,40 +11,52 @@ import lombok.NoArgsConstructor;
 
 import static com.gsapps.reminders.R.drawable.holiday;
 import static com.gsapps.reminders.R.drawable.outline_cake_black_18;
+import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
+import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_IN;
+import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_US;
+import static com.gsapps.reminders.util.enums.EventType.CONTACT_EVENT;
+import static com.gsapps.reminders.util.enums.EventType.HOLIDAY_EVENT;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
-public class EventDTOFactory {
-    private static EventDTOFactory eventDTOFactory = null;
+public final class EventDTOFactory {
+    private static final String LOG_TAG = EventDTOFactory.class.getSimpleName();
 
-    public static EventDTOFactory getEventDTOFactory() {
-        if(eventDTOFactory == null) {
-            synchronized (EventDTOFactory.class) {
-                if(eventDTOFactory == null) {
-                    eventDTOFactory = new EventDTOFactory();
-                }
-            }
+    public static EventDTO createEventDTO(EventType eventType) {
+        switch (eventType) {
+            case CONTACT_EVENT:
+                return new ContactEventDTO(eventType, outline_cake_black_18);
+
+            case HOLIDAY_EVENT:
+                return new HolidayEventDTO(eventType, holiday);
+
+            case MEETING_EVENT:
+                return new MeetingEventDTO(eventType, 0);
+
+            case TRAVEL_EVENT:
+                return new TravelEventDTO(eventType, 0);
         }
 
-        return eventDTOFactory;
+        return null;
     }
 
-    public EventDTO createEventDTO(EventType eventType) {
-        switch (eventType) {
-            case CONTACT:
-                return new ContactEventDTO(outline_cake_black_18);
+    public static EventDTO createEventDTO(String ownerAccount) {
+        EventDTO eventDTO = null;
 
-            case HOLIDAY:
-                return new HolidayEventDTO(holiday);
+        switch (ownerAccount) {
+            case ADDRESS_BOOK_CONTACTS:
+                eventDTO = createEventDTO(CONTACT_EVENT);
+                break;
 
-            case MEETING:
-                return new MeetingEventDTO(0);
-
-            case TRAVEL:
-                return new TravelEventDTO(0);
+            case HOLIDAY_IN:
+            case HOLIDAY_US:
+                eventDTO = createEventDTO(HOLIDAY_EVENT);
+                break;
 
             default:
-                return null;
+                Log.e(LOG_TAG, "Unrecognised owner account: " + ownerAccount);
         }
+
+        return eventDTO;
     }
 }

@@ -6,8 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
+
 import com.gsapps.reminders.adapters.EventListAdapter.Holder;
 import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.model.MeetingEventDTO;
@@ -57,7 +59,7 @@ public class EventListAdapter extends Adapter<Holder> {
         return eventDTOList.size();
     }
 
-    class Holder extends ViewHolder {
+    public static class Holder extends ViewHolder {
         final ImageView eventIcon;
         final TextView eventName, eventDate;
 
@@ -69,7 +71,7 @@ public class EventListAdapter extends Adapter<Holder> {
         }
     }
 
-    private String getDateFormat(EventDTO eventDTO) {
+    private static String getDateFormat(EventDTO eventDTO) {
         return eventDTO instanceof MeetingEventDTO ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
     }
 }

@@ -29,6 +29,7 @@ import static android.provider.CalendarContract.Events.DESCRIPTION;
 import static android.provider.CalendarContract.Events.DTSTART;
 import static android.provider.CalendarContract.Events.TITLE;
 import static androidx.recyclerview.widget.RecyclerView.Adapter;
+import static com.gsapps.reminders.adapters.EventListAdapter.Holder;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
 import static com.gsapps.reminders.util.ContentProviderUtils.createContentProviderBundle;
 import static java.util.Collections.sort;
@@ -75,7 +76,7 @@ public class LoadEventsTask extends AsyncTask<CalendarType, Void, List<EventDTO>
     }
 
     private void updateMyCalendarView(List<EventDTO> eventDTOList) {
-        Adapter eventListAdapter = new EventListAdapter(context, eventDTOList);
+        Adapter<Holder> eventListAdapter = new EventListAdapter(context, eventDTOList);
         RecyclerView eventListView = ((Activity) context).findViewById(viewId);
         eventListView.setAdapter(eventListAdapter);
         eventListView.setLayoutManager(new LinearLayoutManager(context));

@@ -5,15 +5,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.util.comparators.StartDateComparator;
 import com.gsapps.reminders.util.enums.CalendarType;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 
 import static android.provider.CalendarContract.Calendars;
 import static android.provider.CalendarContract.Calendars.ACCOUNT_NAME;

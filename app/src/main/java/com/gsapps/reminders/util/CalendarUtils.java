@@ -1,43 +1,37 @@
 package com.gsapps.reminders.util;
 
-import android.util.Log;
-import com.microsoft.graph.extensions.DateTimeTimeZone;
+import java.time.Instant;
+import java.time.LocalDateTime;
+
 import lombok.NoArgsConstructor;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import static java.util.Calendar.*;
-import static java.util.TimeZone.getTimeZone;
+import static java.time.ZoneId.systemDefault;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static lombok.AccessLevel.PRIVATE;
 
-@SuppressWarnings("UseOfObsoleteDateTimeApi")
 @NoArgsConstructor(access = PRIVATE)
 public final class CalendarUtils {
     private static final String LOG_TAG = CalendarUtils.class.getSimpleName();
 
-    public static String getTodaysDateString(String format) {
-        return getDateString(getTodaysCalendar(), format);
+    public static String getTodaysDateTimeString(String format) {
+        return getDateString(getTodaysDateTime(), format);
     }
 
-    public static Calendar getTodaysCalendar() {
-        Calendar calendar = getInstance();
-        calendar.set(HOUR_OF_DAY, 0);
-        calendar.set(MINUTE, 0);
-        calendar.set(SECOND, 0);
-        calendar.set(MILLISECOND, 0);
-        return calendar;
+    public static LocalDateTime getTodaysDateTime() {
+        return LocalDateTime.now()
+                            .withHour(0)
+                            .withMinute(0)
+                            .withSecond(0)
+                            .withNano(0);
     }
 
-    public static String getDateString(Calendar calendar, String format) {
-        DateFormat dateFormat = new SimpleDateFormat(format); // TODO: 09-04-2019 Convert start date to local date format
-        return dateFormat.format(calendar.getTime());
+    public static long getTodaysDateTimeinMillis() {
+        return getTodaysDateTime().atZone(systemDefault())
+                                  .toInstant()
+                                  .toEpochMilli();
     }
 
-    public static Calendar getCalendar(DateTimeTimeZone dateTimeTimeZone) {
+    /*public static Calendar getCalendar(DateTimeTimeZone dateTimeTimeZone) {
         String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS";
         DateFormat dateFormat = new SimpleDateFormat(pattern);
         Calendar calendar = getInstance();
@@ -51,11 +45,15 @@ public final class CalendarUtils {
         }
 
         return calendar;
+    }*/
+
+    public static String getDateString(LocalDateTime localDateTime, String format) {
+        return localDateTime.format(ofPattern(format));
     }
 
-    public static Calendar getCalendar(long timeInMillis) {
-        Calendar calendar = getInstance();
-        calendar.setTimeInMillis(timeInMillis);
-        return calendar;
+    public static LocalDateTime getLocalDateTime(long timeInMillis) {
+        return Instant.ofEpochMilli(timeInMillis)
+                      .atZone(systemDefault())
+                      .toLocalDateTime();
     }
 }

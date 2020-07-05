@@ -4,10 +4,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.gsapps.reminders.util.ReminderUtils.*;
-import static org.junit.Assert.*;
+import static com.gsapps.reminders.util.ReminderUtils.isNotNullOrEmpty;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class ReminderUtilsTest {
+public class ReminderUtilsUnitTest {
 
     @Before
     public void setUp() throws Exception {}

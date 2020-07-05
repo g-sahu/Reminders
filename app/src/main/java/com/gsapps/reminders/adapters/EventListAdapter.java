@@ -27,7 +27,7 @@ import static com.gsapps.reminders.util.CalendarUtils.getDateString;
 
 public class EventListAdapter extends Adapter<Holder> {
     private final List<EventDTO> eventDTOList;
-    private static LayoutInflater inflater = null;
+    private static LayoutInflater inflater;
     private final Context context;
 
     public EventListAdapter(Context context, List<EventDTO> eventDTOList) {

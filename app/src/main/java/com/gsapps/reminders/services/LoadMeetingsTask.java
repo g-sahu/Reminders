@@ -3,8 +3,10 @@ package com.gsapps.reminders.services;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.util.comparators.StartDateComparator;
@@ -18,7 +20,6 @@ import java.util.List;
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.factories.EventDTOFactory.createEventDTO;
 import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
-import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
 import static com.gsapps.reminders.util.ReminderUtils.getOptions;
 import static com.gsapps.reminders.util.enums.EventType.MEETING_EVENT;
 import static java.util.Collections.sort;
@@ -47,8 +48,8 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, Void> {
                 //eventDTO.setSourceEventId(meeting.id);
                 eventDTO.setTitle(meeting.subject);
                 eventDTO.setEventDesc(meeting.bodyPreview);
-                eventDTO.setStartTs(getCalendar(meeting.start));
-                eventDTO.setEndTs(getCalendar(meeting.end));
+                //eventDTO.setStartTs(getCalendar(meeting.start));
+                //eventDTO.setEndTs(getCalendar(meeting.end));
                 eventDTO.setRecurring(false);
                 eventDTOList.add(eventDTO);
             }

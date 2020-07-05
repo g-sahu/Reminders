@@ -4,14 +4,15 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+
 import com.gsapps.reminders.model.EventDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.gsapps.reminders.factories.EventDTOFactory.createEventDTO;
-import static com.gsapps.reminders.util.CalendarUtils.getCalendar;
-import static com.gsapps.reminders.util.CalendarUtils.getTodaysCalendar;
+import static com.gsapps.reminders.util.CalendarUtils.getLocalDateTime;
+import static com.gsapps.reminders.util.CalendarUtils.getTodaysDateTimeinMillis;
 import static com.gsapps.reminders.util.ContentProviderUtils.SELECTION_ARGS;
 import static com.gsapps.reminders.util.ContentProviderUtils.query;
 import static java.lang.String.valueOf;
@@ -22,7 +23,7 @@ public class RemindersService {
     public List<EventDTO> getEventDTOs(Context context, Bundle calendarsBundle, Bundle eventsBundle) {
         List<EventDTO> eventDTOList = new ArrayList<>();
         ContentResolver contentResolver = context.getContentResolver();
-        String todayTimeMillis = valueOf(getTodaysCalendar().getTimeInMillis());
+        String todayTimeMillis = valueOf(getTodaysDateTimeinMillis());
 
         try (Cursor calendarsCursor = query(contentResolver, calendarsBundle)) {
             while (calendarsCursor != null && calendarsCursor.moveToNext()) {
@@ -38,7 +39,7 @@ public class RemindersService {
                         if (eventDTO != null) {
                             eventDTO.setTitle(eventsCursor.getString(1));
                             eventDTO.setEventDesc(eventsCursor.getString(2));
-                            eventDTO.setStartTs(getCalendar(eventsCursor.getLong(3)));
+                            eventDTO.setStartTs(getLocalDateTime(eventsCursor.getLong(3)));
                             eventDTOList.add(eventDTO);
                         }
                     }

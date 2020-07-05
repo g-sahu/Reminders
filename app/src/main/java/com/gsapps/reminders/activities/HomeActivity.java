@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +16,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.material.navigation.NavigationView;
 import com.gsapps.reminders.factories.FragmentFactory;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
@@ -139,7 +142,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private void loadProfilePic(CircleImageView profilePic, Uri uri) {
         with(this)
                 .load(uri)
-                .crossFade()
                 .diskCacheStrategy(ALL)
                 .into(profilePic);
     }

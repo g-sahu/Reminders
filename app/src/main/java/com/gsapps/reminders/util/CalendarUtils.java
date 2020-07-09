@@ -26,9 +26,13 @@ public final class CalendarUtils {
     }
 
     public static long getTodaysDateTimeinMillis() {
-        return getTodaysDateTime().atZone(systemDefault())
-                                  .toInstant()
-                                  .toEpochMilli();
+        return getLocalDateTimeinMillis(getTodaysDateTime());
+    }
+
+    public static long getLocalDateTimeinMillis(LocalDateTime localDateTime) {
+        return localDateTime.atZone(systemDefault())
+                            .toInstant()
+                            .toEpochMilli();
     }
 
     /*public static Calendar getCalendar(DateTimeTimeZone dateTimeTimeZone) {

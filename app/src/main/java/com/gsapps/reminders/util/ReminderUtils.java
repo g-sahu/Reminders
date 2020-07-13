@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.microsoft.graph.options.HeaderOption;
 import com.microsoft.graph.options.Option;
 import com.microsoft.graph.options.QueryOption;
@@ -31,6 +32,7 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class ReminderUtils {
     private static Toast toast;
+    private static final Gson GSON = new Gson();
 
     public static boolean hasPermission(@NonNull Context context, @NonNull String permission) {
         return checkSelfPermission(context, permission) == PERMISSION_GRANTED;
@@ -86,4 +88,11 @@ public final class ReminderUtils {
         return (str != null) && !(str.trim().isEmpty());
     }
 
+    public static String toJson(Object object) {
+        return GSON.toJson(object);
+    }
+
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        return GSON.fromJson(json, clazz);
+    }
 }

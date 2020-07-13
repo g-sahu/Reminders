@@ -50,7 +50,8 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, Void> {
                 eventDTO.setEventDesc(meeting.bodyPreview);
                 //eventDTO.setStartTs(getCalendar(meeting.start));
                 //eventDTO.setEndTs(getCalendar(meeting.end));
-                eventDTO.setRecurring(false);
+                // TODO: 13-07-2020 Enable field in EventDTO to remove this commented code
+                //eventDTO.setRecurring(false);
                 eventDTOList.add(eventDTO);
             }
         } catch (GraphServiceException e) {

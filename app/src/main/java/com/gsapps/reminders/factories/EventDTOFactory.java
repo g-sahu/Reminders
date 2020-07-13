@@ -1,12 +1,12 @@
 package com.gsapps.reminders.factories;
 
 import android.util.Log;
+
 import com.gsapps.reminders.model.ContactEventDTO;
 import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.model.HolidayEventDTO;
-import com.gsapps.reminders.model.MeetingEventDTO;
-import com.gsapps.reminders.model.TravelEventDTO;
 import com.gsapps.reminders.util.enums.EventType;
+
 import lombok.NoArgsConstructor;
 
 import static com.gsapps.reminders.R.drawable.holiday;
@@ -31,10 +31,14 @@ public final class EventDTOFactory {
                 return new HolidayEventDTO(eventType, holiday);
 
             case MEETING_EVENT:
-                return new MeetingEventDTO(eventType, 0);
+                // TODO: 13-07-2020 Implement Parcelable in MeetingEventDTO to enable this commented code
+                //return new MeetingEventDTO(eventType, 0);
+                return null;
 
             case TRAVEL_EVENT:
-                return new TravelEventDTO(eventType, 0);
+                // TODO: 13-07-2020 Implement Parcelable in TravelEventDTO to enable this commented code
+                //return new TravelEventDTO(eventType, 0);
+                return null;
         }
 
         return null;

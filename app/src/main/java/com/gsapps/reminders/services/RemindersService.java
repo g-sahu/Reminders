@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gsapps.reminders.factories.EventDTOFactory.createEventDTO;
-import static com.gsapps.reminders.util.CalendarUtils.getLocalDateTime;
 import static com.gsapps.reminders.util.CalendarUtils.getTodaysDateTimeinMillis;
 import static com.gsapps.reminders.util.ContentProviderUtils.SELECTION_ARGS;
 import static com.gsapps.reminders.util.ContentProviderUtils.query;
@@ -39,7 +38,7 @@ public class RemindersService {
                         if (eventDTO != null) {
                             eventDTO.setTitle(eventsCursor.getString(1));
                             eventDTO.setEventDesc(eventsCursor.getString(2));
-                            eventDTO.setStartTs(getLocalDateTime(eventsCursor.getLong(3)));
+                            eventDTO.setStartTs(eventsCursor.getLong(3));
                             eventDTOList.add(eventDTO);
                         }
                     }

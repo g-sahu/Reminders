@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import com.gsapps.reminders.util.enums.EventType;
 
-import java.time.LocalDateTime;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +14,7 @@ import static lombok.EqualsAndHashCode.Include;
 
 @Getter @Setter @RequiredArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@SuppressWarnings("AbstractClassWithoutAbstractMethods")
 public abstract class EventDTO implements Parcelable {
     @Include protected long eventId;
     protected String title;
@@ -23,10 +22,10 @@ public abstract class EventDTO implements Parcelable {
     protected String eventDesc;
     //protected boolean isRecurring;
 
-    protected LocalDateTime startTs;
-    protected LocalDateTime endTs;
-    protected LocalDateTime createTs;
-    protected LocalDateTime lastUpdateTs;
+    protected long startTs;
+    protected long endTs;
+    protected long createTs;
+    protected long lastUpdateTs;
     protected final int icon;
 
     protected EventDTO(Parcel in) {
@@ -37,11 +36,10 @@ public abstract class EventDTO implements Parcelable {
         // TODO: 13-07-2020 Convert boolean to int to serialise this field
         //isRecurring = in.readBoolean();
 
-        // TODO: 13-07-2020 Find a way to serialize these fields
-        /*startTs = (LocalDateTime) in.readValue(LocalDateTime.class.getClassLoader());
-        endTs = (LocalDateTime) in.readValue(LocalDateTime.class.getClassLoader());
-        createTs = (LocalDateTime) in.readValue(LocalDateTime.class.getClassLoader());
-        lastUpdateTs = (LocalDateTime) in.readValue(LocalDateTime.class.getClassLoader());*/
+        startTs = in.readLong();
+        endTs = in.readLong();
+        createTs = in.readLong();
+        lastUpdateTs = in.readLong();
         icon = in.readInt();
     }
 
@@ -53,10 +51,10 @@ public abstract class EventDTO implements Parcelable {
         dest.writeString(eventDesc);
         // TODO: 13-07-2020 Convert boolean to int to serialise this field
         //dest.writeBoolean(isRecurring);
-        dest.writeValue(startTs);
-        dest.writeValue(endTs);
-        dest.writeValue(createTs);
-        dest.writeValue(lastUpdateTs);
+        dest.writeLong(startTs);
+        dest.writeLong(endTs);
+        dest.writeLong(createTs);
+        dest.writeLong(lastUpdateTs);
         dest.writeInt(icon);
     }
 

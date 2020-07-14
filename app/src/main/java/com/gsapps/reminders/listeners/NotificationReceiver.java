@@ -25,6 +25,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.O;
 import static com.gsapps.reminders.R.drawable.ic_one;
+import static com.gsapps.reminders.util.CalendarUtils.getDateTimeString;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS_JSON;
 import static com.gsapps.reminders.util.ReminderUtils.fromJson;
@@ -53,9 +54,8 @@ public class NotificationReceiver extends BroadcastReceiver {
         //builder.setStyle(mediaStyle);
         builder.setContentTitle(eventDTO.getTitle());
         builder.setContentText(eventDTO.getEventDesc());
-        // TODO: 13-07-2020 Serialise LocalDateTime in EventDTO
-        //builder.setSubText(getDateString(eventDTO.getStartTs(), "dd/MM/YYYY"));
-        //builder.setWhen(getLocalDateTimeinMillis(eventDTO.getStartTs()));
+        builder.setSubText(getDateTimeString(eventDTO.getStartTs(), "dd/MM/YYYY"));
+        builder.setWhen(eventDTO.getStartTs());
         builder.setShowWhen(true);
         builder.setVisibility(VISIBILITY_PUBLIC);
         builder.setSmallIcon(ic_one);

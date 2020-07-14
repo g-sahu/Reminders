@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.gsapps.reminders.adapters.EventListAdapter.Holder;
 import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.model.MeetingEventDTO;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ import static com.gsapps.reminders.R.id.event_date;
 import static com.gsapps.reminders.R.id.event_icon;
 import static com.gsapps.reminders.R.id.event_name;
 import static com.gsapps.reminders.R.layout.item_event;
-import static com.gsapps.reminders.util.CalendarUtils.getDateString;
+import static com.gsapps.reminders.util.CalendarUtils.getDateTimeString;
 
 public class EventListAdapter extends Adapter<Holder> {
     private final List<EventDTO> eventDTOList;
@@ -46,7 +45,7 @@ public class EventListAdapter extends Adapter<Holder> {
         EventDTO eventDTO = eventDTOList.get(position);
         with(context).load(eventDTO.getIcon()).into(holder.eventIcon);
         holder.eventName.setText(eventDTO.getTitle());
-        holder.eventDate.setText(getDateString(eventDTO.getStartTs(), getDateFormat(eventDTO)));
+        holder.eventDate.setText(getDateTimeString(eventDTO.getStartTs(), getDateFormat(eventDTO)));
     }
 
     @Override
@@ -72,6 +71,8 @@ public class EventListAdapter extends Adapter<Holder> {
     }
 
     private static String getDateFormat(EventDTO eventDTO) {
-        return eventDTO instanceof MeetingEventDTO ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
+        // TODO: 13-07-2020 Implement Parcelable in MeetingEventDTO to enable this commented code
+        //return eventDTO instanceof MeetingEventDTO ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
+        return "dd/MM/YYYY";
     }
 }

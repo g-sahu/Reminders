@@ -24,4 +24,8 @@ public final class Constants {
     public static final String IS_LOGGED_OUT = "isLoggedOut";
     public static final String ACTION_MSAL_ACCESS_TOKEN_ACQUIRED = "ACTION_MSAL_ACCESS_TOKEN_ACQUIRED";
     public static final String MSAL_ACCESS_TOKEN = "MSAL_ACCESS_TOKEN";
+
+    //Keys
+    public static final String KEY_EVENTS = "KEY_EVENTS";
+    public static final String KEY_EVENTS_JSON = "KEY_EVENTS_JSON";
 }

@@ -32,6 +32,11 @@
                       android:host="auth" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".listeners.NotificationReceiver"
+                android:enabled="true"
+                android:exported="true">
+        </receiver>
     </application>
 
 </manifest>

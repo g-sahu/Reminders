@@ -1,10 +1,10 @@
 package com.gsapps.reminders.util;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 import lombok.NoArgsConstructor;
 
+import static java.time.Instant.ofEpochMilli;
 import static java.time.ZoneId.systemDefault;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static lombok.AccessLevel.PRIVATE;
@@ -12,10 +12,6 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class CalendarUtils {
     private static final String LOG_TAG = CalendarUtils.class.getSimpleName();
-
-    public static String getTodaysDateTimeString(String format) {
-        return getDateString(getTodaysDateTime(), format);
-    }
 
     public static LocalDateTime getTodaysDateTime() {
         return LocalDateTime.now()
@@ -26,9 +22,13 @@ public final class CalendarUtils {
     }
 
     public static long getTodaysDateTimeinMillis() {
-        return getTodaysDateTime().atZone(systemDefault())
-                                  .toInstant()
-                                  .toEpochMilli();
+        return getLocalDateTimeinMillis(getTodaysDateTime());
+    }
+
+    public static long getLocalDateTimeinMillis(LocalDateTime localDateTime) {
+        return localDateTime.atZone(systemDefault())
+                            .toInstant()
+                            .toEpochMilli();
     }
 
     /*public static Calendar getCalendar(DateTimeTimeZone dateTimeTimeZone) {
@@ -47,13 +47,23 @@ public final class CalendarUtils {
         return calendar;
     }*/
 
+    public static String getDateTimeString(long timeInMillis, String format) {
+        return ofEpochMilli(timeInMillis)
+                .atZone(systemDefault())
+                .format(ofPattern(format));
+    }
+
     public static String getDateString(LocalDateTime localDateTime, String format) {
         return localDateTime.format(ofPattern(format));
     }
 
+    public static String getTodaysDateTimeString(String format) {
+        return getDateString(getTodaysDateTime(), format);
+    }
+
     public static LocalDateTime getLocalDateTime(long timeInMillis) {
-        return Instant.ofEpochMilli(timeInMillis)
-                      .atZone(systemDefault())
-                      .toLocalDateTime();
+        return ofEpochMilli(timeInMillis)
+                .atZone(systemDefault())
+                .toLocalDateTime();
     }
 }

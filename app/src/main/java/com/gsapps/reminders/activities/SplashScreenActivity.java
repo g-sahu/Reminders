@@ -27,6 +27,8 @@ import static android.provider.CalendarContract.Events.DESCRIPTION;
 import static android.provider.CalendarContract.Events.DTSTART;
 import static android.provider.CalendarContract.Events.TITLE;
 import static com.gsapps.reminders.R.layout.activity_splash_screen;
+import static com.gsapps.reminders.util.CalendarUtils.getCurrentTimeMillis;
+import static com.gsapps.reminders.util.CalendarUtils.getMidnightTimeMillis;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS_JSON;
 import static com.gsapps.reminders.util.ContentProviderUtils.createContentProviderBundle;
@@ -35,6 +37,7 @@ import static java.time.Instant.now;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String LOG_TAG = SplashScreenActivity.class.getSimpleName();
+    private RemindersService remindersService = new RemindersService();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,12 +78,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     private List<EventDTO> getEvents() {
         String[] PROJECTION_CALENDARS = {_ID, OWNER_ACCOUNT};
         String[] PROJECTION_EVENTS = {_ID, TITLE, DESCRIPTION, DTSTART};
-        String calendarsSelection = ACCOUNT_NAME + " = ? AND " + ACCOUNT_TYPE + " = ?";
+        long fromMillis = getCurrentTimeMillis();
+        long toMillis = getMidnightTimeMillis();
+        String calendarsSelection = ACCOUNT_NAME + " = ? AND " + ACCOUNT_TYPE + " = ? AND";
         String[] calendarsSelectionArgs = new String[]{"simplygaurav07@gmail.com", "com.google"};
-        String eventsSelection = CALENDAR_ID + " = ? AND " + DTSTART + " >= ?";
+        String eventsSelection = CALENDAR_ID + " = ? AND " + DTSTART + " >= ? AND " + DTSTART + " <= ?";
         Bundle calendarsBundle = createContentProviderBundle(Calendars.CONTENT_URI, PROJECTION_CALENDARS, calendarsSelection, calendarsSelectionArgs, null);
         Bundle eventsBundle = createContentProviderBundle(Events.CONTENT_URI, PROJECTION_EVENTS, eventsSelection, null, null);
-        return new RemindersService().getEventDTOs(this, calendarsBundle, eventsBundle);
+        return remindersService.getEventDTOs(this, calendarsBundle, eventsBundle);
     }
 
 }

@@ -16,6 +16,7 @@ import com.gsapps.reminders.activities.HomeActivity;
 import com.gsapps.reminders.model.ContactEventDTO;
 import com.gsapps.reminders.model.EventDTO;
 
+import static android.app.Notification.Builder;
 import static android.app.Notification.CATEGORY_EVENT;
 import static android.app.Notification.VISIBILITY_PUBLIC;
 import static android.app.NotificationManager.IMPORTANCE_HIGH;
@@ -32,8 +33,8 @@ import static com.gsapps.reminders.util.ReminderUtils.fromJson;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final String LOG_TAG = NotificationReceiver.class.getSimpleName();
-    private Context context;
     private static final String CHANNEL_ID = "1";
+    private Context context;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -49,7 +50,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         // TODO: 13-07-2020 Change this to EventDetail activity
         Intent openIntent = new Intent(context, HomeActivity.class);
         PendingIntent openPendingIntent = getActivity(context, 0, openIntent, FLAG_UPDATE_CURRENT);
-        Notification.Builder builder = new Notification.Builder(context);
+        Builder builder = new Builder(context);
         // TODO: 13-07-2020 Finalise on notification style 
         //builder.setStyle(mediaStyle);
         builder.setContentTitle(eventDTO.getTitle());

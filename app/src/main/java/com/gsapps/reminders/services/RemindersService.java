@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gsapps.reminders.factories.EventDTOFactory.createEventDTO;
-import static com.gsapps.reminders.util.CalendarUtils.getTodaysDateTimeinMillis;
+import static com.gsapps.reminders.util.CalendarUtils.getTodaysDateTimeMillis;
 import static com.gsapps.reminders.util.ContentProviderUtils.SELECTION_ARGS;
 import static com.gsapps.reminders.util.ContentProviderUtils.query;
 import static java.lang.String.valueOf;
@@ -22,7 +22,7 @@ public class RemindersService {
     public List<EventDTO> getEventDTOs(Context context, Bundle calendarsBundle, Bundle eventsBundle) {
         List<EventDTO> eventDTOList = new ArrayList<>();
         ContentResolver contentResolver = context.getContentResolver();
-        String todayTimeMillis = valueOf(getTodaysDateTimeinMillis());
+        String todayTimeMillis = valueOf(getTodaysDateTimeMillis());
 
         try (Cursor calendarsCursor = query(contentResolver, calendarsBundle)) {
             while (calendarsCursor != null && calendarsCursor.moveToNext()) {

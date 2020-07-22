@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import com.gsapps.reminders.activities.HomeActivity;
 import com.gsapps.reminders.model.ContactEventDTO;
 import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.util.JsonUtils;
 
 import static android.app.Notification.Builder;
 import static android.app.Notification.CATEGORY_EVENT;
@@ -29,7 +30,6 @@ import static com.gsapps.reminders.R.drawable.ic_one;
 import static com.gsapps.reminders.util.CalendarUtils.getDateTimeString;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS_JSON;
-import static com.gsapps.reminders.util.ReminderUtils.fromJson;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final String LOG_TAG = NotificationReceiver.class.getSimpleName();
@@ -42,7 +42,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         Log.i(LOG_TAG, "Sending Reminders notification...");
         Bundle bundle = intent.getBundleExtra(KEY_EVENTS);
         String json = bundle.getString(KEY_EVENTS_JSON);
-        EventDTO eventDTO = fromJson(json, ContactEventDTO.class);
+        EventDTO eventDTO = JsonUtils.fromJson(json, ContactEventDTO.class);
         createNotification(eventDTO);
     }
 

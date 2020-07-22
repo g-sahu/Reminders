@@ -6,13 +6,12 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-import com.gsapps.reminders.converters.CalendarConverter;
+
 import com.gsapps.reminders.converters.ContactEventTypeConverter;
 import com.gsapps.reminders.util.enums.ContactEventType;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Calendar;
 
 @Entity(tableName = "contact_event",
         foreignKeys = @ForeignKey(entity = Event.class, parentColumns = "event_id", childColumns = "event_id"))
@@ -31,12 +30,12 @@ public class ContactEvent {
     @TypeConverters(ContactEventTypeConverter.class)
     public ContactEventType contactEventType;
 
-    @NonNull
+    /*@NonNull
     @ColumnInfo(name = "create_ts")
     @TypeConverters(CalendarConverter.class)
     public Calendar createTs;
 
     @ColumnInfo(name = "last_updt_ts")
     @TypeConverters(CalendarConverter.class)
-    public Calendar lastUpdateTs;
+    public Calendar lastUpdateTs;*/
 }

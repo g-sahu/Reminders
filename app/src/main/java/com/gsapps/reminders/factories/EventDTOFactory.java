@@ -16,13 +16,17 @@ import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_IN
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_US;
 import static com.gsapps.reminders.util.enums.EventType.CONTACT_EVENT;
 import static com.gsapps.reminders.util.enums.EventType.HOLIDAY_EVENT;
+import static java.lang.String.format;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public final class EventDTOFactory {
     private static final String LOG_TAG = EventDTOFactory.class.getSimpleName();
+    private static final String MSG_IAE = "Unrecognised %s: ";
 
     public static EventDTO createEventDTO(EventType eventType) {
+        String msg = format(MSG_IAE, "eventType") + eventType;
+
         switch (eventType) {
             case CONTACT_EVENT:
                 return new ContactEventDTO(eventType, outline_cake_black_18);
@@ -33,34 +37,34 @@ public final class EventDTOFactory {
             case MEETING_EVENT:
                 // TODO: 13-07-2020 Implement Parcelable in MeetingEventDTO to enable this commented code
                 //return new MeetingEventDTO(eventType, 0);
-                return null;
+                Log.e(LOG_TAG, msg);
+                throw new IllegalArgumentException(msg);
 
             case TRAVEL_EVENT:
                 // TODO: 13-07-2020 Implement Parcelable in TravelEventDTO to enable this commented code
                 //return new TravelEventDTO(eventType, 0);
-                return null;
-        }
+                Log.e(LOG_TAG, msg);
+                throw new IllegalArgumentException(msg);
 
-        return null;
+            default:
+                Log.e(LOG_TAG, msg);
+                throw new IllegalArgumentException(msg);
+        }
     }
 
     public static EventDTO createEventDTO(String ownerAccount) {
-        EventDTO eventDTO = null;
-
         switch (ownerAccount) {
             case ADDRESS_BOOK_CONTACTS:
-                eventDTO = createEventDTO(CONTACT_EVENT);
-                break;
+                return createEventDTO(CONTACT_EVENT);
 
             case HOLIDAY_IN:
             case HOLIDAY_US:
-                eventDTO = createEventDTO(HOLIDAY_EVENT);
-                break;
+                return createEventDTO(HOLIDAY_EVENT);
 
             default:
-                Log.e(LOG_TAG, "Unrecognised owner account: " + ownerAccount);
+                String msg = format(MSG_IAE, "ownerAccount") + ownerAccount;
+                Log.e(LOG_TAG, msg);
+                throw new IllegalArgumentException(msg);
         }
-
-        return eventDTO;
     }
 }

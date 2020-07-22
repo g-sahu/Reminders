@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "fa9270b0160445d0be8413b5c01c7c5f",
+    "identityHash": "3d4a4c1dd6c12b532d549c98b6ab3461",
     "entities": [
       {
         "tableName": "Event",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `event_type` INTEGER NOT NULL, `event_desc` TEXT, `is_recurring` INTEGER NOT NULL, `start_ts` TEXT NOT NULL, `end_ts` TEXT NOT NULL, `create_ts` TEXT NOT NULL, `last_updt_ts` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `event_type` INTEGER NOT NULL, `event_desc` TEXT, `is_recurring` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "eventId",
@@ -37,30 +37,6 @@
             "columnName": "is_recurring",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "startTs",
-            "columnName": "start_ts",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "endTs",
-            "columnName": "end_ts",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "createTs",
-            "columnName": "create_ts",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "lastUpdateTs",
-            "columnName": "last_updt_ts",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -74,7 +50,7 @@
       },
       {
         "tableName": "contact_event",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` INTEGER NOT NULL, `src_event_id` TEXT NOT NULL, `contact_event_type` INTEGER NOT NULL, `create_ts` TEXT NOT NULL, `last_updt_ts` TEXT, PRIMARY KEY(`event_id`), FOREIGN KEY(`event_id`) REFERENCES `Event`(`event_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` INTEGER NOT NULL, `src_event_id` TEXT NOT NULL, `contact_event_type` INTEGER NOT NULL, PRIMARY KEY(`event_id`), FOREIGN KEY(`event_id`) REFERENCES `Event`(`event_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "eventId",
@@ -93,18 +69,6 @@
             "columnName": "contact_event_type",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "createTs",
-            "columnName": "create_ts",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "lastUpdateTs",
-            "columnName": "last_updt_ts",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -132,7 +96,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fa9270b0160445d0be8413b5c01c7c5f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3d4a4c1dd6c12b532d549c98b6ab3461')"
     ]
   }
 }

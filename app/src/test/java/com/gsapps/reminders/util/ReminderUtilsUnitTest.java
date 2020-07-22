@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.gsapps.reminders.util.ReminderUtils.isNotNullOrEmpty;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -18,21 +17,21 @@ public class ReminderUtilsUnitTest {
 
     @Test
     public void isNotNullOrEmpty_Null() {
-        assertFalse(isNotNullOrEmpty(null));
+        assertFalse(StringUtils.isNotNullOrEmpty(null));
     }
 
     @Test
     public void isNotNullOrEmpty_Empty() {
-        assertFalse(isNotNullOrEmpty(""));
+        assertFalse(StringUtils.isNotNullOrEmpty(""));
     }
 
     @Test
     public void isNotNullOrEmpty_WhiteSpaces() {
-        assertFalse(isNotNullOrEmpty(" "));
+        assertFalse(StringUtils.isNotNullOrEmpty(" "));
     }
 
     @Test
     public void isNotNullOrEmpty_NonEmpty() {
-        assertTrue(isNotNullOrEmpty("String"));
+        assertTrue(StringUtils.isNotNullOrEmpty("String"));
     }
 }

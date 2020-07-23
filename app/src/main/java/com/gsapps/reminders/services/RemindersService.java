@@ -51,6 +51,8 @@ public class RemindersService {
                              eventDTOs.add(populateEventDTO(ownerAccount, eventsCursor));
                          }
                      }
+
+                     eventsSelectionArgs.remove(0);
                  });
 
         return eventDTOs;

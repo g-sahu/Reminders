@@ -27,9 +27,9 @@ public final class ContentProviderUtils {
             throw new IllegalArgumentException("Content URI cannot be null");
         }
 
-        String[] projection = toArray(bundle.getStringArrayList(PROJECTION.name()));
+        String[] projection = toArray(bundle.getStringArrayList(PROJECTION.name()), new String[0]);
         String selection = join(bundle.getStringArrayList(SELECTION.name()));
-        String[] selectionArgs = toArray(bundle.getStringArrayList(SELECTION_ARGS.name()));
+        String[] selectionArgs = toArray(bundle.getStringArrayList(SELECTION_ARGS.name()), new String[0]);
         return contentResolver.query(uri, projection, selection, selectionArgs, bundle.getString(SORT_ORDER.name()));
     }
 

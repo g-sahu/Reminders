@@ -64,7 +64,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void registerNotificationIntents() {
-        getEvents().stream().forEach(this :: setAlarm);
+        for (EventDTO eventDTO : getEvents()) {
+            setAlarm(eventDTO);
+        }
     }
 
     private void setAlarm(EventDTO eventDTO) {
@@ -77,7 +79,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         //alarmManager.set(RTC_WAKEUP, getLocalDateTimeinMillis(eventDTO.getStartTs().minusMinutes(30)), pendingIntent);
     }
 
-    // TODO: 13-07-2020 Change this to fetch events for the day
     private List<EventDTO> getEvents() {
         ArrayList<String> calendarsProjection = asList(_ID, OWNER_ACCOUNT);
         ArrayList<String> calendarsSelection = asList(ACCOUNT_NAME + " = ? ", ACCOUNT_TYPE + " = ?");

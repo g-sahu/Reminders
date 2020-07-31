@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
 import com.gsapps.reminders.services.LoadEventsTask;
 
 import static android.Manifest.permission.READ_CALENDAR;
@@ -14,7 +16,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.R.layout.fragment_my_calendar;
 import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
-import static com.gsapps.reminders.util.enums.CalendarType.ALL_CALENDAR;
+import static com.gsapps.reminders.util.enums.CalendarType.COMPREHENSIVE;
 
 public class MyCalendarFragment extends Fragment {
     private Context context;
@@ -29,7 +31,7 @@ public class MyCalendarFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(hasPermission(context, READ_CALENDAR)) {
-            new LoadEventsTask(context, my_calendar_view).execute(ALL_CALENDAR);
+            new LoadEventsTask(context, my_calendar_view).execute(COMPREHENSIVE);
         } else {
             requestPermissions(new String[]{READ_CALENDAR}, REQUEST_READ_CALENDAR);
         }
@@ -42,7 +44,7 @@ public class MyCalendarFragment extends Fragment {
         switch(requestCode) {
             case REQUEST_READ_CALENDAR: {
                 if(grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
-                    new LoadEventsTask(context, my_calendar_view).execute(ALL_CALENDAR);
+                    new LoadEventsTask(context, my_calendar_view).execute(COMPREHENSIVE);
                 } else {
                     // TODO: 21-05-2020 Permission not granted. Show a message to the user
                 }

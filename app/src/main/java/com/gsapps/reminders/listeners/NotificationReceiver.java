@@ -15,7 +15,9 @@ import androidx.annotation.RequiresApi;
 import com.gsapps.reminders.activities.HomeActivity;
 import com.gsapps.reminders.model.ContactEventDTO;
 import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.util.JsonUtils;
 
+import static android.app.Notification.Builder;
 import static android.app.Notification.CATEGORY_EVENT;
 import static android.app.Notification.VISIBILITY_PUBLIC;
 import static android.app.NotificationManager.IMPORTANCE_HIGH;
@@ -28,12 +30,11 @@ import static com.gsapps.reminders.R.drawable.ic_one;
 import static com.gsapps.reminders.util.CalendarUtils.getDateTimeString;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS_JSON;
-import static com.gsapps.reminders.util.ReminderUtils.fromJson;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final String LOG_TAG = NotificationReceiver.class.getSimpleName();
-    private Context context;
     private static final String CHANNEL_ID = "1";
+    private Context context;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -41,7 +42,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         Log.i(LOG_TAG, "Sending Reminders notification...");
         Bundle bundle = intent.getBundleExtra(KEY_EVENTS);
         String json = bundle.getString(KEY_EVENTS_JSON);
-        EventDTO eventDTO = fromJson(json, ContactEventDTO.class);
+        EventDTO eventDTO = JsonUtils.fromJson(json, ContactEventDTO.class);
         createNotification(eventDTO);
     }
 
@@ -49,7 +50,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         // TODO: 13-07-2020 Change this to EventDetail activity
         Intent openIntent = new Intent(context, HomeActivity.class);
         PendingIntent openPendingIntent = getActivity(context, 0, openIntent, FLAG_UPDATE_CURRENT);
-        Notification.Builder builder = new Notification.Builder(context);
+        Builder builder = new Builder(context);
         // TODO: 13-07-2020 Finalise on notification style 
         //builder.setStyle(mediaStyle);
         builder.setContentTitle(eventDTO.getTitle());

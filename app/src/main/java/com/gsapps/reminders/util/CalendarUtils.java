@@ -1,5 +1,6 @@
 package com.gsapps.reminders.util;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import lombok.NoArgsConstructor;
@@ -21,14 +22,22 @@ public final class CalendarUtils {
                             .withNano(0);
     }
 
-    public static long getTodaysDateTimeinMillis() {
-        return getLocalDateTimeinMillis(getTodaysDateTime());
-    }
-
-    public static long getLocalDateTimeinMillis(LocalDateTime localDateTime) {
+    public static long getLocalDateTimeMillis(LocalDateTime localDateTime) {
         return localDateTime.atZone(systemDefault())
                             .toInstant()
                             .toEpochMilli();
+    }
+
+    public static long getTodaysDateTimeMillis() {
+        return getLocalDateTimeMillis(getTodaysDateTime());
+    }
+
+    public static long getCurrentTimeMillis() {
+        return Instant.now().toEpochMilli();
+    }
+
+    public static long getMidnightTimeMillis() {
+        return getLocalDateTimeMillis(getTodaysDateTime().plusDays(1));
     }
 
     /*public static Calendar getCalendar(DateTimeTimeZone dateTimeTimeZone) {

@@ -5,9 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
-import static com.gsapps.reminders.util.CalendarUtils.getTodaysDateTimeinMillis;
+import static com.gsapps.reminders.util.CalendarUtils.getMidnightTimeMillis;
+import static com.gsapps.reminders.util.CalendarUtils.getTodaysDateTimeMillis;
 import static java.time.ZoneId.systemDefault;
+import static java.time.temporal.ChronoUnit.DAYS;
 import static org.junit.Assert.assertEquals;
 
 public class CalendarUtilsUnitTest {
@@ -21,7 +24,7 @@ public class CalendarUtilsUnitTest {
 
     @Test
     public void getTodaysDateTimeinMillis_Valid() {
-        String actualDateTime = Instant.ofEpochMilli(getTodaysDateTimeinMillis())
+        String actualDateTime = Instant.ofEpochMilli(getTodaysDateTimeMillis())
                                        .atZone(systemDefault())
                                        .toString();
 
@@ -34,5 +37,18 @@ public class CalendarUtilsUnitTest {
                                          .toString();
 
         assertEquals(expectedDateTime, actualDateTime);
+    }
+
+    @Test
+    public void getMidnightTimeMillis_Valid() {
+        long actualMillis = getMidnightTimeMillis();
+        long expectedMillis = LocalDateTime.now()
+                                           .truncatedTo(DAYS)
+                                           .plusDays(1)
+                                           .atZone(systemDefault())
+                                           .toInstant()
+                                           .toEpochMilli();
+
+        assertEquals(expectedMillis, actualMillis);
     }
 }

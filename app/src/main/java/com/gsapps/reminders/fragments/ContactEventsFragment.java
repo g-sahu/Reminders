@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
 import com.gsapps.reminders.services.LoadEventsTask;
 
 import static android.Manifest.permission.READ_CALENDAR;
@@ -14,7 +16,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static com.gsapps.reminders.R.id.contact_events_view;
 import static com.gsapps.reminders.R.layout.fragment_contact_events;
 import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
-import static com.gsapps.reminders.util.enums.CalendarType.CONTACT_EVENTS_CALENDAR;
+import static com.gsapps.reminders.util.enums.CalendarType.CONTACT_EVENTS;
 
 public class ContactEventsFragment extends Fragment {
     private static final String LOG_TAG = ContactEventsFragment.class.getSimpleName();
@@ -30,7 +32,7 @@ public class ContactEventsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if(hasPermission(context, READ_CALENDAR)) {
-            new LoadEventsTask(context, contact_events_view).execute(CONTACT_EVENTS_CALENDAR);
+            new LoadEventsTask(context, contact_events_view).execute(CONTACT_EVENTS);
         } else {
             requestPermissions(new String[]{READ_CALENDAR}, REQUEST_READ_CALENDAR);
         }
@@ -43,7 +45,7 @@ public class ContactEventsFragment extends Fragment {
         switch(requestCode) {
             case REQUEST_READ_CALENDAR: {
                 if(grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
-                    new LoadEventsTask(context, contact_events_view).execute(CONTACT_EVENTS_CALENDAR);
+                    new LoadEventsTask(context, contact_events_view).execute(CONTACT_EVENTS);
                 } else {
                     // TODO: 21-05-2020 Permission not granted. Show a message to the user
                 }

@@ -6,14 +6,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
 import com.gsapps.reminders.converters.BooleanConverter;
-import com.gsapps.reminders.converters.CalendarConverter;
 import com.gsapps.reminders.converters.EventTypeConverter;
 import com.gsapps.reminders.util.enums.EventType;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Calendar;
 
 import static java.util.Objects.hash;
 
@@ -37,7 +36,7 @@ public class Event {
     @TypeConverters(BooleanConverter.class)
     public boolean isRecurring;
 
-    @NonNull @ColumnInfo(name = "start_ts")
+    /*@NonNull @ColumnInfo(name = "start_ts")
     @TypeConverters(CalendarConverter.class)
     public Calendar startTs;
 
@@ -51,7 +50,7 @@ public class Event {
 
     @ColumnInfo(name = "last_updt_ts")
     @TypeConverters(CalendarConverter.class)
-    public Calendar lastUpdateTs;
+    public Calendar lastUpdateTs;*/
 
     @Override
     public boolean equals(@Nullable Object obj) {

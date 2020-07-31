@@ -76,7 +76,7 @@ public class RemindersService {
         List<CalendarDTO> calendars = new ArrayList<>();
 
         try (Cursor calendarsCursor = query(context.getContentResolver(), calendarsBundle)) {
-            while (calendarsCursor != null && calendarsCursor.moveToNext()) {
+            while (hasNext(calendarsCursor)) {
                 CalendarDTO calendarDTO = new CalendarDTO();
                 calendarDTO.setCalendarID(calendarsCursor.getInt(0));
                 calendarDTO.setOwnerAccount(calendarsCursor.getString(1));

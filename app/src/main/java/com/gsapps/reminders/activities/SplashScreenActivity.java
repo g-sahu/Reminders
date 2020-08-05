@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.gsapps.reminders.listeners.NotificationReceiver;
 import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.services.RemindersService;
 
 import static android.app.AlarmManager.RTC_WAKEUP;
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
@@ -19,12 +18,11 @@ import static com.gsapps.reminders.R.layout.activity_splash_screen;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS_JSON;
 import static com.gsapps.reminders.util.JsonUtils.toJson;
-import static com.gsapps.reminders.util.enums.CalendarType.COMPREHENSIVE;
 import static java.time.Instant.now;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String LOG_TAG = SplashScreenActivity.class.getSimpleName();
-    private final RemindersService remindersService = new RemindersService();
+    //private final RemindersService remindersService = new RemindersService();
     private Context context;
 
     @Override
@@ -37,7 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        registerNotificationIntents();
+        //registerNotificationIntents();
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
@@ -48,11 +46,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void registerNotificationIntents() {
+    /*private void registerNotificationIntents() {
         for (EventDTO eventDTO : remindersService.getEvents(context, COMPREHENSIVE)) {
             setAlarm(eventDTO);
         }
-    }
+    }*/
 
     private void setAlarm(EventDTO eventDTO) {
         Bundle bundle = new Bundle();

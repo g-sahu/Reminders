@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.WorkerThread;
+
 import com.gsapps.reminders.model.CalendarDTO;
 import com.gsapps.reminders.model.EventDTO;
 import com.gsapps.reminders.util.enums.CalendarType;
@@ -12,6 +14,8 @@ import com.gsapps.reminders.util.enums.CalendarType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 
 import static android.provider.BaseColumns._ID;
 import static android.provider.CalendarContract.Calendars;
@@ -25,7 +29,6 @@ import static android.provider.CalendarContract.Events.DTSTART;
 import static android.provider.CalendarContract.Events.TITLE;
 import static com.gsapps.reminders.factories.EventDTOFactory.createEventDTO;
 import static com.gsapps.reminders.util.CalendarUtils.getCurrentTimeMillis;
-import static com.gsapps.reminders.util.CalendarUtils.getMidnightTimeMillis;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
 import static com.gsapps.reminders.util.ContentProviderUtils.createContentProviderBundle;
 import static com.gsapps.reminders.util.ContentProviderUtils.hasNext;
@@ -35,10 +38,29 @@ import static com.gsapps.reminders.util.ListUtils.getOrDefault;
 import static com.gsapps.reminders.util.enums.ContentProviderParam.SELECTION_ARGS;
 import static java.lang.String.valueOf;
 
+@RequiredArgsConstructor
 public class RemindersService {
     private static final String LOG_TAG = RemindersService.class.getSimpleName();
+    private final Context context;
 
-    public List<EventDTO> getEvents(Context context, CalendarType calendarType) {
+    @WorkerThread
+    public List<CalendarDTO> getCalendars(Bundle calendarsBundle) {
+        List<CalendarDTO> calendars = new ArrayList<>();
+
+        try (Cursor calendarsCursor = query(context.getContentResolver(), calendarsBundle)) {
+            while (hasNext(calendarsCursor)) {
+                CalendarDTO calendarDTO = new CalendarDTO();
+                calendarDTO.setCalendarID(calendarsCursor.getInt(0));
+                calendarDTO.setOwnerAccount(calendarsCursor.getString(1));
+                calendars.add(calendarDTO);
+            }
+        }
+
+        return calendars;
+    }
+
+    @WorkerThread
+    public List<EventDTO> getEvents(CalendarType calendarType) {
         ArrayList<String> calendarsProjection = asList(_ID, OWNER_ACCOUNT);
         ArrayList<String> calendarsSelection = null;
         ArrayList<String> calendarsSelectionArgs = null;
@@ -59,35 +81,23 @@ public class RemindersService {
         }
 
         Bundle calendarsBundle = createContentProviderBundle(Calendars.CONTENT_URI, calendarsProjection, calendarsSelection, calendarsSelectionArgs, null);
-        List<CalendarDTO> calendars = getCalendars(context, calendarsBundle);
+        List<CalendarDTO> calendars = getCalendars(calendarsBundle);
 
         if (calendars.isEmpty()) {
             return new ArrayList<>();
         }
 
         ArrayList<String> eventsProjection = asList(_ID, TITLE, DESCRIPTION, DTSTART);
-        ArrayList<String> eventsSelection = asList(CALENDAR_ID + " = ?", DTSTART + " >= ?", DTSTART + " <= ?");
-        ArrayList<String> eventSelectionArgs = asList(valueOf(getCurrentTimeMillis()), valueOf(getMidnightTimeMillis()));
+        /*ArrayList<String> eventsSelection = asList(CALENDAR_ID + " = ?", DTSTART + " >= ?", DTSTART + " <= ?");
+        ArrayList<String> eventSelectionArgs = asList(valueOf(getCurrentTimeMillis()), valueOf(getMidnightTimeMillis()));*/
+        ArrayList<String> eventsSelection = asList(CALENDAR_ID + " = ?", DTSTART + " >= ?");
+        ArrayList<String> eventSelectionArgs = asList(valueOf(getCurrentTimeMillis()));
         Bundle eventsBundle = createContentProviderBundle(Events.CONTENT_URI, eventsProjection, eventsSelection, eventSelectionArgs, null);
-        return getEvents(context, calendars, eventsBundle);
+        return getEvents(calendars, eventsBundle);
     }
 
-    public List<CalendarDTO> getCalendars(Context context, Bundle calendarsBundle) {
-        List<CalendarDTO> calendars = new ArrayList<>();
-
-        try (Cursor calendarsCursor = query(context.getContentResolver(), calendarsBundle)) {
-            while (hasNext(calendarsCursor)) {
-                CalendarDTO calendarDTO = new CalendarDTO();
-                calendarDTO.setCalendarID(calendarsCursor.getInt(0));
-                calendarDTO.setOwnerAccount(calendarsCursor.getString(1));
-                calendars.add(calendarDTO);
-            }
-        }
-
-        return calendars;
-    }
-
-    public List<EventDTO> getEvents(Context context, Collection<CalendarDTO> calendars, Bundle eventsBundle) {
+    @WorkerThread
+    public List<EventDTO> getEvents(Collection<CalendarDTO> calendars, Bundle eventsBundle) {
         ArrayList<String> eventsSelectionArgs = getOrDefault(eventsBundle, SELECTION_ARGS.name(), new ArrayList<>());
         List<EventDTO> eventDTOs = new ArrayList<>();
 

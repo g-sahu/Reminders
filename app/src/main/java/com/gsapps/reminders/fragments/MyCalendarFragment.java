@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.viewmodels.EventViewModel;
+import com.gsapps.reminders.viewmodels.HomeActivityViewModel;
 
 import java.util.List;
 
@@ -22,19 +22,18 @@ import static android.Manifest.permission.READ_CALENDAR;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.R.layout.fragment_my_calendar;
-import static com.gsapps.reminders.adapters.EventListAdapter.Holder;
 import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
 
 public class MyCalendarFragment extends Fragment {
     private static final int REQUEST_READ_CALENDAR = 1;
-    private EventViewModel eventViewModel;
+    private HomeActivityViewModel homeActivityViewModel;
     private Activity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
-        eventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
+        homeActivityViewModel = new ViewModelProvider(this).get(HomeActivityViewModel.class);
     }
 
     @Override
@@ -62,13 +61,12 @@ public class MyCalendarFragment extends Fragment {
     }
 
     private void subscribe() {
-        eventViewModel.getEvents().observe(getViewLifecycleOwner(), this :: updateMyCalendarView);
+        homeActivityViewModel.getMyCalendarEvents().observe(getViewLifecycleOwner(), this :: updateMyCalendarView);
     }
 
     private void updateMyCalendarView(List<EventDTO> eventDTOList) {
-        RecyclerView.Adapter<Holder> eventListAdapter = new EventListAdapter(activity, eventDTOList);
         RecyclerView eventListView = activity.findViewById(my_calendar_view);
-        eventListView.setAdapter(eventListAdapter);
+        eventListView.setAdapter(new EventListAdapter(activity, eventDTOList));
         eventListView.setLayoutManager(new LinearLayoutManager(activity));
     }
 }

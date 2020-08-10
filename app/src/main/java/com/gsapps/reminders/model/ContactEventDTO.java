@@ -2,7 +2,7 @@ package com.gsapps.reminders.model;
 
 import android.os.Parcel;
 
-import com.gsapps.reminders.util.enums.ContactEventDTOCreator;
+import com.gsapps.reminders.creators.ContactEventDTOCreator;
 import com.gsapps.reminders.util.enums.EventType;
 
 import lombok.Getter;

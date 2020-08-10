@@ -1,4 +1,4 @@
-package com.gsapps.reminders.util.enums;
+package com.gsapps.reminders.creators;
 
 import android.os.Parcel;
 import android.os.Parcelable.Creator;

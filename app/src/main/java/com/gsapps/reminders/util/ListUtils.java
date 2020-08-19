@@ -1,11 +1,10 @@
 package com.gsapps.reminders.util;
 
-import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -24,8 +23,13 @@ public final class ListUtils {
         return new ArrayList<>(Arrays.asList(t));
     }
 
-    public static ArrayList<String> getOrDefault(@NonNull Bundle bundle, String key, ArrayList<String> defaultList) {
-        return Optional.ofNullable(bundle.getStringArrayList(key))
-                       .orElse(defaultList);
+    public static <T> T getOrDefault(T object, T defaultValue) {
+        return Optional.ofNullable(object)
+                       .orElse(defaultValue);
+    }
+
+    public static <T, E extends Throwable> T getOrThrow(T object, Supplier<? extends E> exceptionSupplier) throws E {
+        return Optional.ofNullable(object)
+                       .orElseThrow(exceptionSupplier);
     }
 }

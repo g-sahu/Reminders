@@ -7,8 +7,8 @@ import org.junit.Test;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
-import static com.gsapps.reminders.util.CalendarUtils.getMidnightTimeMillis;
-import static com.gsapps.reminders.util.CalendarUtils.getTodaysDateTimeMillis;
+import static com.gsapps.reminders.util.CalendarUtils.getEndOfDayMillis;
+import static com.gsapps.reminders.util.CalendarUtils.getStartOfDayMillis;
 import static java.time.ZoneId.systemDefault;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.junit.Assert.assertEquals;
@@ -24,7 +24,7 @@ public class CalendarUtilsUnitTest {
 
     @Test
     public void getTodaysDateTimeinMillis_Valid() {
-        String actualDateTime = Instant.ofEpochMilli(getTodaysDateTimeMillis())
+        String actualDateTime = Instant.ofEpochMilli(getStartOfDayMillis())
                                        .atZone(systemDefault())
                                        .toString();
 
@@ -41,7 +41,7 @@ public class CalendarUtilsUnitTest {
 
     @Test
     public void getMidnightTimeMillis_Valid() {
-        long actualMillis = getMidnightTimeMillis();
+        long actualMillis = getEndOfDayMillis();
         long expectedMillis = LocalDateTime.now()
                                            .truncatedTo(DAYS)
                                            .plusDays(1)

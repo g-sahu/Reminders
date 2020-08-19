@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 public final class CalendarUtils {
     private static final String LOG_TAG = CalendarUtils.class.getSimpleName();
 
-    public static LocalDateTime getTodaysDateTime() {
+    public static LocalDateTime getStartOfDayDateTime() {
         return LocalDateTime.now()
                             .withHour(0)
                             .withMinute(0)
@@ -28,16 +28,16 @@ public final class CalendarUtils {
                             .toEpochMilli();
     }
 
-    public static long getTodaysDateTimeMillis() {
-        return getLocalDateTimeMillis(getTodaysDateTime());
-    }
-
     public static long getCurrentTimeMillis() {
         return Instant.now().toEpochMilli();
     }
 
-    public static long getMidnightTimeMillis() {
-        return getLocalDateTimeMillis(getTodaysDateTime().plusDays(1));
+    public static long getStartOfDayMillis() {
+        return getLocalDateTimeMillis(getStartOfDayDateTime());
+    }
+
+    public static long getEndOfDayMillis() {
+        return getLocalDateTimeMillis(getStartOfDayDateTime().plusDays(1));
     }
 
     /*public static Calendar getCalendar(DateTimeTimeZone dateTimeTimeZone) {
@@ -66,8 +66,8 @@ public final class CalendarUtils {
         return localDateTime.format(ofPattern(format));
     }
 
-    public static String getTodaysDateTimeString(String format) {
-        return getDateString(getTodaysDateTime(), format);
+    public static String getStartOfDayDateTimeString(String format) {
+        return getDateString(getStartOfDayDateTime(), format);
     }
 
     public static LocalDateTime getLocalDateTime(long timeInMillis) {

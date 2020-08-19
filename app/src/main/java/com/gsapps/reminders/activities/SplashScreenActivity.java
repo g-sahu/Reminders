@@ -2,20 +2,26 @@ package com.gsapps.reminders.activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.gsapps.reminders.RemindersApplication;
 import com.gsapps.reminders.listeners.NotificationReceiver;
 import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.services.RemindersService;
+import com.gsapps.reminders.services.LoadEventsTask;
+import com.gsapps.reminders.services.LoadEventsTask.Params;
+
+import java.util.concurrent.ExecutionException;
 
 import static android.app.AlarmManager.RTC_WAKEUP;
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static android.app.PendingIntent.getBroadcast;
 import static com.gsapps.reminders.R.layout.activity_splash_screen;
+import static com.gsapps.reminders.util.CalendarUtils.getEndOfDayMillis;
+import static com.gsapps.reminders.util.CalendarUtils.getStartOfDayMillis;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS_JSON;
 import static com.gsapps.reminders.util.JsonUtils.toJson;
@@ -24,13 +30,12 @@ import static java.time.Instant.now;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String LOG_TAG = SplashScreenActivity.class.getSimpleName();
-    private final RemindersService remindersService = new RemindersService();
-    private Context context;
+    private RemindersApplication application;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
+        application = (RemindersApplication) getApplication();
         setContentView(activity_splash_screen);
     }
 
@@ -49,8 +54,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void registerNotificationIntents() {
-        for (EventDTO eventDTO : remindersService.getEvents(context, COMPREHENSIVE)) {
-            setAlarm(eventDTO);
+        //Fetch today's events for calendar type
+        try {
+            new LoadEventsTask(application).execute(new Params(COMPREHENSIVE, getStartOfDayMillis(), getEndOfDayMillis()))
+                                           .get()
+                                           .stream()
+                                           .forEach(this :: setAlarm);
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e(LOG_TAG, "Error while fetching events: " + e.getMessage());
         }
     }
 

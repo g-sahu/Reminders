@@ -21,7 +21,6 @@ public abstract class EventDTO implements Parcelable {
     protected final EventType eventType;
     protected String eventDesc;
     //protected boolean isRecurring;
-
     protected long startTs;
     protected long endTs;
     protected long createTs;
@@ -35,7 +34,6 @@ public abstract class EventDTO implements Parcelable {
         eventDesc = in.readString();
         // TODO: 13-07-2020 Convert boolean to int to serialise this field
         //isRecurring = in.readBoolean();
-
         startTs = in.readLong();
         endTs = in.readLong();
         createTs = in.readLong();

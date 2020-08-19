@@ -1,48 +1,34 @@
 package com.gsapps.reminders.services;
 
-import android.app.Activity;
-import android.content.Context;
+import android.app.Application;
 import android.os.AsyncTask;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.util.comparators.StartDateComparator;
+import com.gsapps.reminders.services.LoadEventsTask.Params;
 import com.gsapps.reminders.util.enums.CalendarType;
 
 import java.util.List;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import static androidx.recyclerview.widget.RecyclerView.Adapter;
-import static com.gsapps.reminders.adapters.EventListAdapter.Holder;
-import static java.util.Collections.sort;
+import static com.gsapps.reminders.util.ContentProviderUtils.createEventsBundle;
 
 @RequiredArgsConstructor
-public class LoadEventsTask extends AsyncTask<CalendarType, Void, List<EventDTO>> {
+public class LoadEventsTask extends AsyncTask<Params, Void, List<EventDTO>> {
     private static final String LOG_TAG = LoadEventsTask.class.getSimpleName();
-    private final RemindersService remindersService = new RemindersService();
-    private final Context context;
-    private final int viewId;
+    private final Application application;
 
     @Override
-    protected List<EventDTO> doInBackground(CalendarType... calendarType) {
-        return remindersService.getEvents(context, calendarType[0]);
+    protected List<EventDTO> doInBackground(Params... params) {
+        Params param = params[0];
+        return new RemindersService(application).getEvents(param.calendarType, createEventsBundle(param.millisFrom, param.millisTo));
     }
 
-    @Override
-    protected void onPostExecute(List<EventDTO> eventDTOList) {
-        super.onPostExecute(eventDTOList);
-        sort(eventDTOList, new StartDateComparator());
-        updateMyCalendarView(eventDTOList);
-    }
-
-    private void updateMyCalendarView(List<EventDTO> eventDTOList) {
-        Adapter<Holder> eventListAdapter = new EventListAdapter(context, eventDTOList);
-        RecyclerView eventListView = ((Activity) context).findViewById(viewId);
-        eventListView.setAdapter(eventListAdapter);
-        eventListView.setLayoutManager(new LinearLayoutManager(context));
+    @Data
+    public static class Params {
+        private final CalendarType calendarType;
+        private final long millisFrom;
+        private final long millisTo;
     }
 }

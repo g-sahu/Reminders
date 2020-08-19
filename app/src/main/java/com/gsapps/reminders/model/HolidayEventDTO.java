@@ -2,8 +2,8 @@ package com.gsapps.reminders.model;
 
 import android.os.Parcel;
 
+import com.gsapps.reminders.creators.HolidayEventDTOCreator;
 import com.gsapps.reminders.util.enums.EventType;
-import com.gsapps.reminders.util.enums.HolidayEventDTOCreator;
 
 import lombok.Getter;
 import lombok.Setter;

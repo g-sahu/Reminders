@@ -3,6 +3,8 @@ package com.gsapps.reminders.util.enums;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.gsapps.reminders.creators.EventTypeCreator;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

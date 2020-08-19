@@ -1,16 +1,19 @@
 package com.gsapps.reminders.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 import static lombok.EqualsAndHashCode.Include;
 
-@Getter @Setter
+@Data
+@Builder
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class CalendarDTO {
-    @Include private int calendarID;
-    private String name;
+    @Include private final int calendarID;
+    private String calendarName;
     private String accountName;
     private String accountType;
     private String ownerAccount;

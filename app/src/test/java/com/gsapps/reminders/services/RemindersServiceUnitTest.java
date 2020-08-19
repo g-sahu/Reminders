@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 
 public class RemindersServiceUnitTest {
-    private RemindersService remindersService = new RemindersService();
+    //private RemindersService remindersService = new RemindersService();
 
     @Before
     public void setUp() throws Exception {

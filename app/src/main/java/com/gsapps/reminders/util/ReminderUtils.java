@@ -21,7 +21,7 @@ import static android.widget.Toast.makeText;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
 import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
-import static com.gsapps.reminders.util.CalendarUtils.getTodaysDateTimeString;
+import static com.gsapps.reminders.util.CalendarUtils.getStartOfDayDateTimeString;
 import static java.util.TimeZone.getDefault;
 import static java.util.stream.Collectors.toList;
 import static lombok.AccessLevel.PRIVATE;
@@ -57,7 +57,7 @@ public final class ReminderUtils {
         List<Option> options = new ArrayList<>();
         options.add(new HeaderOption("Prefer", "outlook.timezone=\"" + getDefault().getID() + "\""));
         options.add(new QueryOption("select", "subject,bodyPreview,start,end,location"));
-        options.add(new QueryOption("filter", "start/dateTime ge '" + getTodaysDateTimeString("yyyy-MM-dd HH:mm") + "'"));
+        options.add(new QueryOption("filter", "start/dateTime ge '" + getStartOfDayDateTimeString("yyyy-MM-dd HH:mm") + "'"));
         options.add(new QueryOption("orderby", "start/dateTime"));
         return options;
     }

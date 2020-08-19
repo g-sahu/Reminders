@@ -61,7 +61,8 @@ public class MyCalendarFragment extends Fragment {
     }
 
     private void subscribe() {
-        homeActivityViewModel.getMyCalendarEvents().observe(getViewLifecycleOwner(), this :: updateMyCalendarView);
+        homeActivityViewModel.getMyCalendarEvents()
+                             .observe(getViewLifecycleOwner(), this :: updateMyCalendarView);
     }
 
     private void updateMyCalendarView(List<EventDTO> eventDTOList) {

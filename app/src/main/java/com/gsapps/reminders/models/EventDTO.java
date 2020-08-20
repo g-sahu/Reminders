@@ -26,6 +26,7 @@ public abstract class EventDTO implements Parcelable {
     protected long createTs;
     protected long lastUpdateTs;
     protected final int icon;
+    protected final String dateFormat = "d'%s' MMM, yyyy";
 
     protected EventDTO(Parcel in) {
         eventId = in.readInt();

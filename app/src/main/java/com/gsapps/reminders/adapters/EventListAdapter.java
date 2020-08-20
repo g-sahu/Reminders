@@ -45,7 +45,7 @@ public class EventListAdapter extends Adapter<Holder> {
         EventDTO eventDTO = eventDTOList.get(position);
         with(context).load(eventDTO.getIcon()).into(holder.eventIcon);
         holder.eventName.setText(eventDTO.getTitle());
-        holder.eventDate.setText(getDateTimeString(eventDTO.getStartTs(), getDateFormat(eventDTO)));
+        holder.eventDate.setText(getDateTimeString(eventDTO.getStartTs(), eventDTO.getDateFormat(), true));
     }
 
     @Override
@@ -68,11 +68,5 @@ public class EventListAdapter extends Adapter<Holder> {
             eventName = itemView.findViewById(event_name);
             eventDate = itemView.findViewById(event_date);
         }
-    }
-
-    private static String getDateFormat(EventDTO eventDTO) {
-        // TODO: 13-07-2020 Implement Parcelable in MeetingEventDTO to enable this commented code
-        //return eventDTO instanceof MeetingEventDTO ? "dd/MM/YYYY hh:mm a" : "dd/MM/YYYY";
-        return "dd/MM/YYYY";
     }
 }

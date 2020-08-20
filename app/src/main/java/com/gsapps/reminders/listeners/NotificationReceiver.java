@@ -55,7 +55,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         //builder.setStyle(mediaStyle);
         builder.setContentTitle(eventDTO.getTitle());
         builder.setContentText(eventDTO.getEventDesc());
-        builder.setSubText(getDateTimeString(eventDTO.getStartTs(), "dd/MM/YYYY"));
+        builder.setSubText(getDateTimeString(eventDTO.getStartTs(), eventDTO.getDateFormat(), true));
         builder.setWhen(eventDTO.getStartTs());
         builder.setShowWhen(true);
         builder.setVisibility(VISIBILITY_PUBLIC);

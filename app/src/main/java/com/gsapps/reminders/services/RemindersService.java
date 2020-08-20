@@ -7,8 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.WorkerThread;
 
 import com.gsapps.reminders.RemindersApplication;
-import com.gsapps.reminders.model.CalendarDTO;
-import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.models.CalendarDTO;
+import com.gsapps.reminders.models.EventDTO;
 import com.gsapps.reminders.util.enums.CalendarType;
 
 import java.util.ArrayList;

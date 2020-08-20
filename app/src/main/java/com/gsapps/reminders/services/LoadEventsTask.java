@@ -3,7 +3,7 @@ package com.gsapps.reminders.services;
 import android.app.Application;
 import android.os.AsyncTask;
 
-import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.models.EventDTO;
 import com.gsapps.reminders.services.LoadEventsTask.Params;
 import com.gsapps.reminders.util.enums.CalendarType;
 

@@ -2,9 +2,9 @@ package com.gsapps.reminders.factories;
 
 import android.util.Log;
 
-import com.gsapps.reminders.model.ContactEventDTO;
-import com.gsapps.reminders.model.EventDTO;
-import com.gsapps.reminders.model.HolidayEventDTO;
+import com.gsapps.reminders.models.ContactEventDTO;
+import com.gsapps.reminders.models.EventDTO;
+import com.gsapps.reminders.models.HolidayEventDTO;
 import com.gsapps.reminders.util.enums.EventType;
 
 import lombok.NoArgsConstructor;

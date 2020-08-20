@@ -1,4 +1,4 @@
-package com.gsapps.reminders.model;
+package com.gsapps.reminders.models;
 
 import android.os.Parcel;
 

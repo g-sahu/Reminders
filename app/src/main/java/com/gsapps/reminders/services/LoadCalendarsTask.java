@@ -4,7 +4,7 @@ import android.app.Application;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.gsapps.reminders.model.CalendarDTO;
+import com.gsapps.reminders.models.CalendarDTO;
 
 import java.util.List;
 

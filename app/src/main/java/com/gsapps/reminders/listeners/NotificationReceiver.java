@@ -13,8 +13,8 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.gsapps.reminders.activities.HomeActivity;
-import com.gsapps.reminders.model.ContactEventDTO;
-import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.models.ContactEventDTO;
+import com.gsapps.reminders.models.EventDTO;
 import com.gsapps.reminders.util.JsonUtils;
 
 import static android.app.Notification.Builder;

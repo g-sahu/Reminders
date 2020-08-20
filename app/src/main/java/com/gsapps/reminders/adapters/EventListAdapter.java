@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.gsapps.reminders.adapters.EventListAdapter.Holder;
-import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.models.EventDTO;
 
 import java.util.List;
 

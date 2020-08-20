@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.gsapps.reminders.RemindersApplication;
 import com.gsapps.reminders.listeners.NotificationReceiver;
-import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.models.EventDTO;
 import com.gsapps.reminders.services.LoadEventsTask;
 import com.gsapps.reminders.services.LoadEventsTask.Params;
 

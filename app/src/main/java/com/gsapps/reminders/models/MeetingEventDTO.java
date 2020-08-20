@@ -1,4 +1,4 @@
-package com.gsapps.reminders.model;
+package com.gsapps.reminders.models;
 
 import lombok.Getter;
 import lombok.Setter;

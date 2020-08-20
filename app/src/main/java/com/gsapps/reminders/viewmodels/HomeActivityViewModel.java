@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.models.EventDTO;
 import com.gsapps.reminders.services.LoadEventsTask;
 import com.gsapps.reminders.services.LoadEventsTask.Params;
 import com.gsapps.reminders.util.comparators.StartDateComparator;

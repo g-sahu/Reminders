@@ -4,7 +4,7 @@ import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.gsapps.reminders.model.CalendarDTO;
+import com.gsapps.reminders.models.CalendarDTO;
 import com.gsapps.reminders.services.LoadCalendarsTask;
 import com.gsapps.reminders.util.enums.CalendarType;
 

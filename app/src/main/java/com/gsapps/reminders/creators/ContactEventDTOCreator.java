@@ -3,7 +3,7 @@ package com.gsapps.reminders.creators;
 import android.os.Parcel;
 import android.os.Parcelable.Creator;
 
-import com.gsapps.reminders.model.ContactEventDTO;
+import com.gsapps.reminders.models.ContactEventDTO;
 
 public class ContactEventDTOCreator implements Creator<ContactEventDTO> {
     @Override

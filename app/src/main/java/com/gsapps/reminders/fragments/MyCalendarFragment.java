@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gsapps.reminders.adapters.EventListAdapter;
-import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.models.EventDTO;
 import com.gsapps.reminders.viewmodels.HomeActivityViewModel;
 
 import java.util.List;

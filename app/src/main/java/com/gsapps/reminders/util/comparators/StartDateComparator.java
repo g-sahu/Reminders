@@ -1,6 +1,6 @@
 package com.gsapps.reminders.util.comparators;
 
-import com.gsapps.reminders.model.EventDTO;
+import com.gsapps.reminders.models.EventDTO;
 
 import java.util.Comparator;
 

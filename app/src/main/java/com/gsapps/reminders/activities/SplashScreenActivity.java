@@ -26,7 +26,7 @@ import static com.gsapps.reminders.util.Constants.KEY_EVENTS;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS_JSON;
 import static com.gsapps.reminders.util.JsonUtils.toJson;
 import static com.gsapps.reminders.util.enums.CalendarType.COMPREHENSIVE;
-import static java.time.Instant.now;
+import static java.time.Duration.ofMinutes;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final String LOG_TAG = SplashScreenActivity.class.getSimpleName();
@@ -54,7 +54,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void registerNotificationIntents() {
-        //Fetch today's events for calendar type
+        //Fetch events for the day
         try {
             new LoadEventsTask(application).execute(new Params(COMPREHENSIVE, getStartOfDayMillis(), getEndOfDayMillis()))
                                            .get()
@@ -71,7 +71,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NotificationReceiver.class).putExtra(KEY_EVENTS, bundle);
         PendingIntent pendingIntent = getBroadcast(this, 1, intent, FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(RTC_WAKEUP, now().plusSeconds(10).toEpochMilli(), pendingIntent);
-        //alarmManager.set(RTC_WAKEUP, getLocalDateTimeinMillis(eventDTO.getStartTs().minusMinutes(30)), pendingIntent);
+        alarmManager.set(RTC_WAKEUP, eventDTO.getStartTs() - ofMinutes(30).toMillis(), pendingIntent);
     }
 }

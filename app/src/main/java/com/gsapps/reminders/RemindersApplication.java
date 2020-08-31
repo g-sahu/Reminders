@@ -1,32 +1,40 @@
 package com.gsapps.reminders;
 
 import android.app.Application;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.gsapps.reminders.models.CalendarDTO;
-import com.gsapps.reminders.services.LoadCalendarsTask;
 import com.gsapps.reminders.util.enums.CalendarType;
+import com.microsoft.identity.client.IMultipleAccountPublicClientApplication;
+import com.microsoft.identity.client.IPublicClientApplication;
+import com.microsoft.identity.client.exception.MsalException;
 
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
+import lombok.Getter;
+
+import static com.gsapps.reminders.R.raw.msal_config;
+import static com.gsapps.reminders.R.string.app_name;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_IN;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_US;
-import static com.gsapps.reminders.util.ContentProviderUtils.createCalendarBundle;
+import static com.gsapps.reminders.util.Constants.MSAL_ERROR_MSG;
 import static com.gsapps.reminders.util.enums.CalendarType.COMPREHENSIVE;
 import static com.gsapps.reminders.util.enums.CalendarType.CONTACT_EVENTS;
 import static com.gsapps.reminders.util.enums.CalendarType.HOLIDAY;
+import static com.microsoft.identity.client.PublicClientApplication.createMultipleAccountPublicClientApplication;
+import static java.lang.String.format;
 
 public class RemindersApplication extends Application {
     private static final String LOG_TAG = RemindersApplication.class.getSimpleName();
     private static final Map<String, CalendarType> calendarTypeByOwnerAcMap;
     private final Map<CalendarType, Set<CalendarDTO>> calendarsByCalendarTypeMap = new EnumMap<>(CalendarType.class);
+    @Getter private IMultipleAccountPublicClientApplication multipleAccountApp;
+    @Getter private String appName;
 
     static {
         calendarTypeByOwnerAcMap = new HashMap<>();
@@ -38,7 +46,10 @@ public class RemindersApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Bundle calendarsBundle = createCalendarBundle(COMPREHENSIVE);
+        appName = getString(app_name);
+        createMultipleAccountPublicClientApplication(this, msal_config, new MultipleAccountApplicationCreatedListener());
+
+        /*Bundle calendarsBundle = createCalendarBundle(COMPREHENSIVE);
 
         try {
             new LoadCalendarsTask(this).execute(calendarsBundle)
@@ -47,7 +58,7 @@ public class RemindersApplication extends Application {
                                        .forEach(this :: updateCalendarMap);
         } catch (ExecutionException | InterruptedException e) {
             Log.e(LOG_TAG, "Error while fetching calendars: " + e.getMessage());
-        }
+        }*/
     }
 
     private void updateCalendarMap(CalendarDTO calendarDTO) {
@@ -66,5 +77,18 @@ public class RemindersApplication extends Application {
 
     public Set<CalendarDTO> getCalendars(CalendarType calendarType) {
         return calendarsByCalendarTypeMap.getOrDefault(calendarType, new HashSet<>());
+    }
+
+    class MultipleAccountApplicationCreatedListener implements
+            IPublicClientApplication.IMultipleAccountApplicationCreatedListener {
+        @Override
+        public void onCreated(IMultipleAccountPublicClientApplication application) {
+            multipleAccountApp = application;
+        }
+
+        @Override
+        public void onError(MsalException e) {
+            Log.e(LOG_TAG, "Exception while creating public client." + format(MSAL_ERROR_MSG, e.getErrorCode(), e.getMessage()));
+        }
     }
 }

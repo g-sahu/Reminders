@@ -15,11 +15,12 @@ import java.util.List;
 
 import lombok.NoArgsConstructor;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
-import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
+import static com.gsapps.reminders.R.string.app_name;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static com.gsapps.reminders.util.CalendarUtils.getStartOfDayDateTimeString;
 import static java.util.TimeZone.getDefault;
@@ -50,7 +51,8 @@ public final class ReminderUtils {
     }
 
     public static boolean isOutlookConnected(Context context) {
-        return getDefaultSharedPreferences(context).getBoolean(context.getString(key_connect_with_outlook), false);
+        return context.getSharedPreferences(context.getString(app_name), MODE_PRIVATE)
+                      .getBoolean(context.getString(key_connect_with_outlook), false);
     }
 
     public static List<Option> getOptions() {

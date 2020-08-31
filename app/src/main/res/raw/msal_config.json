@@ -1,0 +1,12 @@
+{
+  "client_id": "3cb2d2cd-e368-4b31-ac55-fa052fc2055b",
+  "authorization_user_agent": "DEFAULT",
+  "redirect_uri": "msauth://com.gsapps.reminders/QTqnBIRACkD%2BiaO6HKcj9w5CDG8%3D",
+  "authorities": [{
+    "type": "AAD",
+    "audience": {
+      "type": "AzureADandPersonalMicrosoftAccount",
+      "tenant_id": "common"
+    }
+  }]
+}

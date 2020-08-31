@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.gsapps.reminders.factories.FragmentFactory;
+import com.gsapps.reminders.services.MSAuthManager;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,8 +35,6 @@ import static com.gsapps.reminders.R.string.drawer_close;
 import static com.gsapps.reminders.R.string.drawer_open;
 import static com.gsapps.reminders.R.string.my_calendar;
 import static com.gsapps.reminders.factories.FragmentFactory.getFragmentFactory;
-import static com.gsapps.reminders.services.MSAuthManager.getClientApplication;
-import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
 import static com.gsapps.reminders.util.Constants.DISPLAY_NAME;
 import static com.gsapps.reminders.util.Constants.PHOTO_URL;
 import static com.gsapps.reminders.util.enums.FragmentTag.CONTACT_EVENTS_FRAGMENT;
@@ -49,11 +48,13 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     private Fragment calendarFragment, contactEventsFragment, meetingsFragment, settingsFragment;
     public static Context context; // TODO: 24-03-2019 To be changed to a better way to access activity context in other classes.
     private final FragmentFactory fragmentFactory = getFragmentFactory();
+    private MSAuthManager msAuthManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        msAuthManager = new MSAuthManager(this);
         setContentView(activity_home);
 
         // Set a Toolbar to replace the ActionBar.
@@ -136,7 +137,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getClientApplication(context).handleInteractiveRequestRedirect(requestCode, resultCode, data);
     }
 
     private void loadProfilePic(CircleImageView profilePic, Uri uri) {
@@ -156,6 +156,6 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
     public void connectWithOutlook(View view) {
         findViewById(connect_with_outlook).setVisibility(GONE);
         findViewById(meetings_view).setVisibility(VISIBLE);
-        loginOutlook(context);
+        msAuthManager.loginOutlook(this);
     }
 }

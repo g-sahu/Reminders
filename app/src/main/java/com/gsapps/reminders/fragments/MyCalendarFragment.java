@@ -22,10 +22,10 @@ import static android.Manifest.permission.READ_CALENDAR;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static com.gsapps.reminders.R.id.my_calendar_view;
 import static com.gsapps.reminders.R.layout.fragment_my_calendar;
+import static com.gsapps.reminders.util.Constants.REQUEST_READ_CALENDAR;
 import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
 
 public class MyCalendarFragment extends Fragment {
-    private static final int REQUEST_READ_CALENDAR = 1;
     private HomeActivityViewModel homeActivityViewModel;
     private Activity activity;
 

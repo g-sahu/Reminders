@@ -1,28 +1,31 @@
 package com.gsapps.reminders.fragments;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.gsapps.reminders.services.MSAuthManager;
 
 import static androidx.preference.Preference.OnPreferenceChangeListener;
 import static androidx.preference.Preference.OnPreferenceClickListener;
 import static com.gsapps.reminders.R.string.key_connect_with_outlook;
 import static com.gsapps.reminders.R.string.key_logout;
 import static com.gsapps.reminders.R.xml.settings;
-import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
-import static com.gsapps.reminders.services.MSAuthManager.logoutOutlook;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 
 public class SettingsFragment extends PreferenceFragmentCompat
         implements OnPreferenceChangeListener, OnPreferenceClickListener {
     private static final String LOG_TAG = SettingsFragment.class.getSimpleName();
-    private Context context;
+    private MSAuthManager msAuthManager;
+    private Activity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getContext();
+        activity = (Activity) getContext();
+        msAuthManager = new MSAuthManager(activity);
         findPreference(getString(key_connect_with_outlook)).setOnPreferenceChangeListener(this);
         //findPreference(getString(key_logout)).setOnPreferenceChangeListener(this);
         findPreference(getString(key_logout)).setOnPreferenceClickListener(this);
@@ -55,10 +58,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     public void connectWithOutlook(boolean isSwitchedOn) {
         if(isSwitchedOn) {
-            loginOutlook(context);
+            msAuthManager.loginOutlook(activity);
         } else {
-            logoutOutlook(context);
-            showToastMessage(context, "Logged out of Outlook");
+            msAuthManager.logoutOutlook();
+            showToastMessage(activity, "Logged out of Outlook");
         }
     }
 }

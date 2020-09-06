@@ -15,7 +15,7 @@ import com.microsoft.graph.requests.extensions.GraphServiceClient;
 import com.microsoft.identity.client.AuthenticationCallback;
 import com.microsoft.identity.client.IAccount;
 import com.microsoft.identity.client.IAuthenticationResult;
-import com.microsoft.identity.client.IMultipleAccountPublicClientApplication;
+import com.microsoft.identity.client.ISingleAccountPublicClientApplication;
 import com.microsoft.identity.client.exception.MsalClientException;
 import com.microsoft.identity.client.exception.MsalException;
 import com.microsoft.identity.client.exception.MsalServiceException;
@@ -31,7 +31,7 @@ import static com.gsapps.reminders.util.Constants.MSAL_ACCESS_TOKEN;
 import static com.gsapps.reminders.util.Constants.MSAL_ERROR_MSG;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 import static com.microsoft.graph.logger.LoggerLevel.DEBUG;
-import static com.microsoft.identity.client.IMultipleAccountPublicClientApplication.RemoveAccountCallback;
+import static com.microsoft.identity.client.ISingleAccountPublicClientApplication.SignOutCallback;
 import static java.lang.String.format;
 
 public class MSAuthManager implements IAuthenticationProvider {
@@ -39,16 +39,16 @@ public class MSAuthManager implements IAuthenticationProvider {
     private final static String[] SCOPES = {"https://graph.microsoft.com/User.Read", "https://graph.microsoft.com/Calendars.Read"};
     private final Context appContext;
     private final String appName;
-    private final IMultipleAccountPublicClientApplication multipleAccountApp;
+    private final ISingleAccountPublicClientApplication singleAccountApp;
     private IGraphServiceClient graphServiceClient;
-    private IAccount firstAccount;
+    private IAccount account;
     private String accessToken;
 
     public MSAuthManager(Activity activity) {
         appContext = activity.getApplicationContext();
         RemindersApplication remindersApplication = (RemindersApplication) activity.getApplication();
         appName = remindersApplication.getAppName();
-        multipleAccountApp = remindersApplication.getMultipleAccountApp();
+        singleAccountApp = remindersApplication.getSingleAccountApp();
     }
 
     public synchronized IGraphServiceClient getGraphServiceClient() {
@@ -70,18 +70,13 @@ public class MSAuthManager implements IAuthenticationProvider {
     }
 
     public void loginOutlook(Activity activity) {
-        if (firstAccount == null) {
-            multipleAccountApp.acquireToken(activity, SCOPES, new AuthenticationCallbackListener());
+        if (account == null) {
+            singleAccountApp.signIn(activity, null, SCOPES, new AuthenticationCallbackListener());
         } else {
             try {
-                //On a worker thread
-                IAccount account = multipleAccountApp.getAccount(firstAccount.getId());
-
-                if (account != null) {
-                    String authority = multipleAccountApp.getConfiguration().getDefaultAuthority().getAuthorityURL().toString();
-                    IAuthenticationResult result = multipleAccountApp.acquireTokenSilent(SCOPES, account, authority);
-                    postAuthProcess(result);
-                }
+                String authority = singleAccountApp.getConfiguration().getDefaultAuthority().getAuthorityURL().toString();
+                IAuthenticationResult result = singleAccountApp.acquireTokenSilent(SCOPES, authority);
+                postAuthProcess(result);
             } catch (MsalException e) {
                 Log.e(LOG_TAG, "Exception while acquiring token silently. " + format(MSAL_ERROR_MSG, e.getErrorCode(), e.getMessage()));
             } catch (InterruptedException e) {
@@ -91,15 +86,14 @@ public class MSAuthManager implements IAuthenticationProvider {
     }
 
     public void logoutOutlook() {
-        multipleAccountApp.removeAccount(firstAccount, new RemoveAccountCallbackListener());
+        singleAccountApp.signOut(new SignOutCallbackListener());
         saveAccessToken(null);
     }
 
     private void postAuthProcess(IAuthenticationResult authenticationResult) {
         String accessToken = authenticationResult.getAccessToken();
-        firstAccount = authenticationResult.getAccount();
+        account = authenticationResult.getAccount();
         Log.d(LOG_TAG, "Authenticated successfully ");
-        Log.d(LOG_TAG, "Access Token: " + accessToken);
         saveAccessToken(accessToken);
         saveOutlookSettings();
         sendBroadcast();
@@ -133,7 +127,7 @@ public class MSAuthManager implements IAuthenticationProvider {
                   .apply();
     }
 
-    class AuthenticationCallbackListener implements AuthenticationCallback {
+    private class AuthenticationCallbackListener implements AuthenticationCallback {
         @Override
         public void onSuccess(IAuthenticationResult authenticationResult) {
             postAuthProcess(authenticationResult);
@@ -160,9 +154,9 @@ public class MSAuthManager implements IAuthenticationProvider {
         }
     }
 
-    class RemoveAccountCallbackListener implements RemoveAccountCallback {
+    private class SignOutCallbackListener implements SignOutCallback {
         @Override
-        public void onRemoved() {
+        public void onSignOut() {
             Log.i(LOG_TAG, "Account removed successfully");
             showToastMessage(appContext, "Logged out of Outlook");
         }

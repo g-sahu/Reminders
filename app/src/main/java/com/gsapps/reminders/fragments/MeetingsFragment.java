@@ -74,7 +74,7 @@ public class MeetingsFragment extends Fragment {
     }
 
     private void getContactEvents() {
-        new LoadMeetingsTask((Activity) activity).execute();
+        new LoadMeetingsTask(activity, msAuthManager.getGraphServiceClient()).execute();
     }
 
     private void toggleConnectOutlookMessage(boolean isOutlookConnected) {

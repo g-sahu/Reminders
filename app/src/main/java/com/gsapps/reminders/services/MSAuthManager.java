@@ -8,6 +8,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.gsapps.reminders.RemindersApplication;
+import com.microsoft.graph.authentication.IAuthenticationProvider;
+import com.microsoft.graph.http.IHttpRequest;
+import com.microsoft.graph.models.extensions.IGraphServiceClient;
+import com.microsoft.graph.requests.extensions.GraphServiceClient;
 import com.microsoft.identity.client.AuthenticationCallback;
 import com.microsoft.identity.client.IAccount;
 import com.microsoft.identity.client.IAuthenticationResult;
@@ -26,15 +30,17 @@ import static com.gsapps.reminders.util.Constants.ACTION_MSAL_ACCESS_TOKEN_ACQUI
 import static com.gsapps.reminders.util.Constants.MSAL_ACCESS_TOKEN;
 import static com.gsapps.reminders.util.Constants.MSAL_ERROR_MSG;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
+import static com.microsoft.graph.logger.LoggerLevel.DEBUG;
 import static com.microsoft.identity.client.IMultipleAccountPublicClientApplication.RemoveAccountCallback;
 import static java.lang.String.format;
 
-public class MSAuthManager {
+public class MSAuthManager implements IAuthenticationProvider {
     private static final String LOG_TAG = "MSAuthManager";
     private final static String[] SCOPES = {"https://graph.microsoft.com/User.Read", "https://graph.microsoft.com/Calendars.Read"};
     private final Context appContext;
     private final String appName;
     private final IMultipleAccountPublicClientApplication multipleAccountApp;
+    private IGraphServiceClient graphServiceClient;
     private IAccount firstAccount;
     private String accessToken;
 
@@ -43,6 +49,24 @@ public class MSAuthManager {
         RemindersApplication remindersApplication = (RemindersApplication) activity.getApplication();
         appName = remindersApplication.getAppName();
         multipleAccountApp = remindersApplication.getMultipleAccountApp();
+    }
+
+    public synchronized IGraphServiceClient getGraphServiceClient() {
+        if (graphServiceClient == null) {
+            graphServiceClient = GraphServiceClient.builder()
+                                                   .authenticationProvider(this)
+                                                   .buildClient();
+
+            graphServiceClient.getLogger().setLoggingLevel(DEBUG);
+        }
+
+        return graphServiceClient;
+    }
+
+    @Override
+    public void authenticateRequest(IHttpRequest request)  {
+        request.addHeader("Authorization", "Bearer " + getAccessToken());
+        Log.i(LOG_TAG, "Authenticating MS Graph request: " + request);
     }
 
     public void loginOutlook(Activity activity) {
@@ -137,7 +161,6 @@ public class MSAuthManager {
     }
 
     class RemoveAccountCallbackListener implements RemoveAccountCallback {
-
         @Override
         public void onRemoved() {
             Log.i(LOG_TAG, "Account removed successfully");

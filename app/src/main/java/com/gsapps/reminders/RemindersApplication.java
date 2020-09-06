@@ -6,7 +6,6 @@ import android.util.Log;
 import com.gsapps.reminders.models.CalendarDTO;
 import com.gsapps.reminders.util.enums.CalendarType;
 import com.microsoft.identity.client.IMultipleAccountPublicClientApplication;
-import com.microsoft.identity.client.IPublicClientApplication;
 import com.microsoft.identity.client.exception.MsalException;
 
 import java.util.EnumMap;
@@ -17,7 +16,6 @@ import java.util.Set;
 
 import lombok.Getter;
 
-import static com.gsapps.reminders.R.raw.msal_config;
 import static com.gsapps.reminders.R.string.app_name;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.ADDRESS_BOOK_CONTACTS;
 import static com.gsapps.reminders.util.Constants.GoogleCalendarOwner.HOLIDAY_IN;
@@ -26,6 +24,7 @@ import static com.gsapps.reminders.util.Constants.MSAL_ERROR_MSG;
 import static com.gsapps.reminders.util.enums.CalendarType.COMPREHENSIVE;
 import static com.gsapps.reminders.util.enums.CalendarType.CONTACT_EVENTS;
 import static com.gsapps.reminders.util.enums.CalendarType.HOLIDAY;
+import static com.microsoft.identity.client.IPublicClientApplication.IMultipleAccountApplicationCreatedListener;
 import static com.microsoft.identity.client.PublicClientApplication.createMultipleAccountPublicClientApplication;
 import static java.lang.String.format;
 
@@ -47,7 +46,12 @@ public class RemindersApplication extends Application {
     public void onCreate() {
         super.onCreate();
         appName = getString(app_name);
-        createMultipleAccountPublicClientApplication(this, msal_config, new MultipleAccountApplicationCreatedListener());
+        //createMultipleAccountPublicClientApplication(this, msal_config, new MultipleAccountApplicationCreatedListener());
+        try {
+            multipleAccountApp = createMultipleAccountPublicClientApplication(this, R.raw.msal_config);
+        } catch (MsalException | InterruptedException e) {
+            Log.e(LOG_TAG, "Exception while creating Microsoft Public Client: " + e.getMessage());
+        }
 
         /*Bundle calendarsBundle = createCalendarBundle(COMPREHENSIVE);
 
@@ -79,8 +83,7 @@ public class RemindersApplication extends Application {
         return calendarsByCalendarTypeMap.getOrDefault(calendarType, new HashSet<>());
     }
 
-    class MultipleAccountApplicationCreatedListener implements
-            IPublicClientApplication.IMultipleAccountApplicationCreatedListener {
+    class MultipleAccountApplicationCreatedListener implements IMultipleAccountApplicationCreatedListener {
         @Override
         public void onCreated(IMultipleAccountPublicClientApplication application) {
             multipleAccountApp = application;

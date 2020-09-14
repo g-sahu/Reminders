@@ -28,4 +28,9 @@ public final class Constants {
     //Keys
     public static final String KEY_EVENTS = "KEY_EVENTS";
     public static final String KEY_EVENTS_JSON = "KEY_EVENTS_JSON";
+
+    // Request codes
+    public static final int REQUEST_READ_CALENDAR = 1;
+
+    public static final String MSAL_ERROR_MSG = "Error code: %s, Error message: %s";
 }

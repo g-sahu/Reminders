@@ -29,8 +29,9 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="msal86773c8b-b482-474b-abf4-c7e2599611f8"
-                      android:host="auth" />
+                <data android:scheme="msauth"
+                        android:host="com.gsapps.reminders"
+                        android:path="/QTqnBIRACkD+iaO6HKcj9w5CDG8="/>
             </intent-filter>
         </activity>
 

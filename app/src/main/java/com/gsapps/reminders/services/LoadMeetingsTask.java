@@ -10,38 +10,37 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gsapps.reminders.adapters.EventListAdapter;
 import com.gsapps.reminders.models.EventDTO;
 import com.gsapps.reminders.util.comparators.StartDateComparator;
-import com.microsoft.graph.extensions.Event;
-import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.http.GraphServiceException;
+import com.microsoft.graph.models.extensions.Event;
+import com.microsoft.graph.models.extensions.IGraphServiceClient;
+import com.microsoft.graph.requests.extensions.IEventCollectionPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
+
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.factories.EventDTOFactory.createEventDTO;
-import static com.gsapps.reminders.services.GraphServiceClientManager.getInstance;
 import static com.gsapps.reminders.util.ReminderUtils.getOptions;
 import static com.gsapps.reminders.util.enums.EventType.MEETING_EVENT;
 import static java.util.Collections.sort;
 
+@RequiredArgsConstructor
 public class LoadMeetingsTask extends AsyncTask<Void, Void, Void> {
-    private final String LOG_TAG = getClass().getSimpleName();
+    private static final String LOG_TAG = LoadMeetingsTask.class.getSimpleName();
+    private final List<EventDTO> eventDTOList = new ArrayList<>();
     private final Activity activity;
-    private List<EventDTO> eventDTOList = new ArrayList<>();
-
-    public LoadMeetingsTask(Activity activity) {
-        this.activity = activity;
-    }
+    private final IGraphServiceClient graphServiceClient;
 
     @Override
     protected Void doInBackground(Void... params) {
         try {
-            IEventCollectionPage result = getInstance()
-                                            .getGraphServiceClient()
-                                            .getMe()
-                                            .getEvents()
-                                            .buildRequest(getOptions())
-                                            .get();
+            IEventCollectionPage result = graphServiceClient.me()
+                                                            .events()
+                                                            .buildRequest(getOptions())
+                                                            .select("subject,bodyPreview,createdDateTime,start,end,location")
+                                                            .get();
 
             for(Event meeting : result.getCurrentPage()) {
                 EventDTO eventDTO = createEventDTO(MEETING_EVENT);
@@ -55,7 +54,7 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, Void> {
                 eventDTOList.add(eventDTO);
             }
         } catch (GraphServiceException e) {
-            Log.e(LOG_TAG, e.getMessage());
+            Log.e(LOG_TAG, "Error while fetching meeting events: " + e.getMessage());
         }
 
         return null;

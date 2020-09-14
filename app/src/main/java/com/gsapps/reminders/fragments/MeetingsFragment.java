@@ -9,10 +9,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.gsapps.reminders.services.LoadMeetingsTask;
+import com.gsapps.reminders.services.MSAuthManager;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -20,26 +23,26 @@ import static androidx.localbroadcastmanager.content.LocalBroadcastManager.getIn
 import static com.gsapps.reminders.R.id.connect_with_outlook;
 import static com.gsapps.reminders.R.id.meetings_view;
 import static com.gsapps.reminders.R.layout.fragment_meetings;
-import static com.gsapps.reminders.services.MSAuthManager.getAccessToken;
-import static com.gsapps.reminders.services.MSAuthManager.loginOutlook;
 import static com.gsapps.reminders.util.Constants.ACTION_MSAL_ACCESS_TOKEN_ACQUIRED;
 import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 
 public class MeetingsFragment extends Fragment {
     private static final String LOG_TAG = MeetingsFragment.class.getSimpleName();
     public static View view; //TODO: 01-04-2019  To be changed to a better way to access view object in other classes.
-    private Context context;
+    private Activity activity;
     private BroadcastReceiver msAuthReceiver;
     private IntentFilter intentFilter;
     private LocalBroadcastManager localBroadcastManager;
+    private MSAuthManager msAuthManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getContext();
+        activity = (Activity) getContext();
         msAuthReceiver = new MSAuthReceiver();
+        msAuthManager = new MSAuthManager(activity);
         intentFilter = new IntentFilter(ACTION_MSAL_ACCESS_TOKEN_ACQUIRED);
-        localBroadcastManager = getInstance(context);
+        localBroadcastManager = getInstance(activity);
     }
 
     @Override
@@ -52,12 +55,12 @@ public class MeetingsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         localBroadcastManager.registerReceiver(msAuthReceiver, intentFilter);
-        boolean isOutlookConnected = isOutlookConnected(context);
+        boolean isOutlookConnected = isOutlookConnected(activity.getApplicationContext());
         toggleConnectOutlookMessage(isOutlookConnected);
 
         if(isOutlookConnected) {
-            if(getAccessToken() == null) {
-                loginOutlook(context);
+            if(msAuthManager.getAccessToken() == null) {
+                msAuthManager.loginOutlook(activity);
             } else {
                 getContactEvents();
             }
@@ -71,7 +74,7 @@ public class MeetingsFragment extends Fragment {
     }
 
     private void getContactEvents() {
-        new LoadMeetingsTask((Activity) context).execute();
+        new LoadMeetingsTask(activity, msAuthManager.getGraphServiceClient()).execute();
     }
 
     private void toggleConnectOutlookMessage(boolean isOutlookConnected) {

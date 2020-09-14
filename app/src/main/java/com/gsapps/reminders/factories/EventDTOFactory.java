@@ -5,6 +5,7 @@ import android.util.Log;
 import com.gsapps.reminders.models.ContactEventDTO;
 import com.gsapps.reminders.models.EventDTO;
 import com.gsapps.reminders.models.HolidayEventDTO;
+import com.gsapps.reminders.models.MeetingEventDTO;
 import com.gsapps.reminders.util.enums.EventType;
 
 import lombok.NoArgsConstructor;
@@ -35,10 +36,7 @@ public final class EventDTOFactory {
                 return new HolidayEventDTO(eventType, holiday);
 
             case MEETING_EVENT:
-                // TODO: 13-07-2020 Implement Parcelable in MeetingEventDTO to enable this commented code
-                //return new MeetingEventDTO(eventType, 0);
-                Log.e(LOG_TAG, msg);
-                throw new IllegalArgumentException(msg);
+                return new MeetingEventDTO(eventType, 0);
 
             case TRAVEL_EVENT:
                 // TODO: 13-07-2020 Implement Parcelable in TravelEventDTO to enable this commented code

@@ -39,6 +39,7 @@ public class LoadMeetingsTask extends AsyncTask<Void, Void, Void> {
             IEventCollectionPage result = graphServiceClient.me()
                                                             .events()
                                                             .buildRequest(getOptions())
+                                                            .select("subject,bodyPreview,createdDateTime,start,end,location")
                                                             .get();
 
             for(Event meeting : result.getCurrentPage()) {

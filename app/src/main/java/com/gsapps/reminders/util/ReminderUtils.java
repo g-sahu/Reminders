@@ -58,9 +58,8 @@ public final class ReminderUtils {
     public static List<Option> getOptions() {
         List<Option> options = new ArrayList<>();
         options.add(new HeaderOption("Prefer", "outlook.timezone=\"" + getDefault().getID() + "\""));
-        options.add(new QueryOption("select", "subject,bodyPreview,start,end,location"));
-        options.add(new QueryOption("filter", "start/dateTime ge '" + getStartOfDayDateTimeString("yyyy-MM-dd HH:mm") + "'"));
-        options.add(new QueryOption("orderby", "start/dateTime"));
+        options.add(new QueryOption("$filter", "start/dateTime ge '" + getStartOfDayDateTimeString("yyyy-MM-dd'T'HH:mm") + "'"));
+        options.add(new QueryOption("$orderby", "start/dateTime"));
         return options;
     }
 }

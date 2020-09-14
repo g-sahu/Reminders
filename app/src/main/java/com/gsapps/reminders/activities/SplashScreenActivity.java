@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.gsapps.reminders.RemindersApplication;
 import com.gsapps.reminders.listeners.NotificationReceiver;
 import com.gsapps.reminders.models.EventDTO;
+import com.gsapps.reminders.services.LoadCalendarsTask;
 import com.gsapps.reminders.services.LoadEventsTask;
 import com.gsapps.reminders.services.LoadEventsTask.Params;
 import com.microsoft.identity.client.ISingleAccountPublicClientApplication;
@@ -19,10 +20,13 @@ import com.microsoft.identity.client.exception.MsalException;
 
 import java.util.concurrent.ExecutionException;
 
+import static android.Manifest.permission.READ_CALENDAR;
 import static android.app.AlarmManager.RTC_WAKEUP;
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static android.app.PendingIntent.getBroadcast;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.M;
 import static com.gsapps.reminders.R.layout.activity_splash_screen;
 import static com.gsapps.reminders.R.raw.msal_config;
 import static com.gsapps.reminders.util.CalendarUtils.getEndOfDayMillis;
@@ -31,7 +35,9 @@ import static com.gsapps.reminders.util.Constants.KEY_EVENTS;
 import static com.gsapps.reminders.util.Constants.KEY_EVENTS_JSON;
 import static com.gsapps.reminders.util.Constants.MSAL_ERROR_MSG;
 import static com.gsapps.reminders.util.Constants.REQUEST_READ_CALENDAR;
+import static com.gsapps.reminders.util.ContentProviderUtils.createCalendarBundle;
 import static com.gsapps.reminders.util.JsonUtils.toJson;
+import static com.gsapps.reminders.util.ReminderUtils.hasPermission;
 import static com.gsapps.reminders.util.ReminderUtils.showToastMessage;
 import static com.gsapps.reminders.util.enums.CalendarType.COMPREHENSIVE;
 import static com.microsoft.identity.client.IPublicClientApplication.ISingleAccountApplicationCreatedListener;
@@ -50,14 +56,17 @@ public class SplashScreenActivity extends Activity {
         setContentView(activity_splash_screen);
         activity = this;
         remindersApplication = (RemindersApplication) getApplication();
+        createSingleAccountPublicClientApplication(this, msal_config, new PublicClientApplicationListener());
+    }
 
-        /*if (!hasPermission(this, READ_CALENDAR)) {
+    private void requestMissingPermissions() {
+        if (!hasPermission(this, READ_CALENDAR)) {
             if (SDK_INT >= M) {
                 requestPermissions(new String[]{READ_CALENDAR}, REQUEST_READ_CALENDAR);
+            } else {
+                // TODO: 14-09-2020 Check what needs to be done here
             }
-        }*/
-
-        createSingleAccountPublicClientApplication(this, msal_config, new PublicClientApplicationListener());
+        }
     }
 
     @Override
@@ -65,13 +74,24 @@ public class SplashScreenActivity extends Activity {
         switch(requestCode) {
             case REQUEST_READ_CALENDAR: {
                 if(grantResults.length > 0 && grantResults[0] == PERMISSION_GRANTED) {
-                    registerNotificationIntents();
-                    startActivity(new Intent(this, HomeActivity.class));
-                    finish();
+                    startupApp();
                 } else {
                     // TODO: 21-05-2020 Permission not granted. Show a message to the user
+                    startActivity(new Intent(this, HomeActivity.class));
+                    finish();
                 }
             }
+        }
+    }
+
+    private void loadCalendars() {
+        try {
+            new LoadCalendarsTask(remindersApplication).execute(createCalendarBundle(COMPREHENSIVE))
+                                                       .get()
+                                                       .stream()
+                                                       .forEach(calendarDTO -> remindersApplication.updateCalendarMap(calendarDTO));
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e(LOG_TAG, "Error while fetching calendars: " + e.getMessage());
         }
     }
 
@@ -97,6 +117,8 @@ public class SplashScreenActivity extends Activity {
     }
 
     private void startupApp() {
+        loadCalendars();
+        registerNotificationIntents();
         startActivity(new Intent(this, HomeActivity.class));
         finish();
     }
@@ -105,7 +127,7 @@ public class SplashScreenActivity extends Activity {
         @Override
         public void onCreated(ISingleAccountPublicClientApplication application) {
             remindersApplication.setSingleAccountApp(application);
-            startupApp();
+            requestMissingPermissions();
         }
 
         @Override
@@ -113,7 +135,7 @@ public class SplashScreenActivity extends Activity {
             String errorMsg = "Exception while creating public client.";
             Log.e(LOG_TAG, errorMsg + format(MSAL_ERROR_MSG, e.getErrorCode(), e.getMessage()));
             showToastMessage(activity, errorMsg);
-            startupApp();
+            requestMissingPermissions();
         }
     }
 }

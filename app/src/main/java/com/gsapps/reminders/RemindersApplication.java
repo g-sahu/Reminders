@@ -41,20 +41,9 @@ public class RemindersApplication extends Application {
     public void onCreate() {
         super.onCreate();
         appName = getString(app_name);
-
-        /*Bundle calendarsBundle = createCalendarBundle(COMPREHENSIVE);
-
-        try {
-            new LoadCalendarsTask(this).execute(calendarsBundle)
-                                       .get()
-                                       .stream()
-                                       .forEach(this :: updateCalendarMap);
-        } catch (ExecutionException | InterruptedException e) {
-            Log.e(LOG_TAG, "Error while fetching calendars: " + e.getMessage());
-        }*/
     }
 
-    private void updateCalendarMap(CalendarDTO calendarDTO) {
+    public void updateCalendarMap(CalendarDTO calendarDTO) {
         final String ownerAccount = calendarDTO.getOwnerAccount();
 
         if(calendarTypeByOwnerAcMap.containsKey(ownerAccount)) {

@@ -28,7 +28,7 @@ import static com.gsapps.reminders.util.ReminderUtils.isOutlookConnected;
 
 public class MeetingsFragment extends Fragment {
     private static final String LOG_TAG = MeetingsFragment.class.getSimpleName();
-    public static View view; //TODO: 01-04-2019  To be changed to a better way to access view object in other classes.
+    private View view;
     private Activity activity;
     private BroadcastReceiver msAuthReceiver;
     private IntentFilter intentFilter;

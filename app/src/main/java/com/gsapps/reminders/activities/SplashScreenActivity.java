@@ -67,6 +67,8 @@ public class SplashScreenActivity extends Activity {
                 // TODO: 14-09-2020 Check what needs to be done here
             }
         }
+
+        startupApp();
     }
 
     @Override
@@ -77,8 +79,7 @@ public class SplashScreenActivity extends Activity {
                     startupApp();
                 } else {
                     // TODO: 21-05-2020 Permission not granted. Show a message to the user
-                    startActivity(new Intent(this, HomeActivity.class));
-                    finish();
+                    startHomeActivity();
                 }
             }
         }
@@ -119,6 +120,10 @@ public class SplashScreenActivity extends Activity {
     private void startupApp() {
         loadCalendars();
         registerNotificationIntents();
+        startHomeActivity();
+    }
+
+    private void startHomeActivity() {
         startActivity(new Intent(this, HomeActivity.class));
         finish();
     }

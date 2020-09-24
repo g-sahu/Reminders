@@ -37,6 +37,7 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class ContentProviderUtils {
     private static final String LOG_TAG = ContentProviderUtils.class.getSimpleName();
+    private static final String EMAIL = "simplygaurav07@gmail.com";
 
     public static Cursor query(@NonNull ContentResolver contentResolver, @NonNull Bundle bundle) {
         Uri uri = bundle.getParcelable(URI.name());
@@ -71,12 +72,12 @@ public final class ContentProviderUtils {
         switch (calendarType) {
             case COMPREHENSIVE:
                 calendarsSelection = asList(ACCOUNT_NAME + " = ? ", ACCOUNT_TYPE + " = ?");
-                calendarsSelectionArgs = asList("simplygaurav07@gmail.com", "com.google");
+                calendarsSelectionArgs = asList(EMAIL, "com.google");
                 break;
 
             case CONTACT_EVENTS:
                 calendarsSelection = asList(ACCOUNT_NAME + " = ? ", ACCOUNT_TYPE + " = ?", OWNER_ACCOUNT + " = ?");
-                calendarsSelectionArgs = asList("simplygaurav07@gmail.com", "com.google", ADDRESS_BOOK_CONTACTS);
+                calendarsSelectionArgs = asList(EMAIL, "com.google", ADDRESS_BOOK_CONTACTS);
                 break;
 
             default:

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/birthday_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.BirthdayDetailFragment">
+
+    <ImageView
+            android:id="@+id/display_pic"
+            android:contentDescription="@string/display_pic"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/outline_cake_black_18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/event_title"
+            app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+            android:id="@+id/event_title"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="@string/contacts_birthday"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/display_pic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/date_of_birth" />
+
+    <ImageView
+            android:id="@+id/calendar_icon"
+            android:contentDescription="@string/calendar_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_three"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_title"
+            app:layout_constraintEnd_toStartOf="@+id/date_of_birth"
+            app:layout_constraintBottom_toTopOf="@+id/cake_icon" />
+
+    <TextView
+            android:id="@+id/date_of_birth"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="@string/date_of_birth"
+            app:layout_constraintStart_toEndOf="@+id/calendar_icon"
+            app:layout_constraintTop_toBottomOf="@+id/event_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/wish_birthday" />
+
+    <ImageView
+            android:id="@+id/cake_icon"
+            android:contentDescription="@string/cake_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/holiday"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/calendar_icon"
+            app:layout_constraintEnd_toStartOf="@+id/wish_birthday"
+            app:layout_constraintBottom_toTopOf="@+id/wish_icons_space_left" />
+
+    <TextView
+            android:id="@+id/wish_birthday"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="@string/wish_birthday"
+            app:layout_constraintStart_toEndOf="@+id/calendar_icon"
+            app:layout_constraintTop_toBottomOf="@+id/date_of_birth"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/whatsapp_icon" />
+
+    <Space
+            android:id="@+id/wish_icons_space_left"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cake_icon"
+            app:layout_constraintEnd_toStartOf="@+id/whatsapp_icon"
+            app:layout_constraintBottom_toTopOf="@+id/notes_icon" />
+
+    <ImageView
+            android:id="@+id/whatsapp_icon"
+            android:contentDescription="@string/whatsapp_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_two"
+            app:layout_constraintStart_toEndOf="@+id/wish_icons_space_left"
+            app:layout_constraintTop_toBottomOf="@+id/wish_birthday"
+            app:layout_constraintEnd_toStartOf="@+id/call_icon"
+            app:layout_constraintBottom_toTopOf="@+id/notes_title" />
+
+    <ImageView
+            android:id="@+id/call_icon"
+            android:contentDescription="@string/call_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_two"
+            app:layout_constraintStart_toEndOf="@+id/whatsapp_icon"
+            app:layout_constraintTop_toBottomOf="@+id/wish_birthday"
+            app:layout_constraintEnd_toStartOf="@+id/wish_icons_space_right"
+            app:layout_constraintBottom_toTopOf="@+id/notes_title" />
+
+    <Space
+            android:id="@+id/wish_icons_space_right"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toEndOf="@+id/call_icon"
+            app:layout_constraintTop_toBottomOf="@+id/wish_birthday"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/notes_title" />
+
+    <ImageView
+            android:id="@+id/notes_icon"
+            android:contentDescription="@string/notes_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_three"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wish_icons_space_left"
+            app:layout_constraintEnd_toStartOf="@+id/notes_title"
+            app:layout_constraintBottom_toTopOf="@+id/notes_text_space_left" />
+
+    <TextView
+            android:id="@+id/notes_title"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="@string/notes"
+            app:layout_constraintStart_toEndOf="@id/notes_icon"
+            app:layout_constraintTop_toBottomOf="@id/whatsapp_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/notes_text" />
+
+    <Space
+            android:id="@+id/notes_text_space_left"
+            android:layout_width="50dp"
+            android:layout_height="150dp"
+            app:layout_constraintBottom_toTopOf="@id/delete_button"
+            app:layout_constraintEnd_toStartOf="@+id/notes_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notes_icon" />
+
+    <EditText
+            android:id="@+id/notes_text"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="@string/add_a_note"
+            android:inputType="textMultiLine"
+            android:importantForAutofill="no"
+            app:layout_constraintStart_toEndOf="@+id/notes_text_space_left"
+            app:layout_constraintTop_toBottomOf="@+id/notes_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/delete_button" />
+
+    <Space
+            android:id="@+id/delete_space_left"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/delete_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/notes_text" />
+
+    <ImageButton
+            android:id="@+id/delete_button"
+            android:contentDescription="@string/delete_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@android:drawable/btn_dialog"
+            app:layout_constraintStart_toEndOf="@+id/delete_space_left"
+            app:layout_constraintTop_toBottomOf="@id/notes_text"
+            app:layout_constraintEnd_toStartOf="@id/delete_space_right"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Space
+            android:id="@+id/delete_space_right"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toEndOf="@id/delete_button"
+            app:layout_constraintTop_toBottomOf="@id/notes_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

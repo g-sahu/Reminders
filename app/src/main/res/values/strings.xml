@@ -25,7 +25,17 @@
     <string name="connect_with_outlook">Connect with Outlook</string>
     <string name="key_logout">LOGOUT</string>
     <string name="key_connect_with_outlook">CONNECT_WITH_OUTLOOK</string>
-    <string name="connect_with_outlook_message">You are not connected to Outlook currently. To view your meetings,
-        connect your Outlook account.
-    </string>
+    <string name="connect_with_outlook_message">You are not connected to Outlook currently. To view your meetings, connect your Outlook account.</string>
+    <string name="display_pic">Display pic</string>
+    <string name="contacts_birthday">Contact\'s Birthday</string>
+    <string name="calendar_icon">Calendar Icon</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="cake_icon">Cake icon</string>
+    <string name="wish_birthday">Wish Birthday</string>
+    <string name="whatsapp_icon">WhatsApp Icon</string>
+    <string name="call_icon">Call Icon</string>
+    <string name="notes_icon">Notes Icon</string>
+    <string name="notes">Notes</string>
+    <string name="add_a_note">Add a note</string>
+    <string name="delete_button">Delete Button</string>
 </resources>
